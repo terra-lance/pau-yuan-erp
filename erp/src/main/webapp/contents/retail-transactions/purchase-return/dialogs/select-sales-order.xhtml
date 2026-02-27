@@ -1,0 +1,99 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:form id="selectSalesOrderForm">
+		<p:dialog value="Selection" widgetVar="selectSalesOrderWV"
+			resizable="false" responsive="true" modal="true">
+			<p:toolbar id="toolbar">
+				<f:facet name="right">
+					<p:commandButton value="Select" icon="fa fa-fw fa-check"
+						action="#{purchaseReturnController.selectSalesOrder()}"
+						update="@(.page)" />
+				</f:facet>
+			</p:toolbar>
+
+			<p:panel styleClass="dialog" header="Select Frame from Sales Order">
+				<p:dataTable styleClass="data-table" rowIndexVar="rowIndex"
+					var="object" rowKey="#{object}"
+					value="#{purchaseReturnController.salesOrders}" paginator="true"
+					paginatorPosition="#{sessionBean.userPreference.paginatorPosition}"
+					rows="10" rowsPerPageTemplate="10,20,30,40,50"
+					selection="#{purchaseReturnController.selectedSalesOrders}"
+					rowSelectMode="none" lazy="true">
+
+					<p:column selectionMode="multiple"
+						style="width:16px;text-align:center" />
+
+					<p:column headerText="Customer" filterBy="#{object.customer.name}"
+						filterMatchMode="contains" sortBy="#{object.customer.name}">
+						<h:outputText value="#{object.customer.name}" />
+					</p:column>
+
+					<p:column headerText="Order" filterBy="#{object.documentNo}"
+						filterMatchMode="contains" sortBy="#{object.documentNo}">
+						<h:outputText value="#{object.documentNo}" />
+					</p:column>
+
+					<p:column headerText="Date" filterBy="#{object.documentDate}"
+						filterMatchMode="contains" sortBy="#{object.documentDate}">
+						<h:outputText value="#{object.documentDate}">
+							<f:convertDateTime
+								pattern="#{purchaseReturnController.configuration.datePattern}" />
+						</h:outputText>
+					</p:column>
+
+					<p:column headerText="Serial No."
+						filterBy="#{object.frameInventory.serialNo}"
+						filterMatchMode="contains"
+						sortBy="#{object.frameInventory.serialNo}">
+						<h:outputText value="#{object.frameInventory.serialNo}" />
+					</p:column>
+
+					<p:column headerText="Brand"
+						filterBy="#{object.frameInventory.purchaseOrderFrame.frame.brand.code}"
+						filterMatchMode="contains"
+						sortBy="#{object.frameInventory.purchaseOrderFrame.frame.brand.code}">
+						<h:outputText
+							value="#{object.frameInventory.purchaseOrderFrame.frame.brand.code}" />
+					</p:column>
+
+					<p:column headerText="Model"
+						filterBy="#{object.frameInventory.purchaseOrderFrame.frame.code}"
+						filterMatchMode="contains"
+						sortBy="#{object.frameInventory.purchaseOrderFrame.frame.code}">
+						<h:outputText
+							value="#{object.frameInventory.purchaseOrderFrame.frame.code}" />
+					</p:column>
+
+					<p:column headerText="Material"
+						filterBy="#{object.frameInventory.purchaseOrderFrame.frame.material}"
+						filterMatchMode="contains"
+						sortBy="#{object.frameInventory.purchaseOrderFrame.frame.material}">
+						<h:outputText
+							value="#{object.frameInventory.purchaseOrderFrame.frame.material}" />
+					</p:column>
+
+					<p:column headerText="Size"
+						filterBy="#{object.frameInventory.purchaseOrderFrame.frame.size}"
+						filterMatchMode="contains"
+						sortBy="#{object.frameInventory.purchaseOrderFrame.frame.size}">
+						<h:outputText
+							value="#{object.frameInventory.purchaseOrderFrame.frame.size}" />
+					</p:column>
+
+					<p:column headerText="Color"
+						filterBy="#{object.frameInventory.purchaseOrderFrame.color}"
+						filterMatchMode="contains"
+						sortBy="#{object.frameInventory.purchaseOrderFrame.color}">
+						<h:outputText
+							value="#{object.frameInventory.purchaseOrderFrame.color}" />
+					</p:column>
+				</p:dataTable>
+			</p:panel>
+		</p:dialog>
+	</h:form>
+
+</ui:composition>

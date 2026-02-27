@@ -1,0 +1,192 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:form id="selectInspectionForm">
+		<p:dialog value="Selection" widgetVar="selectInspectionWV"
+			resizable="false" responsive="true" modal="true">
+
+			<p:panel styleClass="dialog"
+				header="Select Inspection from Previous Customer Order">
+				<p:dataTable styleClass="data-table" rowIndexVar="rowIndex"
+					var="object" rowKey="#{object}"
+					value="#{salesOrderController.inspections}" paginator="true"
+					paginatorPosition="#{sessionBean.userPreference.paginatorPosition}"
+					rows="10" rowsPerPageTemplate="10,20,30,40,50" lazy="true"
+					emptyMessage="This customer do not have other order record history">
+
+					<p:column styleClass="index-cell">
+						<p:commandButton icon="fa fa-fw fa-check"
+							action="#{salesOrderController.selectInspection(object)}"
+							update="@(.page)" />
+					</p:column>
+
+					<p:column headerText="Order No." styleClass="triple-action-cell"
+						filterBy="#{object.documentNo}" filterMatchMode="contains"
+						sortBy="#{object.documentNo}">
+						<h:outputText value="#{object.documentNo}" />
+					</p:column>
+
+					<p:column headerText="Date" styleClass="double-action-cell"
+						sortBy="#{object.documentDate}">
+						<h:outputText value="#{object.documentDate}">
+							<f:convertDateTime
+								pattern="#{salesOrderController.configuration.datePattern}" />
+						</h:outputText>
+					</p:column>
+
+					<p:column headerText="Inspection Result">
+						<div class="grid">
+							<div class="col-12 md:col-8 xl:col-8">
+								<p:outputPanel styleClass="ui-inputgroup border">
+									<p:outputPanel styleClass="ui-inputgroup-addon" />
+
+									<p:inputText styleClass="full-width read-only"
+										style="border-right: 1px solid silver" value="SPH"
+										readonly="true" placeholder="SPH" />
+									<p:inputText styleClass="full-width read-only"
+										style="border-right: 1px solid silver" value="CYL"
+										readonly="true" placeholder="CYL" />
+									<p:inputText styleClass="full-width read-only"
+										style="border-right: 1px solid silver" value="AXIS"
+										readonly="true" placeholder="AXIS" />
+									<p:inputText styleClass="full-width read-only"
+										style="border-right: 1px solid silver" value="ADD"
+										readonly="true" placeholder="ADD" />
+									<p:inputText styleClass="full-width read-only"
+										style="border-right: 1px solid silver" value="PRISM"
+										readonly="true" placeholder="PRISM" />
+									<p:inputText styleClass="full-width read-only"
+										style="border-right: 1px solid silver" value="DEC(MN)"
+										readonly="true" placeholder="DEC(MN)" />
+									<p:inputText styleClass="full-width read-only" value="VA"
+										readonly="true" placeholder="VA" />
+								</p:outputPanel>
+
+								<p:outputPanel styleClass="ui-inputgroup border">
+									<p:outputPanel styleClass="ui-inputgroup-addon">RE</p:outputPanel>
+
+									<p:inputText styleClass="full-width align-right read-only"
+										style="border-right: 1px solid silver" id="rightSphere"
+										value="#{object.rightSphere}" readonly="true" />
+									<p:inputText styleClass="full-width align-right read-only"
+										style="border-right: 1px solid silver" id="rightCylinder"
+										value="#{object.rightCylinder}" readonly="true" />
+									<p:inputText styleClass="full-width align-right read-only"
+										style="border-right: 1px solid silver" id="rightAxis"
+										value="#{object.rightAxis}" readonly="true" />
+									<p:inputText styleClass="full-width align-right read-only"
+										style="border-right: 1px solid silver" id="rightAdditional"
+										value="#{object.rightAdditional}" readonly="true" />
+									<p:inputText styleClass="full-width align-right read-only"
+										style="border-right: 1px solid silver" id="rightPrism"
+										value="#{object.rightPrism}" readonly="true" />
+									<p:inputText styleClass="full-width align-right read-only"
+										style="border-right: 1px solid silver" id="rightDecentration"
+										value="#{object.rightDecentration}" readonly="true" />
+									<p:inputText styleClass="full-width align-right read-only"
+										id="rightVisualAcuity" value="#{object.rightVisualAcuity}"
+										readonly="true" />
+								</p:outputPanel>
+
+								<p:outputPanel styleClass="ui-inputgroup border">
+									<p:outputPanel styleClass="ui-inputgroup-addon">LE</p:outputPanel>
+
+									<p:inputText styleClass="full-width align-right read-only"
+										style="border-right: 1px solid silver" id="leftSphere"
+										value="#{object.leftSphere}" readonly="true" />
+									<p:inputText styleClass="full-width align-right read-only"
+										style="border-right: 1px solid silver" id="leftCylinder"
+										value="#{object.leftCylinder}" readonly="true" />
+									<p:inputText styleClass="full-width align-right read-only"
+										style="border-right: 1px solid silver" id="leftAxis"
+										value="#{object.leftAxis}" readonly="true" />
+									<p:inputText styleClass="full-width align-right read-only"
+										style="border-right: 1px solid silver" id="leftAdditional"
+										value="#{object.leftAdditional}" readonly="true" />
+									<p:inputText styleClass="full-width align-right read-only"
+										style="border-right: 1px solid silver" id="leftPrism"
+										value="#{object.leftPrism}" readonly="true" />
+									<p:inputText styleClass="full-width align-right read-only"
+										style="border-right: 1px solid silver" id="leftDecentration"
+										value="#{object.leftDecentration}" readonly="true" />
+									<p:inputText styleClass="full-width align-right read-only"
+										id="leftVisualAcuity" value="#{object.leftVisualAcuity}"
+										readonly="true" />
+								</p:outputPanel>
+							</div>
+
+							<div class="col-12 md:col-4 xl:col-4">
+								<p:outputPanel styleClass="ui-inputgroup border">
+									<p:outputPanel styleClass="ui-inputgroup-addon x2">
+
+									</p:outputPanel>
+
+									<p:inputText styleClass="full-width read-only"
+										style="border-right: 1px solid silver" value="PD(d)"
+										readonly="true" placeholder="PD(d)" />
+									<p:inputText styleClass="full-width read-only"
+										style="border-right: 1px solid silver" value="PD(n)"
+										readonly="true" placeholder="PD(n)" />
+									<p:inputText styleClass="full-width read-only" value="HT"
+										readonly="true" placeholder="HT" />
+								</p:outputPanel>
+
+								<p:outputPanel styleClass="ui-inputgroup border">
+									<p:outputPanel styleClass="ui-inputgroup-addon x2">BOTH</p:outputPanel>
+
+									<p:inputNumber styleClass="full-width read-only"
+										style="border-right: 1px solid silver" id="bothPdd"
+										value="#{object.bothPdd}" decimalPlaces="1" emptyValue="zero"
+										readonly="true" />
+									<p:inputNumber styleClass="full-width read-only"
+										style="border-right: 1px solid silver" id="bothPdn"
+										value="#{object.bothPdn}" decimalPlaces="1" emptyValue="zero"
+										readonly="true" />
+									<p:inputNumber styleClass="full-width read-only" id="bothHt"
+										value="#{object.bothHt}" decimalPlaces="1" emptyValue="zero"
+										readonly="true" />
+								</p:outputPanel>
+
+								<p:outputPanel styleClass="ui-inputgroup border">
+									<p:outputPanel styleClass="ui-inputgroup-addon x2">RE</p:outputPanel>
+
+									<p:inputNumber styleClass="full-width read-only"
+										style="border-right: 1px solid silver" id="rightPdd"
+										value="#{object.rightPdd}" decimalPlaces="1" emptyValue="zero"
+										readonly="true" />
+									<p:inputNumber styleClass="full-width read-only"
+										style="border-right: 1px solid silver" id="rightPdn"
+										value="#{object.rightPdn}" decimalPlaces="1" emptyValue="zero"
+										readonly="true" />
+									<p:inputNumber styleClass="full-width read-only" id="rightHt"
+										value="#{object.rightHt}" decimalPlaces="1" emptyValue="zero"
+										readonly="true" />
+								</p:outputPanel>
+
+								<p:outputPanel styleClass="ui-inputgroup border">
+									<p:outputPanel styleClass="ui-inputgroup-addon x2">LE</p:outputPanel>
+
+									<p:inputNumber styleClass="full-width read-only"
+										style="border-right: 1px solid silver" id="leftPdd"
+										value="#{object.leftPdd}" decimalPlaces="1" emptyValue="zero"
+										readonly="true" />
+									<p:inputNumber styleClass="full-width read-only"
+										style="border-right: 1px solid silver" id="leftPdn"
+										value="#{object.leftPdn}" decimalPlaces="1" emptyValue="zero"
+										readonly="true" />
+									<p:inputNumber styleClass="full-width read-only" id="leftHt"
+										value="#{object.leftHt}" decimalPlaces="1" emptyValue="zero"
+										readonly="true" />
+								</p:outputPanel>
+							</div>
+						</div>
+					</p:column>
+				</p:dataTable>
+			</p:panel>
+		</p:dialog>
+	</h:form>
+
+</ui:composition>

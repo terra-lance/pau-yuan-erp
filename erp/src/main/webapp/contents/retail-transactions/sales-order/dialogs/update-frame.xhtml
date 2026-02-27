@@ -1,0 +1,99 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:form id="updateFrameForm">
+		<p:dialog value="Update Frame" widgetVar="updateFrameWV"
+			resizable="false" responsive="true" modal="true" closable="false">
+
+			<p:toolbar id="toolbar">
+				<f:facet name="left">
+					<h:outputText value="Update Frame" />
+				</f:facet>
+
+				<f:facet name="right">
+					<p:commandButton value="Clear" icon="fa fa-ban"
+						action="#{salesOrderController.clearFrame()}" process="@form"
+						update="@form @(.page)">
+						<p:confirm header="Confirmation"
+							message="Do you wish to clear frame scanned?"
+							icon="ui-icon-alert" />
+					</p:commandButton>
+					<p:commandButton value="Return" icon="fa fa-fw fa-rotate-left"
+						onclick="PF('updateFrameWV').hide()" update="@(.page)" />
+				</f:facet>
+			</p:toolbar>
+
+			<p:panel styleClass="dialog" id="dialogPanel">
+				<p:outputPanel class="grid">
+					<div class="col-12 md:col-6 xl:col-6">
+						<h6>Frame</h6>
+						<p:inputText styleClass="full-width read-only" id="frameSummary"
+							value="#{salesOrderController.object.frameInventory.purchaseOrderFrame.frameSummary}"
+							readonly="true" />
+					</div>
+
+					<div class="col-12 md:col-6 xl:col-3">
+						<h6>Code</h6>
+						<p:inputText styleClass="full-width read-only" id="encodeCode"
+							value="#{salesOrderController.object.frameInventory.purchaseOrderFrame.remark}"
+							readonly="true" />
+					</div>
+
+					<div class="col-12 md:col-6 xl:col-3">
+						<h6>Color</h6>
+						<p:inputText styleClass="full-width read-only" id="frameColor"
+							value="#{salesOrderController.object.frameInventory.purchaseOrderFrame.color}"
+							readonly="true" />
+					</div>
+
+					<div class="col-12 md:col-6 xl:col-6">
+						<h6>Type</h6>
+						<p:inputText styleClass="full-width read-only" id="frameType"
+							value="#{salesOrderController.object.frameInventory.purchaseOrderFrame.frame.type.description}"
+							readonly="true" />
+					</div>
+
+					<div class="col-12 md:col-6 xl:col-6">
+						<h6>Size</h6>
+						<p:inputText styleClass="full-width read-only" id="size"
+							value="#{salesOrderController.object.frameInventory.purchaseOrderFrame.frame.size}"
+							readonly="true" />
+					</div>
+
+					<div class="col-12 md:col-12 xl:col-12">
+						<h6>Remark</h6>
+						<p:inputText styleClass="full-width" id="frameRemark"
+							value="#{salesOrderController.object.frameRemark}"
+							autocomplete="off" />
+					</div>
+
+					<div class="col-12 md:col-12 xl:col-12">
+						<h6>Use Customer Own Frame</h6>
+						<p:outputPanel styleClass="ui-inputgroup">
+							<div class="ui-inputgroup-addon">
+								<p:selectBooleanCheckbox id="useOwnFrame"
+									value="#{salesOrderController.object.useOwnFrame}">
+									<p:ajax event="change"
+										listener="#{salesOrderController.processOwnFrame}"
+										process="@form" update="dialogPanel" />
+								</p:selectBooleanCheckbox>
+							</div>
+							<p:inputTextarea
+								styleClass="full-width #{salesOrderController.object.useOwnFrame ? '' : 'read-only'}"
+								id="ownFrameRemark"
+								value="#{salesOrderController.object.ownFrameRemark}" rows="1"
+								autocomplete="off"
+								readonly="#{!salesOrderController.object.useOwnFrame}" />
+							<p:watermark for="ownFrameRemark"
+								value="Customer Own Frame Remark" />
+						</p:outputPanel>
+					</div>
+				</p:outputPanel>
+			</p:panel>
+		</p:dialog>
+	</h:form>
+
+</ui:composition>

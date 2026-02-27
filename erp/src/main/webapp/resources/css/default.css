@@ -1,0 +1,297 @@
+/* HTML */
+h5, h6 {
+	margin-top: 5px !important;
+	margin-bottom: 5px !important;
+}
+
+td, tr {
+	word-wrap: break-word;
+}
+
+/* Primefaces Modify */
+.ui-growl {
+	top: 70% !important;
+	z-index: 9999;
+}
+
+.ui-datatable .ui-datatable-data td {
+	vertical-align: middle;
+}
+
+.ui-toolbar {
+	padding: 0.5rem 0.5rem !important;
+}
+
+.ui-datatable thead th {
+	padding: 0.5rem 0.5rem !important;
+}
+
+.ui-datagrid-content {
+	padding: 0em !important;
+}
+
+.ui-datatable .ui-paginator {
+	padding: 0.5em !important;
+}
+
+.ui-datatable .ui-datatable-data>tr>td {
+	padding: 0.5rem 0.5rem !important;
+}
+
+.ui-state-disabled {
+	opacity: 1 !important;
+}
+
+body .ui-button {
+	margin-right: .1rem !important;
+	margin-botton: .1rem !important;
+}
+
+body .ui-datatable-reflow .ui-expanded-row-content td .ui-column-title {
+	display: inline;
+}
+
+.ui-datatable-reflow .ui-datatable-data .ui-expanded-row-content thead .ui-column-title
+	{
+	display: inline;
+}
+
+.ui-inputnumber input {
+	text-align: right;
+}
+
+td, tr {
+	word-wrap: break-word;
+}
+
+body .ui-inputgroup .ui-inputgroup-addon.currency {
+	min-width: 45px !important;
+}
+
+body .ui-inputgroup .ui-inputgroup-addon.x2 {
+	min-width: 65px !important;
+}
+
+body .ui-inputgroup .ui-inputgroup-addon.x3 {
+	min-width: 100px !important;
+}
+
+body .ui-panelgrid .ui-panelgrid-cell {
+	padding: 0.5rem !important;
+}
+
+.full-width.no-padding.ui-panelgrid td {
+	padding: 7px !important;
+}
+
+.ui-datatable-scrollable-theadclone {
+	display: none !important;
+}
+
+/* Layout Unify Class */
+.dialog {
+	width: 90vw !important;
+	height: 80vh !important;
+}
+
+.module-name {
+	font-weight: bold;
+}
+
+/* General Class */
+.no-border, .no-border tr, .no-border td, .no-border div {
+	border: hidden !important;
+	border-color: transparent !important;
+}
+
+.align-left, .align-left tr, .align-left td {
+	text-align: left !important;
+}
+
+.align-center, .align-center th, .align-center tr, .align-center td {
+	text-align: center !important;
+	margin: 0 auto !important;
+}
+
+.align-right, .align-right tr, .align-right td {
+	text-align: right !important;
+}
+
+.full-width {
+	width: 100% !important;
+}
+
+.full-width input {
+	width: 100% !important;
+}
+
+.full-width>.ui-chips-container {
+	width: 100% !important;
+}
+
+.full-width ul {
+	width: 100% !important;
+}
+
+.full-width.ui-panelgrid td {
+	padding-right: 20px !important;
+}
+
+.full-width.ui-selectonemenu {
+	width: 98% !important;
+}
+
+.full-width.data-table {
+	width: 98% !important;
+}
+
+.full-width.data-table input {
+	width: 98% !important;
+}
+
+.full-width.data-table.ui-selectonemenu {
+	width: 80%;
+}
+
+.read-only, .read-only input {
+	background-color: lavender !important;
+}
+
+.enlarge, .enlarge input {
+	font-size: 20px !important;
+}
+
+.enlarge.ui-selectonemenu, .enlarge.ui-selectonemenu-label {
+	font-size: 20px !important;
+}
+
+.multi-line {
+	white-space: pre-wrap;
+}
+
+.invisible {
+	display: none !important;
+}
+
+/* Data Table Color Scheme */
+.red-box {
+	font-weight: bolder;
+	color: white !important;
+	background-color: red !important;
+}
+
+.orange-box {
+	font-weight: bolder;
+	color: black !important;
+	background-color: orange !important;
+}
+
+.yellow-box {
+	font-weight: bolder;
+	color: black !important;
+	background-color: yellow !important;
+}
+
+.lightcoral-box {
+	color: white !important;
+	background-color: lightcoral !important;
+}
+
+.gray-box {
+	color: white !important;
+	background-color: gray !important;
+}
+
+/* Cell Width */
+@media only screen and (min-width: 641px) {
+	.index-cell {
+		width: 35px !important;
+		text-align: right;
+	}
+	.single-action-cell {
+		width: 45px !important;
+		text-align: center;
+	}
+	.double-action-cell {
+		width: 75px !important;
+		text-align: center;
+	}
+	.triple-action-cell {
+		width: 115px !important;
+		text-align: center;
+	}
+	.quadruple-action-cell {
+		width: 160px !important;
+		text-align: center;
+	}
+	.quintuple-action-cell {
+		width: 190px !important;
+		text-align: center;
+	}
+	.desktop-10vw {
+		width: 10vw !important;
+	}
+	.desktop-20vw {
+		width: 20vw !important;
+	}
+	.desktop-30vw {
+		width: 30vw !important;
+	}
+	.desktop-40vw {
+		width: 40vw !important;
+	}
+	.desktop-50vw {
+		width: 50vw !important;
+	}
+	.table-1500px {
+		width: 1500px;
+	}
+	.table-2000px {
+		width: 2000px;
+	}
+	.mobile-only, .mobile-only th, .mobile-only tr, .mobile-only td {
+		display: none;
+	}
+	.layout-topbar-colored .layout-topbar {
+		height: 60px !important;
+	}
+	.menu-wrapper {
+		height: calc(100% - 60px) !important;
+		top: 60px !important;
+	}
+	.layout-main {
+		padding-top: 60px !important;
+	}
+}
+
+/* Desktop Theme Top-bar Shrink */
+@media only screen and (min-width: 991px) {
+	.table-1500px {
+		width: 1500px;
+	}
+	.table-2000px {
+		width: 2000px;
+	}
+	.layout-topbar-colored .layout-topbar {
+		height: 45px !important;
+	}
+	.menu-wrapper {
+		height: calc(100% - 45px) !important;
+		top: 45px !important;
+	}
+	.layout-main {
+		padding-top: 45px !important;
+	}
+}
+
+@media only screen and (max-width: 640px) {
+	.table-2000px {
+		margin-right: 1rem;
+	}
+	body .ui-datatable-reflow .ui-datatable-summaryrow td {
+		display: none;
+	}
+	.desktop-only, .desktop-only th, .desktop-only tr, .desktop-only td {
+		display: none;
+	}
+}

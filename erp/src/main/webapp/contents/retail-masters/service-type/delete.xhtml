@@ -1,0 +1,94 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:form id="deleteForm" class="page">
+		<p:outputPanel
+			rendered="#{serviceTypeController.page == serviceTypeController.naviDelete}">
+			<p:toolbar id="toolbar">
+				<f:facet name="left">
+					<h:outputText styleClass="module-name"
+						value="#{serviceTypeController.title} - Delete Record" />
+				</f:facet>
+
+				<f:facet name="right">
+					<p:commandButton value="Delete" icon="fa fa-fw fa-trash-alt"
+						action="#{serviceTypeController.saveDelete()}" update="@(.page)">
+						<p:confirm header="Confirmation"
+							message="Do you wish to delete the selected record?"
+							icon="ui-icon-alert" />
+					</p:commandButton>
+					<p:commandButton value="Close" icon="fa fa-fw fa-close"
+						action="#{serviceTypeController.home()}" update="@(.page)" />
+				</f:facet>
+			</p:toolbar>
+			<p:sticky target="toolbar" />
+			<br />
+
+			<div class="card">
+				<div class="grid">
+					<div class="col-12 md:col-6 xl:col-6">
+						<h6>Code</h6>
+						<p:inputText styleClass="full-width read-only" id="code"
+							value="#{serviceTypeController.object.code}" readonly="true" />
+					</div>
+
+					<div class="col-12 md:col-6 xl:col-6">
+						<h6>Name</h6>
+						<p:inputText styleClass="full-width read-only" id="name"
+							value="#{serviceTypeController.object.name}" readonly="true" />
+					</div>
+
+					<div class="col-12 md:col-12 xl:col-12">
+						<h6>Description</h6>
+						<p:inputTextarea styleClass="full-width read-only"
+							id="description"
+							value="#{serviceTypeController.object.description}"
+							readonly="true" />
+					</div>
+				</div>
+			</div>
+
+			<div class="card">
+				<div class="grid">
+					<div class="col-12 md:col-6 xl:col-3">
+						<h6>User Created</h6>
+						<p:inputText styleClass="full-width read-only" id="userCreated"
+							value="#{serviceTypeController.object.userCreated.name}"
+							readonly="true" />
+					</div>
+
+					<div class="col-12 md:col-6 xl:col-3">
+						<h6>Date Created</h6>
+						<p:inputText styleClass="full-width read-only" id="dateCreated"
+							value="#{serviceTypeController.object.dateCreated}"
+							readonly="true">
+							<f:convertDateTime type="date"
+								pattern="#{serviceTypeController.configuration.timestampPattern}" />
+						</p:inputText>
+					</div>
+
+					<div class="col-12 md:col-6 xl:col-3">
+						<h6>User Modified</h6>
+						<p:inputText styleClass="full-width read-only" id="userModified"
+							value="#{serviceTypeController.object.userModified.name}"
+							readonly="true" />
+					</div>
+
+					<div class="col-12 md:col-6 xl:col-3">
+						<h6>Date Modified</h6>
+						<p:inputText styleClass="full-width read-only" id="dateModified"
+							value="#{serviceTypeController.object.dateModified}"
+							readonly="true">
+							<f:convertDateTime type="date"
+								pattern="#{serviceTypeController.configuration.timestampPattern}" />
+						</p:inputText>
+					</div>
+				</div>
+			</div>
+		</p:outputPanel>
+	</h:form>
+
+</ui:composition>

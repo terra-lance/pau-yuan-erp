@@ -1,0 +1,245 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:form id="insertForm" class="page">
+		<p:outputPanel
+			rendered="#{lensController.page == lensController.naviInsert}">
+			<p:toolbar id="toolbar">
+				<f:facet name="left">
+					<h:outputText styleClass="module-name"
+						value="#{lensController.title} - Add Record" />
+				</f:facet>
+
+				<f:facet name="right">
+					<p:commandButton value="Save" icon="fa fa-fw fa-save"
+						action="#{lensController.saveInsert()}" update="@(.page)" />
+					<p:commandButton value="Close" icon="fa fa-fw fa-close"
+						action="#{lensController.home()}" update="@(.page)" />
+				</f:facet>
+			</p:toolbar>
+			<p:sticky target="toolbar" />
+
+			<div class="card">
+				<div class="grid">
+					<div class="col-12 md:col-6 xl:col-6">
+						<h6>Code</h6>
+						<p:inputText styleClass="full-width" id="code"
+							value="#{lensController.object.code}" autocomplete="off" />
+					</div>
+
+					<div class="col-12 md:col-6 xl:col-6">
+						<h6>Name</h6>
+						<p:inputText styleClass="full-width" id="name"
+							value="#{lensController.object.name}" autocomplete="off" />
+					</div>
+
+					<div class="col-12 md:col-12 xl:col-12">
+						<h6>Description</h6>
+						<p:inputTextarea styleClass="full-width" id="description"
+							value="#{lensController.object.description}" rows="1"
+							autocomplete="off" />
+					</div>
+
+					<div class="col-12 md:col-6 xl:col-6">
+						<h6>Brand</h6>
+						<p:outputPanel styleClass="ui-inputgroup">
+							<p:inputText styleClass="full-width read-only"
+								value="#{lensController.object.brand.code}" readonly="true" />
+							<p:commandButton icon="fa fa-fw fa-search"
+								action="#{lensController.lookupBrand()}" process="@form" />
+						</p:outputPanel>
+					</div>
+
+					<div class="col-12 md:col-6 xl:col-6">
+						<h6>Company</h6>
+						<p:outputPanel styleClass="ui-inputgroup">
+							<p:inputText styleClass="full-width read-only"
+								value="#{lensController.object.company.code}" readonly="true" />
+							<p:commandButton icon="fa fa-fw fa-search"
+								action="#{lensController.lookupCompany()}" process="@form" />
+						</p:outputPanel>
+					</div>
+
+					<div class="col-12 md:col-6 xl:col-6">
+						<h6>Type</h6>
+						<p:selectOneMenu styleClass="full-width"
+							value="#{lensController.object.type}"
+							converter="lensTypeConverter" autoWidth="false">
+							<f:selectItems value="#{lensController.types}" var="type"
+								itemLabel="#{type.description}" itemValue="#{type}" />
+						</p:selectOneMenu>
+					</div>
+
+					<div class="col-12 md:col-12 xl:col-12">
+
+						<p:toolbar styleClass="full-width" id="tabControl">
+							<f:facet name="left">
+								<p:selectOneButton value="#{lensController.tabIndex}">
+									<f:selectItem itemLabel="Indexes"
+										itemValue="#{lensController.tabLensIndex}" />
+									<f:selectItem itemLabel="Designs"
+										itemValue="#{lensController.tabLensDesign}" />
+									<f:selectItem itemLabel="Coatings"
+										itemValue="#{lensController.tabLensCoating}" />
+									<f:selectItem itemLabel="Corridors"
+										itemValue="#{lensController.tabLensCorridor}" />
+
+									<p:ajax event="change" process="@form" update="tabControl tab" />
+								</p:selectOneButton>
+							</f:facet>
+
+							<f:facet name="right">
+								<p:commandButton icon="fa fa-fw fa-plus" value="Insert Index"
+									action="#{lensController.insertIndex()}" process="@form"
+									update="indexTable"
+									rendered="#{lensController.tabIndex == lensController.tabLensIndex}" />
+
+								<p:commandButton icon="fa fa-fw fa-plus" value="Insert Design"
+									action="#{lensController.insertDesign()}" process="@form"
+									update="designTable"
+									rendered="#{lensController.tabIndex == lensController.tabLensDesign}" />
+
+								<p:commandButton icon="fa fa-fw fa-plus" value="Insert Coating"
+									action="#{lensController.insertCoating()}" process="@form"
+									update="coatingTable"
+									rendered="#{lensController.tabIndex == lensController.tabLensCoating}" />
+
+								<p:commandButton icon="fa fa-fw fa-plus" value="Insert Corridor"
+									action="#{lensController.insertCorridor()}" process="@form"
+									update="corridorTable"
+									rendered="#{lensController.tabIndex == lensController.tabLensCorridor}" />
+							</f:facet>
+						</p:toolbar>
+
+						<p:outputPanel id="tab">
+							<p:outputPanel id="indexPanel"
+								styleClass="#{lensController.tabIndex == lensController.tabLensIndex ? '' : 'invisible'}">
+								<p:dataTable id="indexTable" rowIndexVar="rowIndex" var="index"
+									value="#{lensController.object.listIndexes}">
+
+									<p:column headerText="No." styleClass="index-cell">
+										<h:outputText value="#{rowIndex + 1}" />
+									</p:column>
+
+									<p:column headerText="Index">
+										<p:inputNumber styleClass="full-width"
+											value="#{index.indexValue}" emptyValue="zero"
+											autocomplete="off" />
+									</p:column>
+
+									<p:column styleClass="single-action-cell">
+										<p:commandButton class="rounded-button" id="deleteButton"
+											icon="fa fa-trash-alt"
+											action="#{lensController.deleteIndex(index)}"
+											update="indexTable">
+											<p:confirm header="Confirmation"
+												message="Do you wish to remove this index from this lens"
+												icon="ui-icon-alert" />
+										</p:commandButton>
+										<p:tooltip styleClass="tooltip" for="deleteButton"
+											value="Remove Index" position="top"
+											hideEvent="mouseleave click" />
+									</p:column>
+								</p:dataTable>
+							</p:outputPanel>
+
+							<p:outputPanel id="designPanel"
+								styleClass="#{lensController.tabIndex == lensController.tabLensDesign ? '' : 'invisible'}">
+								<p:dataTable id="designTable" rowIndexVar="rowIndex"
+									var="design" value="#{lensController.object.listDesigns}">
+
+									<p:column headerText="No." styleClass="index-cell">
+										<h:outputText value="#{rowIndex + 1}" />
+									</p:column>
+
+									<p:column headerText="Design">
+										<p:inputText styleClass="full-width" value="#{design.design}"
+											autocomplete="off" />
+									</p:column>
+
+									<p:column styleClass="single-action-cell">
+										<p:commandButton class="rounded-button" id="deleteButton"
+											icon="fa fa-trash-alt"
+											action="#{lensController.deleteDesign(design)}"
+											update="designTable">
+											<p:confirm header="Confirmation"
+												message="Do you wish to remove this design from this lens"
+												icon="ui-icon-alert" />
+										</p:commandButton>
+										<p:tooltip styleClass="tooltip" for="deleteButton"
+											value="Remove Design" position="top"
+											hideEvent="mouseleave click" />
+									</p:column>
+								</p:dataTable>
+							</p:outputPanel>
+
+							<p:outputPanel id="coatingPanel"
+								styleClass="#{lensController.tabIndex == lensController.tabLensCoating ? '' : 'invisible'}">
+								<p:dataTable id="coatingTable" rowIndexVar="rowIndex"
+									var="coating" value="#{lensController.object.listCoatings}">
+
+									<p:column headerText="No." styleClass="index-cell">
+										<h:outputText value="#{rowIndex + 1}" />
+									</p:column>
+
+									<p:column headerText="Coating">
+										<p:inputText styleClass="full-width"
+											value="#{coating.coating}" autocomplete="off" />
+									</p:column>
+
+									<p:column styleClass="single-action-cell">
+										<p:commandButton class="rounded-button" id="deleteButton"
+											icon="fa fa-trash-alt"
+											action="#{lensController.deleteCoating(coating)}"
+											update="coatingTable">
+											<p:confirm header="Confirmation"
+												message="Do you wish to remove this coating from this lens"
+												icon="ui-icon-alert" />
+										</p:commandButton>
+										<p:tooltip styleClass="tooltip" for="deleteButton"
+											value="Remove Coating" position="top"
+											hideEvent="mouseleave click" />
+									</p:column>
+								</p:dataTable>
+							</p:outputPanel>
+
+							<p:outputPanel id="corridorPanel"
+								styleClass="#{lensController.tabIndex == lensController.tabLensCorridor ? '' : 'invisible'}">
+								<p:dataTable id="corridorTable" rowIndexVar="rowIndex"
+									var="corridor" value="#{lensController.object.listCorridors}">
+
+									<p:column headerText="No." styleClass="index-cell">
+										<h:outputText value="#{rowIndex + 1}" />
+									</p:column>
+
+									<p:column headerText="Corridor">
+										<p:inputText styleClass="full-width"
+											value="#{corridor.corridor}" autocomplete="off" />
+									</p:column>
+
+									<p:column styleClass="single-action-cell">
+										<p:commandButton class="rounded-button" id="deleteButton"
+											icon="fa fa-trash-alt"
+											action="#{lensController.deleteCorridor(corridor)}"
+											update="corridorTable">
+											<p:confirm header="Confirmation"
+												message="Do you wish to remove this corridor from this lens"
+												icon="ui-icon-alert" />
+										</p:commandButton>
+										<p:tooltip styleClass="tooltip" for="deleteButton"
+											value="Remove Corridor" position="top"
+											hideEvent="mouseleave click" />
+									</p:column>
+								</p:dataTable>
+							</p:outputPanel>
+						</p:outputPanel>
+					</div>
+				</div>
+			</div>
+		</p:outputPanel>
+	</h:form>
+
+</ui:composition>

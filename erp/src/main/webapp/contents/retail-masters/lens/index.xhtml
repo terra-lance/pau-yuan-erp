@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="/templates/template.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:sec="http://www.springframework.org/security/tags">
+
+	<ui:define name="title">
+		<h:outputText value="#{lensController.title}" />
+	</ui:define>
+
+	<ui:define name="content">
+		<h:form id="indexForm" class="page">
+			<p:outputPanel
+				rendered="#{lensController.page == lensController.naviIndex}">
+				<p:toolbar id="toolbar">
+					<f:facet name="left">
+						<h:outputText styleClass="module-name"
+							value="#{lensController.title}" />
+					</f:facet>
+
+					<f:facet name="right">
+						<p:commandButton value="Add Record" icon="fa fa-fw fa-plus"
+							action="#{lensController.insert()}" update="@(.page)" />
+					</f:facet>
+				</p:toolbar>
+				<p:sticky target="toolbar" />
+
+				<br />
+
+				<div class="card">
+					<p:dataTable id="data" rowIndexVar="rowIndex" var="object"
+						rowKey="#{object}" value="#{lensController.objects}"
+						emptyMessage="No record(s) found" widgetVar="dataTableWV"
+						paginator="true"
+						paginatorPosition="#{sessionBean.userPreference.paginatorPosition}"
+						rows="10" rowsPerPageTemplate="10,20,30,40,50" lazy="true"
+						reflow="true" resizableColumns="true">
+
+						<p:column headerText="No." styleClass="index-cell">
+							<h:outputText value="#{rowIndex + 1}" />
+						</p:column>
+
+						<p:column headerText="Code" filterBy="#{object.code}"
+							filterMatchMode="contains" sortBy="#{object.code}">
+							<h:outputText value="#{object.code}" />
+						</p:column>
+
+						<p:column headerText="Name" filterBy="#{object.name}"
+							filterMatchMode="contains" sortBy="#{object.name}">
+							<h:outputText value="#{object.name}" />
+						</p:column>
+
+						<p:column headerText="Description"
+							filterBy="#{object.description}" filterMatchMode="contains"
+							sortBy="#{object.description}">
+							<h:outputText value="#{object.description}" />
+						</p:column>
+						
+						<p:column headerText="Brand" filterBy="#{object.brand.code}"
+							filterMatchMode="contains" sortBy="#{object.brand.code}">
+							<h:outputText value="#{object.brand.code}" />
+						</p:column>
+	
+						<p:column headerText="Type" filterBy="#{object.type}"
+							filterMatchMode="equals" sortBy="#{object.type}">
+							<f:facet name="filter">
+								<p:selectOneMenu styleClass="full-width"
+									onchange="PF('dataTableWV').filter()" autoWidth="false">
+									<f:converter converterId="frameTypeConverter" />
+									<f:selectItem itemLabel="All" itemValue="#{null}" />
+									<f:selectItems value="#{frameController.types}" var="type"
+										itemLabel="#{type.description}" itemValue="#{type}" />
+								</p:selectOneMenu>
+							</f:facet>
+
+							<h:outputText value="#{object.type.description}" />
+						</p:column>
+
+						<p:column styleClass="quintuple-action-cell">
+							<p:commandButton class="rounded-button" id="detailButton"
+								icon="fa fa-search" action="#{lensController.detail(object.id)}"
+								update="@(.page)" />
+							<p:tooltip styleClass="tooltip" for="detailButton"
+								value="Record Detail" position="top"
+								hideEvent="mouseleave click" />
+
+							<p:commandButton class="rounded-button" id="updateButton"
+								icon="fa fa-edit" action="#{lensController.update(object.id)}"
+								update="@(.page)" />
+							<p:tooltip styleClass="tooltip" for="updateButton"
+								value="Update Record" position="top"
+								hideEvent="mouseleave click" />
+
+							<p:commandButton class="rounded-button" id="updatePriceButton"
+								icon="fa fa-tags"
+								action="#{lensController.updatePrice(object.id)}"
+								update="@(.page)" />
+							<p:tooltip styleClass="tooltip" for="updatePriceButton"
+								value="Update Price" position="top" hideEvent="mouseleave click" />
+
+							<p:commandButton class="rounded-button" id="printButton"
+								icon="fa fa-print"
+								action="#{lensController.printLensLabelByDocument(object.id)}"
+								style="margin-right: .3rem" ajax="false" />
+							<p:tooltip styleClass="tooltip" for="printButton"
+								value="Print All Lens Labels" position="top"
+								hideEvent="mouseleave click" />
+
+							<p:commandButton class="rounded-button" id="deleteButton"
+								icon="fa fa-trash-alt"
+								action="#{lensController.delete(object.id)}" update="@(.page)" />
+							<p:tooltip styleClass="tooltip" for="deleteButton"
+								value="Delete Record" position="top"
+								hideEvent="mouseleave click" />
+						</p:column>
+					</p:dataTable>
+				</div>
+			</p:outputPanel>
+		</h:form>
+
+		<ui:include src="/contents/retail-masters/lens/detail.xhtml" />
+
+		<ui:include src="/contents/retail-masters/lens/insert.xhtml" />
+
+		<ui:include src="/contents/retail-masters/lens/update.xhtml" />
+
+		<ui:include src="/contents/retail-masters/lens/delete.xhtml" />
+
+		<ui:include src="/contents/retail-masters/lens/update-price.xhtml" />
+
+		<ui:include
+			src="/contents/retail-masters/lens/dialogs/select-brand.xhtml" />
+
+		<ui:include
+			src="/contents/retail-masters/lens/dialogs/select-company.xhtml" />
+	</ui:define>
+
+</ui:composition>

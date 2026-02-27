@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<faces-config xmlns="http://java.sun.com/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd"
+	version="2.0">
+
+	<application>
+		<resource-bundle>
+			<base-name>messages</base-name>
+			<var>msgs</var>
+		</resource-bundle>
+		<el-resolver>org.springframework.web.jsf.el.SpringBeanFacesELResolver</el-resolver>
+	</application>
+
+	<converter>
+		<description>White Space Converter</description>
+		<converter-id>whiteSpaceConverter</converter-id>
+		<converter-class>com.terrase.frame.converter.WhiteSpaceConverter</converter-class>
+	</converter>
+
+	<converter>
+		<description>Nullable Boolean Converter for TriState Checkbox</description>
+		<converter-id>triStateCheckboxBooleanConverter</converter-id>
+		<converter-class>com.terrase.frame.converter.TriStateCheckboxBooleanConverter</converter-class>
+	</converter>
+
+	<converter>
+		<description>Calendar Converter</description>
+		<converter-id>calendarConverter</converter-id>
+		<converter-class>com.terrase.frame.converter.CalendarConverter</converter-class>
+	</converter>
+
+	<converter>
+		<description>User Group Converter for Pick List</description>
+		<converter-id>userGroupPickListConverter</converter-id>
+		<converter-class>com.terrase.frame.converter.UserGroupPickListConverter</converter-class>
+	</converter>
+
+	<converter>
+		<description>Profile Converter</description>
+		<converter-id>profileConverter</converter-id>
+		<converter-class>com.terrase.frame.converter.ProfileConverter</converter-class>
+	</converter>
+
+	<converter>
+		<description>User Converter</description>
+		<converter-id>userConverter</converter-id>
+		<converter-class>com.terrase.frame.converter.UserConverter</converter-class>
+	</converter>
+
+	<navigation-rule>
+		<from-view-id>/*</from-view-id>
+		<navigation-case>
+			<from-outcome>login</from-outcome>
+			<to-view-id>/login.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+
+	<navigation-rule>
+		<from-view-id>/*</from-view-id>
+		<navigation-case>
+			<from-outcome>home</from-outcome>
+			<to-view-id>/contents/base/index.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+
+	<navigation-rule>
+		<from-view-id>/*</from-view-id>
+		<navigation-case>
+			<from-outcome>profile-index</from-outcome>
+			<to-view-id>/contents/base-masters/profile/index.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+
+	<navigation-rule>
+		<from-view-id>/*</from-view-id>
+		<navigation-case>
+			<from-outcome>user-index</from-outcome>
+			<to-view-id>/contents/base-masters/user/index.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+
+	<navigation-rule>
+		<from-view-id>/*</from-view-id>
+		<navigation-case>
+			<from-outcome>user-group-index</from-outcome>
+			<to-view-id>/contents/base-masters/user-group/index.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+
+	<navigation-rule>
+		<from-view-id>/*</from-view-id>
+		<navigation-case>
+			<from-outcome>auto-number-index</from-outcome>
+			<to-view-id>/contents/base-masters/auto-number/index.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+
+	<navigation-rule>
+		<from-view-id>/*</from-view-id>
+		<navigation-case>
+			<from-outcome>configuration-index</from-outcome>
+			<to-view-id>/contents/base-configs/configuration/index.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+
+	<navigation-rule>
+		<from-view-id>/*</from-view-id>
+		<navigation-case>
+			<from-outcome></from-outcome>
+			<to-view-id>/contents/base/index.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+
+	<component>
+		<component-type>org.primefaces.component.RainMenu</component-type>
+		<component-class>org.primefaces.rain.component.RainMenu</component-class>
+	</component>
+
+	<render-kit>
+		<renderer>
+			<component-family>org.primefaces.component</component-family>
+			<renderer-type>org.primefaces.component.RainMenuRenderer</renderer-type>
+			<renderer-class>org.primefaces.rain.component.RainMenuRenderer</renderer-class>
+		</renderer>
+	</render-kit>
+</faces-config>

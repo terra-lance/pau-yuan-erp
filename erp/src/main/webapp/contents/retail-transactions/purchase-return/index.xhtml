@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="/templates/template.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:sec="http://www.springframework.org/security/tags">
+
+	<ui:define name="title">
+		<h:outputText value="#{purchaseReturnController.title}" />
+	</ui:define>
+
+	<ui:define name="content">
+		<h:form id="indexForm" class="page">
+			<p:outputPanel
+				rendered="#{purchaseReturnController.page == purchaseReturnController.naviIndex}">
+				<p:toolbar id="toolbar">
+					<f:facet name="left">
+						<h:outputText styleClass="module-name"
+							value="#{purchaseReturnController.title}" />
+					</f:facet>
+
+					<f:facet name="right">
+						<p:commandButton id="detailButton" icon="fa fa-search"
+							action="#{purchaseReturnController.detail()}" update="@(.page)"
+							style="margin-right: .3rem" />
+						<p:tooltip styleClass="tooltip" for="detailButton"
+							value="Record Detail" position="top" hideEvent="mouseleave click" />
+
+						<p:commandButton id="insertButton" icon="fa fa-plus"
+							action="#{purchaseReturnController.insert()}" update="@(.page)"
+							style="margin-right: .3rem" />
+						<p:tooltip styleClass="tooltip" for="insertButton"
+							value="Add Record" position="top" hideEvent="mouseleave click" />
+
+						<p:commandButton id="updateButton" icon="fa fa-edit"
+							action="#{purchaseReturnController.update()}" update="@(.page)"
+							style="margin-right: .3rem" />
+						<p:tooltip styleClass="tooltip" for="updateButton"
+							value="Update Record" position="top" hideEvent="mouseleave click" />
+
+						<p:commandButton id="deleteButton" icon="fa fa-trash-alt"
+							action="#{purchaseReturnController.delete()}" update="@(.page)"
+							style="margin-right: .3rem" />
+						<p:tooltip styleClass="tooltip" for="deleteButton"
+							value="Delete Record" position="top" hideEvent="mouseleave click" />
+
+						<p:commandButton id="postButton" icon="fa fa-envelope"
+							action="#{purchaseReturnController.post()}" update="@(.page)"
+							style="margin-right: .3rem" />
+						<p:tooltip styleClass="tooltip" for="postButton"
+							value="Post Record" position="top" hideEvent="mouseleave click" />
+					</f:facet>
+				</p:toolbar>
+				<p:sticky target="toolbar" />
+
+				<div class="card">
+					<p:dataTable id="data" rowIndexVar="rowIndex" var="object"
+						rowKey="#{object}" value="#{purchaseReturnController.objects}"
+						emptyMessage="No record(s) found" widgetVar="dataTableWV"
+						paginator="true"
+						paginatorPosition="#{sessionBean.userPreference.paginatorPosition}"
+						rows="10" rowsPerPageTemplate="10,20,30,40,50"
+						selection="#{purchaseReturnController.selectedObjects}"
+						lazy="true" reflow="true" resizableColumns="true">
+
+						<p:ajax event="rowDblselect"
+							listener="#{purchaseReturnController.detail}" update="@(.page)"
+							global="false" />
+
+						<p:column selectionMode="multiple"
+							style="width:16px;text-align:center" />
+
+						<p:column headerText="Date" sortBy="#{object.documentDate}">
+							<h:outputText value="#{object.documentDate}">
+								<f:convertDateTime
+									pattern="#{purchaseReturnController.configuration.datePattern}" />
+							</h:outputText>
+						</p:column>
+
+						<p:column headerText="Reference" filterBy="#{object.documentNo}"
+							filterMatchMode="contains" sortBy="#{object.documentNo}">
+							<h:outputText value="#{object.documentNo}" />
+						</p:column>
+
+						<p:column headerText="Company" filterBy="#{object.company.code}"
+							filterMatchMode="contains" sortBy="#{object.company.code}">
+							<h:outputText value="#{object.company.code}" />
+						</p:column>
+
+						<p:column headerText="Supplier CN #"
+							filterBy="#{object.supplierCreditNote}"
+							filterMatchMode="contains" sortBy="#{object.supplierCreditNote}">
+							<h:outputText value="#{object.supplierCreditNote}" />
+						</p:column>
+
+						<p:column headerText="Amount" styleClass="align-right">
+							<h:outputText value="#{object.total}">
+								<f:convertNumber
+									pattern="#{purchaseReturnController.monetaryDecimalMask}" />
+							</h:outputText>
+						</p:column>
+
+						<p:column headerText="Posted" styleClass="double-action-cell"
+							filterBy="#{object.posted}" filterMatchMode="equals"
+							sortBy="#{object.posted}">
+							<f:facet name="filter">
+								<p:triStateCheckbox converter="triStateCheckboxBooleanConverter"
+									onchange="PF('dataTableWV').filter()" />
+							</f:facet>
+							<p:selectBooleanCheckbox value="#{object.posted}" disabled="true" />
+						</p:column>
+					</p:dataTable>
+				</div>
+			</p:outputPanel>
+		</h:form>
+
+		<ui:include
+			src="/contents/retail-transactions/purchase-return/detail.xhtml" />
+
+		<ui:include
+			src="/contents/retail-transactions/purchase-return/insert.xhtml" />
+
+		<ui:include
+			src="/contents/retail-transactions/purchase-return/update.xhtml" />
+
+		<ui:include
+			src="/contents/retail-transactions/purchase-return/delete.xhtml" />
+
+		<ui:include
+			src="/contents/retail-transactions/purchase-return/dialogs/select-company.xhtml" />
+
+		<ui:include
+			src="/contents/retail-transactions/purchase-return/dialogs/select-sales-order.xhtml" />
+	</ui:define>
+
+</ui:composition>

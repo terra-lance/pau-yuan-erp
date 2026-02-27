@@ -1,0 +1,188 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:form id="deleteForm" class="page">
+		<p:outputPanel
+			rendered="#{lensController.page == lensController.naviDelete}">
+			<p:toolbar id="toolbar">
+				<f:facet name="left">
+					<h:outputText styleClass="module-name"
+						value="#{lensController.title} - Delete Record" />
+				</f:facet>
+
+				<f:facet name="right">
+					<p:commandButton value="Delete" icon="fa fa-fw fa-trash-alt"
+						action="#{lensController.saveDelete()}" update="@(.page)">
+						<p:confirm header="Confirmation"
+							message="Do you wish to delete the selected record?"
+							icon="ui-icon-alert" />
+					</p:commandButton>
+					<p:commandButton value="Close" icon="fa fa-fw fa-close"
+						action="#{lensController.home()}" update="@(.page)" />
+				</f:facet>
+			</p:toolbar>
+			<p:sticky target="toolbar" />
+
+			<div class="card">
+				<div class="grid">
+					<div class="col-12 md:col-6 xl:col-6">
+						<h6>Code</h6>
+						<p:inputText styleClass="full-width read-only" id="code"
+							value="#{lensController.object.code}" readonly="true" />
+					</div>
+
+					<div class="col-12 md:col-6 xl:col-6">
+						<h6>Name</h6>
+						<p:inputText styleClass="full-width read-only" id="name"
+							value="#{lensController.object.name}" readonly="true" />
+					</div>
+
+					<div class="col-12 md:col-12 xl:col-12">
+						<h6>Description</h6>
+						<p:inputTextarea styleClass="full-width read-only"
+							id="description" value="#{lensController.object.description}"
+							rows="1" readonly="true" />
+					</div>
+
+					<div class="col-12 md:col-6 xl:col-6">
+						<h6>Brand</h6>
+						<p:inputText styleClass="full-width read-only" id="brand"
+							value="#{lensController.object.brand.code}" readonly="true" />
+					</div>
+
+					<div class="col-12 md:col-6 xl:col-6">
+						<h6>Company</h6>
+						<p:inputText styleClass="full-width read-only" id="company"
+							value="#{lensController.object.company.code}" readonly="true" />
+					</div>
+
+					<div class="col-12 md:col-6 xl:col-6">
+						<h6>Type</h6>
+						<p:inputText styleClass="full-width read-only" id="type"
+							value="#{lensController.object.type.description}" readonly="true" />
+					</div>
+
+					<div class="col-12 md:col-12 xl:col-12">
+						<p:toolbar styleClass="full-width" id="tabControl">
+							<f:facet name="left">
+								<p:selectOneButton value="#{lensController.tabIndex}">
+									<f:selectItem itemLabel="Indexes"
+										itemValue="#{lensController.tabLensIndex}" />
+									<f:selectItem itemLabel="Designs"
+										itemValue="#{lensController.tabLensDesign}" />
+									<f:selectItem itemLabel="Coatings"
+										itemValue="#{lensController.tabLensCoating}" />
+									<f:selectItem itemLabel="Corridors"
+										itemValue="#{lensController.tabLensCorridor}" />
+
+									<p:ajax event="change" process="@form" update="tabControl tab" />
+								</p:selectOneButton>
+							</f:facet>
+						</p:toolbar>
+
+						<p:outputPanel id="tab">
+							<p:outputPanel id="indexPanel"
+								styleClass="#{lensController.tabIndex == lensController.tabLensIndex ? '' : 'invisible'}">
+								<p:dataTable id="indexTable" rowIndexVar="rowIndex" var="index"
+									value="#{lensController.object.listIndexes}">
+
+									<p:column headerText="No." styleClass="index-cell">
+										<h:outputText value="#{rowIndex + 1}" />
+									</p:column>
+
+									<p:column headerText="Index">
+										<h:outputText value="#{index.indexValue}" />
+									</p:column>
+								</p:dataTable>
+							</p:outputPanel>
+
+							<p:outputPanel id="designPanel"
+								styleClass="#{lensController.tabIndex == lensController.tabLensDesign ? '' : 'invisible'}">
+								<p:dataTable id="designTable" rowIndexVar="rowIndex"
+									var="design" value="#{lensController.object.listDesigns}">
+
+									<p:column headerText="No." styleClass="index-cell">
+										<h:outputText value="#{rowIndex + 1}" />
+									</p:column>
+
+									<p:column headerText="Design">
+										<h:outputText value="#{design.design}" />
+									</p:column>
+								</p:dataTable>
+							</p:outputPanel>
+
+							<p:outputPanel id="coatingPanel"
+								styleClass="#{lensController.tabIndex == lensController.tabLensCoating ? '' : 'invisible'}">
+								<p:dataTable id="coatingTable" rowIndexVar="rowIndex"
+									var="coating" value="#{lensController.object.listCoatings}">
+
+									<p:column headerText="No." styleClass="index-cell">
+										<h:outputText value="#{rowIndex + 1}" />
+									</p:column>
+
+									<p:column headerText="Coating">
+										<h:outputText value="#{coating.coating}" />
+									</p:column>
+								</p:dataTable>
+							</p:outputPanel>
+
+							<p:outputPanel id="corridorPanel"
+								styleClass="#{lensController.tabIndex == lensController.tabLensCorridor ? '' : 'invisible'}">
+								<p:dataTable id="corridorTable" rowIndexVar="rowIndex"
+									var="corridor" value="#{lensController.object.listCorridors}">
+
+									<p:column headerText="No." styleClass="index-cell">
+										<h:outputText value="#{rowIndex + 1}" />
+									</p:column>
+
+									<p:column headerText="Corridor">
+										<h:outputText value="#{corridor.corridor}" />
+									</p:column>
+								</p:dataTable>
+							</p:outputPanel>
+						</p:outputPanel>
+					</div>
+				</div>
+			</div>
+
+			<div class="card">
+				<div class="grid">
+					<div class="col-12 md:col-6 xl:col-3">
+						<h6>User Created</h6>
+						<p:inputText styleClass="full-width read-only" id="userCreated"
+							value="#{lensController.object.userCreated.name}" readonly="true" />
+					</div>
+
+					<div class="col-12 md:col-6 xl:col-3">
+						<h6>Date Created</h6>
+						<p:inputText styleClass="full-width read-only" id="dateCreated"
+							value="#{lensController.object.dateCreated}" readonly="true">
+							<f:convertDateTime type="date"
+								pattern="#{lensController.configuration.timestampPattern}" />
+						</p:inputText>
+					</div>
+
+					<div class="col-12 md:col-6 xl:col-3">
+						<h6>User Modified</h6>
+						<p:inputText styleClass="full-width read-only" id="userModified"
+							value="#{lensController.object.userModified.name}"
+							readonly="true" />
+					</div>
+
+					<div class="col-12 md:col-6 xl:col-3">
+						<h6>Date Modified</h6>
+						<p:inputText styleClass="full-width read-only" id="dateModified"
+							value="#{lensController.object.dateModified}" readonly="true">
+							<f:convertDateTime type="date"
+								pattern="#{lensController.configuration.timestampPattern}" />
+						</p:inputText>
+					</div>
+				</div>
+			</div>
+		</p:outputPanel>
+	</h:form>
+
+</ui:composition>

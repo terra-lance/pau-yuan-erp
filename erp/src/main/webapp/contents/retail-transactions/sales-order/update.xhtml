@@ -1,0 +1,897 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:form id="updateForm" class="page">
+		<p:outputPanel
+			rendered="#{salesOrderController.page == salesOrderController.naviUpdate}">
+			<p:toolbar id="toolbar">
+				<f:facet name="left">
+					<div class="title">
+						<h:outputText styleClass="module-name"
+							value="#{salesOrderController.title} - Update Record" />
+					</div>
+				</f:facet>
+
+				<f:facet name="right">
+					<p:commandButton value="Save" icon="fa fa-fw fa-save"
+						action="#{salesOrderController.saveUpdate()}" update="@(.page)" />
+					<p:commandButton value="Close" icon="fa fa-fw fa-close"
+						action="#{salesOrderController.home()}" immediate="true"
+						update="@(.page)" />
+				</f:facet>
+			</p:toolbar>
+			<p:sticky target="toolbar" />
+
+			<div class="card">
+				<div class="grid">
+					<div class="col-12 md:col-9 xl:col-9">
+						<p:panel>
+							<div class="grid">
+								<div class="col-12 md:col-3 xl:col-3">
+									<div class="grid">
+										<div class="col-12 md:col-12 xl:col-12">
+											<h6>Reference No.</h6>
+											<p:outputPanel styleClass="ui-inputgroup">
+												<p:inputText styleClass="full-width read-only"
+													id="documentNo"
+													value="#{salesOrderController.object.documentNo}"
+													readonly="true" />
+											</p:outputPanel>
+
+											<h6>Document Date</h6>
+											<p:calendar styleClass="full-width" id="documentDate"
+												value="#{salesOrderController.object.documentDate}"
+												pattern="dd/MM/yyyy" />
+										</div>
+									</div>
+								</div>
+
+								<div class="col-12 md:col-3 xl:col-3">
+									<div class="grid">
+										<div class="col-12 md:col-12 xl:col-12">
+											<h6>Customer</h6>
+											<p:outputPanel styleClass="ui-inputgroup" id="customer">
+												<p:inputText
+													styleClass="full-width #{salesOrderController.object.customer.id != 0 ? 'read-only' : ''}"
+													value="#{salesOrderController.object.customer.name}"
+													autocomplete="off"
+													readonly="#{salesOrderController.object.customer.id != 0}" />
+												<p:commandButton icon="fa fa-search"
+													action="#{salesOrderController.lookupCustomer()}"
+													process="@form" />
+												<p:commandButton icon="fa fa-ban"
+													action="#{salesOrderController.clearCustomer()}"
+													process="@form" update="@form" />
+											</p:outputPanel>
+
+											<h6>NRIC</h6>
+											<p:inputText styleClass="full-width" id="customerIC"
+												value="#{salesOrderController.object.customer.nric}"
+												autocomplete="off" />
+										</div>
+									</div>
+								</div>
+
+								<div class="col-12 md:col-3 xl:col-3">
+									<div class="grid">
+										<div class="col-12 md:col-12 xl:col-12">
+											<h6>Address</h6>
+											<p:inputText styleClass="full-width" id="address1"
+												value="#{salesOrderController.object.address1}"
+												autocomplete="off" />
+											<p:inputText styleClass="full-width" id="address2"
+												value="#{salesOrderController.object.address2}"
+												autocomplete="off" />
+											<p:inputText styleClass="full-width" id="address3"
+												value="#{salesOrderController.object.address3}"
+												autocomplete="off" />
+										</div>
+									</div>
+								</div>
+
+								<div class="col-12 md:col-3 xl:col-3">
+									<div class="grid">
+										<div class="col-12 md:col-12 xl:col-12">
+											<h6>Contact</h6>
+											<p:outputPanel styleClass="ui-inputgroup">
+												<p:outputPanel styleClass="ui-inputgroup-addon">
+													<i class="fa fa-mobile-screen" />
+												</p:outputPanel>
+												<p:inputText styleClass="full-width" id="customerMobile"
+													value="#{salesOrderController.object.customer.mobile}"
+													autocomplete="off" />
+												<p:watermark for="customerMobile" value="Mobile" />
+											</p:outputPanel>
+
+											<p:outputPanel styleClass="ui-inputgroup">
+												<p:outputPanel styleClass="ui-inputgroup-addon">
+													<i class="fa fa-house" />
+												</p:outputPanel>
+												<p:inputText styleClass="full-width" id="customerHome"
+													value="#{salesOrderController.object.customer.home}"
+													autocomplete="off" />
+												<p:watermark for="customerHome" value="Home" />
+											</p:outputPanel>
+
+											<p:outputPanel styleClass="ui-inputgroup">
+												<p:outputPanel styleClass="ui-inputgroup-addon">
+													<i class="fa fa-building" />
+												</p:outputPanel>
+												<p:inputText styleClass="full-width" id="customerOffice"
+													value="#{salesOrderController.object.customer.office}"
+													autocomplete="off" />
+												<p:watermark for="customerOffice" value="Office" />
+											</p:outputPanel>
+										</div>
+									</div>
+								</div>
+							</div>
+						</p:panel>
+
+						<p:toolbar>
+							<f:facet name="left">
+								<p:selectOneButton value="#{salesOrderController.tabIndex}">
+									<f:selectItem itemValue="0" itemLabel="1.) Order/Prescription" />
+									<f:selectItem itemValue="1" itemLabel="2.) Payment" />
+
+									<p:ajax event="change" process="@form" update="tab" />
+								</p:selectOneButton>
+							</f:facet>
+						</p:toolbar>
+
+						<p:outputPanel id="tab">
+							<p:outputPanel id="prescriptionPanel"
+								styleClass="#{salesOrderController.tabIndex == salesOrderController.tabPrescription ? '' : 'invisible'}">
+								<p:panel>
+									<div class="grid">
+										<div class="col-12 md:col-12 xl:col-12">
+											<h6>Examiner</h6>
+											<p:outputPanel styleClass="ui-inputgroup">
+												<p:inputText styleClass="full-width read-only"
+													value="#{salesOrderController.object.examiner.name}"
+													readonly="true" />
+												<p:commandButton icon="fa fa-search"
+													action="#{salesOrderController.lookupExaminer()}"
+													process="@form" />
+											</p:outputPanel>
+										</div>
+
+										<div class="col-12 md:col-8 xl:col-8">
+											<p:commandButton styleClass="full-width" icon="fa fa-search"
+												value="Refer from customer previous order"
+												action="#{salesOrderController.lookupInspection()}"
+												process="@form" />
+
+											<p:outputPanel styleClass="ui-inputgroup border">
+												<p:outputPanel styleClass="ui-inputgroup-addon" />
+
+												<p:inputText styleClass="full-width lightcoral-box"
+													style="border-right: 1px solid silver; font-size:12px"
+													value="SPH" disabled="true" />
+												<p:inputText styleClass="full-width lightcoral-box"
+													style="border-right: 1px solid silver; font-size:12px"
+													value="CYL" disabled="true" />
+												<p:inputText styleClass="full-width lightcoral-box"
+													style="border-right: 1px solid silver; font-size:12px"
+													value="AXIS" disabled="true" />
+												<p:inputText styleClass="full-width lightcoral-box"
+													style="border-right: 1px solid silver; font-size:12px"
+													value="ADD" disabled="true" />
+												<p:inputText styleClass="full-width lightcoral-box"
+													style="border-right: 1px solid silver; font-size:12px"
+													value="PRISM" disabled="true" />
+												<p:inputText styleClass="full-width lightcoral-box"
+													style="border-right: 1px solid silver; font-size:12px"
+													value="DEC(MN)" disabled="true" />
+												<p:inputText styleClass="full-width lightcoral-box"
+													style="border-right: 1px solid silver; font-size:12px"
+													value="VA" disabled="true" />
+												<p:inputText styleClass="full-width lightcoral-box"
+													style="font-size:12px" value="AXL" disabled="true" />
+											</p:outputPanel>
+
+											<p:outputPanel styleClass="ui-inputgroup border">
+												<p:outputPanel styleClass="ui-inputgroup-addon">RE</p:outputPanel>
+
+												<p:inputText styleClass="full-width align-right"
+													style="border-right: 1px solid silver" id="rightSphere"
+													value="#{salesOrderController.object.rightSphere}"
+													autocomplete="off">
+													<p:ajax event="blur"
+														listener="#{salesOrderController.object.validateRightSphere()}"
+														update="rightSphere" />
+												</p:inputText>
+												<p:inputText styleClass="full-width align-right"
+													style="border-right: 1px solid silver" id="rightCylinder"
+													value="#{salesOrderController.object.rightCylinder}"
+													autocomplete="off">
+													<p:ajax event="blur"
+														listener="#{salesOrderController.object.validateRightCylinder()}"
+														update="rightCylinder" />
+												</p:inputText>
+												<p:inputText styleClass="full-width align-right"
+													style="border-right: 1px solid silver" id="rightAxis"
+													value="#{salesOrderController.object.rightAxis}"
+													autocomplete="off" />
+												<p:inputText styleClass="full-width align-right"
+													style="border-right: 1px solid silver" id="rightAdditional"
+													value="#{salesOrderController.object.rightAdditional}"
+													autocomplete="off">
+													<p:ajax event="blur"
+														listener="#{salesOrderController.object.validateRightAdditional()}"
+														update="rightAdditional" />
+												</p:inputText>
+												<p:inputText styleClass="full-width align-right"
+													style="border-right: 1px solid silver" id="rightPrism"
+													value="#{salesOrderController.object.rightPrism}"
+													autocomplete="off" />
+												<p:inputText styleClass="full-width align-right"
+													style="border-right: 1px solid silver"
+													id="rightDecentration"
+													value="#{salesOrderController.object.rightDecentration}"
+													autocomplete="off">
+													<p:ajax event="blur"
+														listener="#{salesOrderController.object.validateRightDecentration()}"
+														update="rightDecentration" />
+												</p:inputText>
+												<p:inputText styleClass="full-width align-right"
+													style="border-right: 1px solid silver"
+													id="rightVisualAcuity"
+													value="#{salesOrderController.object.rightVisualAcuity}"
+													autocomplete="off" />
+												<p:inputText styleClass="full-width align-right"
+													id="rightAxialLength"
+													value="#{salesOrderController.object.rightAxialLength}"
+													autocomplete="off" />
+											</p:outputPanel>
+
+											<p:outputPanel styleClass="ui-inputgroup border">
+												<p:outputPanel styleClass="ui-inputgroup-addon">LE</p:outputPanel>
+
+												<p:inputText styleClass="full-width align-right"
+													style="border-right: 1px solid silver" id="leftSphere"
+													value="#{salesOrderController.object.leftSphere}"
+													autocomplete="off">
+													<p:ajax event="blur"
+														listener="#{salesOrderController.object.validateLeftSphere()}"
+														update="leftSphere" />
+												</p:inputText>
+												<p:inputText styleClass="full-width align-right"
+													style="border-right: 1px solid silver" id="leftCylinder"
+													value="#{salesOrderController.object.leftCylinder}"
+													autocomplete="off">
+													<p:ajax event="blur"
+														listener="#{salesOrderController.object.validateLeftCylinder()}"
+														update="leftCylinder" />
+												</p:inputText>
+												<p:inputText styleClass="full-width align-right"
+													style="border-right: 1px solid silver" id="leftAxis"
+													value="#{salesOrderController.object.leftAxis}"
+													autocomplete="off" />
+												<p:inputText styleClass="full-width align-right"
+													style="border-right: 1px solid silver" id="leftAdditional"
+													value="#{salesOrderController.object.leftAdditional}"
+													autocomplete="off">
+													<p:ajax event="blur"
+														listener="#{salesOrderController.object.validateLeftAdditional()}"
+														update="leftAdditional" />
+												</p:inputText>
+												<p:inputText styleClass="full-width align-right"
+													style="border-right: 1px solid silver" id="leftPrism"
+													value="#{salesOrderController.object.leftPrism}"
+													autocomplete="off" />
+												<p:inputText styleClass="full-width align-right"
+													style="border-right: 1px solid silver"
+													id="leftDecentration"
+													value="#{salesOrderController.object.leftDecentration}"
+													autocomplete="off">
+													<p:ajax event="blur"
+														listener="#{salesOrderController.object.validateLeftDecentration()}"
+														update="leftDecentration" />
+												</p:inputText>
+												<p:inputText styleClass="full-width align-right"
+													style="border-right: 1px solid silver"
+													id="leftVisualAcuity"
+													value="#{salesOrderController.object.leftVisualAcuity}"
+													autocomplete="off" />
+												<p:inputText styleClass="full-width align-right"
+													id="leftAxialLength"
+													value="#{salesOrderController.object.leftAxialLength}"
+													autocomplete="off" />
+											</p:outputPanel>
+										</div>
+
+										<p:outputPanel styleClass="col-12 md:col-4 xl:col-4"
+											id="pdPanel">
+											<p:outputPanel styleClass="ui-inputgroup border">
+												<p:outputPanel styleClass="ui-inputgroup-addon x2">
+
+												</p:outputPanel>
+
+												<p:inputText styleClass="full-width"
+													style="background-color: sandybrown !important;color: white !important;border-right: 1px solid silver"
+													value="PD(d)" disabled="true" />
+												<p:inputText styleClass="full-width"
+													style="background-color: sandybrown !important;color: white !important;border-right: 1px solid silver"
+													value="PD(n)" disabled="true" />
+												<p:inputText styleClass="full-width"
+													style="background-color: sandybrown !important;color: white !important"
+													value="HT" disabled="true" />
+											</p:outputPanel>
+
+											<p:outputPanel styleClass="ui-inputgroup border">
+												<p:outputPanel styleClass="ui-inputgroup-addon x2">BOTH</p:outputPanel>
+
+												<p:inputNumber styleClass="full-width"
+													style="border-right: 1px solid silver" id="bothPdd"
+													value="#{salesOrderController.object.bothPdd}"
+													decimalPlaces="1" emptyValue="zero" autocomplete="off">
+													<p:ajax event="blur"
+														listener="#{salesOrderController.object.validatePupillaryDistance()}"
+														process="@form" update="pdPanel" />
+												</p:inputNumber>
+												<p:inputNumber styleClass="full-width"
+													style="border-right: 1px solid silver" id="bothPdn"
+													value="#{salesOrderController.object.bothPdn}"
+													decimalPlaces="1" emptyValue="zero" autocomplete="off" />
+												<p:inputNumber styleClass="full-width" id="bothHt"
+													value="#{salesOrderController.object.bothHt}"
+													decimalPlaces="1" emptyValue="zero" autocomplete="off" />
+											</p:outputPanel>
+
+											<p:outputPanel styleClass="ui-inputgroup border">
+												<p:outputPanel styleClass="ui-inputgroup-addon x2">RE</p:outputPanel>
+
+												<p:inputNumber styleClass="full-width"
+													style="border-right: 1px solid silver" id="rightPdd"
+													value="#{salesOrderController.object.rightPdd}"
+													decimalPlaces="1" emptyValue="zero" autocomplete="off">
+													<p:ajax event="blur"
+														listener="#{salesOrderController.object.validatePupillaryDistanceRight()}"
+														process="@form" update="rightPdn" />
+												</p:inputNumber>
+												<p:inputNumber styleClass="full-width"
+													style="border-right: 1px solid silver" id="rightPdn"
+													value="#{salesOrderController.object.rightPdn}"
+													decimalPlaces="1" emptyValue="zero" autocomplete="off" />
+												<p:inputNumber styleClass="full-width" id="rightHt"
+													value="#{salesOrderController.object.rightHt}"
+													decimalPlaces="1" emptyValue="zero" autocomplete="off" />
+											</p:outputPanel>
+
+											<p:outputPanel styleClass="ui-inputgroup border">
+												<p:outputPanel styleClass="ui-inputgroup-addon x2">LE</p:outputPanel>
+
+												<p:inputNumber styleClass="full-width"
+													style="border-right: 1px solid silver" id="leftPdd"
+													value="#{salesOrderController.object.leftPdd}"
+													decimalPlaces="1" emptyValue="zero" autocomplete="off">
+													<p:ajax event="blur"
+														listener="#{salesOrderController.object.validatePupillaryDistanceLeft()}"
+														process="@form" update="leftPdn" />
+												</p:inputNumber>
+												<p:inputNumber styleClass="full-width"
+													style="border-right: 1px solid silver" id="leftPdn"
+													value="#{salesOrderController.object.leftPdn}"
+													decimalPlaces="1" emptyValue="zero" autocomplete="off" />
+												<p:inputNumber styleClass="full-width" id="leftHt"
+													value="#{salesOrderController.object.leftHt}"
+													decimalPlaces="1" emptyValue="zero" autocomplete="off" />
+											</p:outputPanel>
+										</p:outputPanel>
+
+										<div class="col-12 md:col-12 xl:col-12">
+											<p:inputTextarea styleClass="full-width"
+												id="prescriptionRemark"
+												value="#{salesOrderController.object.prescriptionRemark}"
+												rows="1" autocomplete="off" />
+											<p:watermark for="prescriptionRemark"
+												value="Prescription Note" />
+										</div>
+									</div>
+								</p:panel>
+
+								<p:panel>
+									<div class="grid">
+										<div class="col-12 md:col-12 xl:col-12">
+											<p:outputPanel styleClass="ui-inputgroup">
+												<p:inputText styleClass="full-width" id="barcode"
+													value="#{salesOrderController.barcode}">
+													<p:ajax event="blur"
+														listener="#{salesOrderController.validateBarcode()}"
+														process="@form"
+														update="salesLenses frame salesServiceItems updateForm:summaryPanel" />
+												</p:inputText>
+												<p:watermark for="barcode" value="Please scan barcode here" />
+												<p:commandButton icon="fa fa-qrcode" />
+											</p:outputPanel>
+										</div>
+
+										<div class="col-12 md:col-12 xl:col-12">
+											<h6>Lens Order</h6>
+											<p:panel>
+												<p:dataTable styleClass="no-border" id="salesLenses"
+													value="#{salesOrderController.object.listLenses}"
+													rowIndexVar="rowIndex" var="lens" rowKey="#{lens}"
+													emptyMessage="No lens ordered">
+													<p:column headerText="No." styleClass="index-cell">
+														<h:outputText value="#{rowIndex + 1}" />
+													</p:column>
+
+													<p:column headerText="Lens">
+														<h:outputText value="#{lens.summary}" />
+													</p:column>
+
+													<p:column headerText="Price"
+														styleClass="triple-action-cell">
+														<p:inputNumber styleClass="full-width"
+															value="#{lens.price}"
+															decimalPlaces="#{salesOrderController.configuration.monetaryDecimal}"
+															emptyValue="zero" autocomplete="off">
+															<p:ajax event="blur"
+																listener="#{salesOrderController.object.calculateSubtotal(salesOrderController.configuration)}"
+																update="updateForm:summaryPanel" />
+														</p:inputNumber>
+													</p:column>
+
+													<p:column styleClass="double-action-cell">
+														<f:facet name="header" styleClass="align-right">
+															<p:commandButton icon="fa fa-search" value="Add"
+																action="#{salesOrderController.lookupLens()}" />
+														</f:facet>
+
+														<p:commandButton class="rounded-button" id="updateButton"
+															icon="fa fa-edit"
+															action="#{salesOrderController.updateLens(lens)}"
+															process="@form" />
+
+														<p:commandButton class="rounded-button" id="deleteButton"
+															icon="fa fa-trash-alt"
+															action="#{salesOrderController.deleteLens(lens)}"
+															update="@(.page)">
+															<p:confirm header="Confirmation"
+																message="Do you wish to delete the selected record?"
+																icon="ui-icon-alert" />
+														</p:commandButton>
+														<p:tooltip styleClass="tooltip" for="deleteButton"
+															value="Delete Record" position="top"
+															hideEvent="mouseleave click" />
+													</p:column>
+												</p:dataTable>
+											</p:panel>
+										</div>
+
+										<div class="col-12 md:col-12 xl:col-12">
+											<h6>Frame Order</h6>
+											<p:panel id="frame">
+												<div class="grid">
+													<div class="col-12 md:col-8 xl:col-8">
+														<h6>Frame</h6>
+														<p:inputText styleClass="full-width read-only"
+															id="frameSummary"
+															value="#{salesOrderController.object.frameSummary}"
+															readonly="true" />
+														<p:watermark for="frameSummary" value="No frame ordered" />
+													</div>
+
+													<div class="col-12 md:col-3 xl:col-3">
+														<h6>Price</h6>
+														<p:inputNumber styleClass="full-width"
+															value="#{salesOrderController.object.framePrice}"
+															decimalPlaces="#{salesOrderController.configuration.monetaryDecimal}"
+															emptyValue="zero" autocomplete="off">
+															<p:ajax event="blur"
+																listener="#{salesOrderController.object.calculateSubtotal(salesOrderController.configuration)}"
+																update="updateForm:summaryPanel" />
+														</p:inputNumber>
+													</div>
+
+													<div class="col-12 md:col-1 xl:col-1">
+														<h6 style="color: white">Edit</h6>
+														<p:commandButton id="updateButton" icon="fa fa-edit"
+															action="#{salesOrderController.updateFrame()}"
+															process="@form" />
+													</div>
+												</div>
+											</p:panel>
+										</div>
+
+										<div class="col-12 md:col-12 xl:col-12">
+											<h6>Service Order</h6>
+											<p:panel>
+												<p:dataTable id="salesServiceItems"
+													value="#{salesOrderController.object.listServiceItems}"
+													rowIndexVar="rowIndex" var="serviceItem"
+													rowKey="#{serviceItem}" emptyMessage="No services ordered">
+													<p:column headerText="No." styleClass="index-cell">
+														<h:outputText value="#{rowIndex + 1}" />
+													</p:column>
+
+													<p:column headerText="Service">
+														<p:inputText styleClass="full-width read-only"
+															value="#{serviceItem.serviceType.name}" readonly="true" />
+													</p:column>
+
+													<p:column headerText="Remark">
+														<p:inputText styleClass="full-width"
+															value="#{serviceItem.remark}" autocomplete="off" />
+													</p:column>
+
+													<p:column headerText="Price"
+														styleClass="triple-action-cell">
+														<p:inputNumber styleClass="full-width"
+															value="#{serviceItem.price}"
+															decimalPlaces="#{salesOrderController.configuration.monetaryDecimal}"
+															emptyValue="zero" autocomplete="off">
+															<p:ajax event="blur"
+																listener="#{salesOrderController.object.calculateSubtotal(salesOrderController.configuration)}"
+																update="updateForm:summaryPanel" />
+														</p:inputNumber>
+													</p:column>
+
+													<p:column styleClass="single-action-cell">
+														<p:commandButton class="rounded-button" id="deleteButton"
+															icon="fa fa-trash-alt"
+															action="#{salesOrderController.deleteServiceItem(serviceItem)}"
+															update="@(.page)">
+															<p:confirm header="Confirmation"
+																message="Do you wish to delete the selected record?"
+																icon="ui-icon-alert" />
+														</p:commandButton>
+														<p:tooltip styleClass="tooltip" for="deleteButton"
+															value="Delete Record" position="top"
+															hideEvent="mouseleave click" />
+													</p:column>
+												</p:dataTable>
+											</p:panel>
+										</div>
+									</div>
+								</p:panel>
+							</p:outputPanel>
+
+							<p:outputPanel id="paymentPanel"
+								styleClass="#{salesOrderController.tabIndex == salesOrderController.tabPayment ? '' : 'invisible'}">
+								<p:panel>
+									<div class="grid">
+										<div class="col-12 md:col-8 xl:col-8">
+											<br />
+											<p:dataTable id="paymentTable" styleClass="data-table"
+												rowIndexVar="rowIndex" rowKey="#{payment}" var="payment"
+												value="#{salesOrderController.object.sortedListPayments}"
+												reflow="true">
+
+												<p:column headerText="Date" styleClass="double-action-cell">
+													<h:outputText value="#{payment.documentDate}">
+														<f:convertDateTime
+															pattern="#{salesOrderController.configuration.timestampPattern}" />
+													</h:outputText>
+												</p:column>
+
+												<p:column headerText="Method">
+													<h:outputText value="#{payment.method.code}" />
+												</p:column>
+
+												<p:column headerText="Note">
+													<h:outputText styleClass="multi-line"
+														value="#{payment.remark}" />
+												</p:column>
+
+												<p:column headerText="Amount"
+													styleClass="double-action-cell">
+													<h:outputText value="#{payment.amount}">
+														<f:convertNumber
+															pattern="#{salesOrderController.monetaryDecimalMask}" />
+													</h:outputText>
+												</p:column>
+
+												<p:column headerText="Status">
+													<h:outputText value="#{payment.status.description}" />
+												</p:column>
+
+												<p:column styleClass="double-action-cell">
+													<p:commandButton class="rounded-button" id="updateButton"
+														icon="fa fa-edit"
+														action="#{salesOrderController.updatePayment(payment.id)}"
+														update="@(.page)">
+														<p:confirm header="Confirmation"
+															message="All changes in this order will be saved before edit payment, do you wish to proceed?"
+															icon="ui-icon-alert" />
+													</p:commandButton>
+													<p:tooltip styleClass="tooltip" for="updateButton"
+														value="Update Payment" position="top"
+														hideEvent="mouseleave click" />
+
+													<p:commandButton class="rounded-button" id="deleteButton"
+														icon="fa fa-trash-alt"
+														action="#{salesOrderController.deletePayment(payment)}"
+														update="@(.page)">
+														<p:confirm header="Confirmation"
+															message="Do you wish to delete the selected payment?"
+															icon="ui-icon-alert" />
+													</p:commandButton>
+													<p:tooltip styleClass="tooltip" for="deleteButton"
+														value="Delete Payment" position="top"
+														hideEvent="mouseleave click" />
+												</p:column>
+											</p:dataTable>
+										</div>
+
+										<div class="col-12 md:col-4 xl:col-4">
+											<p:outputPanel>
+												<h6>Payment</h6>
+
+												<p:commandButton styleClass="full-width"
+													style="margin-bottom:.1rem" value="Deposit"
+													action="#{salesOrderController.insertDeposit()}">
+													<p:confirm header="Confirmation"
+														message="All changes in this order will be saved before making payment, do you wish to proceed?"
+														icon="ui-icon-alert" />
+												</p:commandButton>
+
+												<p:commandButton styleClass="full-width"
+													value="Clear Balance"
+													action="#{salesOrderController.insertPayment()}">
+													<p:confirm header="Confirmation"
+														message="All changes in this order will be saved before making payment, do you wish to proceed?"
+														icon="ui-icon-alert" />
+												</p:commandButton>
+											</p:outputPanel>
+
+											<p:outputPanel>
+												<h6>Print</h6>
+
+												<div class="grid">
+													<div class="col-12 md:col-8 xl:col-8">
+														<p:commandButton styleClass="full-width"
+															style="margin-bottom:.1rem" value="Deposit Slip"
+															action="#{salesOrderController.printDeposit()}"
+															ajax="false" />
+
+														<p:commandButton styleClass="full-width"
+															style="margin-bottom:.1rem" value="Reference"
+															action="#{salesOrderController.printReference()}"
+															ajax="false" />
+
+														<p:commandButton styleClass="full-width"
+															style="margin-bottom:.1rem" value="Lab Copy"
+															action="#{salesOrderController.printLab()}" ajax="false" />
+													</div>
+
+													<div class="col-12 md:col-4 xl:col-4">
+														<p:commandButton styleClass="full-width"
+															style="height: 100%" value="Print All" />
+													</div>
+												</div>
+
+												<div class="grid">
+													<div class="col-12 md:col-12 xl:col-12">
+														<p:commandButton styleClass="full-width"
+															style="margin-bottom:.1rem" value="Tax Invoice (Company)"
+															action="#{salesOrderController.printCompanyTaxInvoice()}"
+															ajax="false" />
+
+														<p:commandButton styleClass="full-width"
+															style="margin-bottom:.1rem"
+															value="Tax Invoice (Customer)"
+															action="#{salesOrderController.printOfficialReceipt()}"
+															ajax="false" />
+
+														<p:commandButton styleClass="full-width"
+															style="margin-bottom:.1rem" value="Updated Payment" />
+													</div>
+												</div>
+											</p:outputPanel>
+										</div>
+									</div>
+								</p:panel>
+							</p:outputPanel>
+						</p:outputPanel>
+					</div>
+
+					<div class="col-12 md:col-3 xl:col-3">
+						<p:panel id="summaryPanel">
+							<div class="grid">
+								<div class="col-12 md:col-12 xl:col-12">
+									<h6>Staff</h6>
+									<p:outputPanel styleClass="ui-inputgroup">
+										<p:inputText styleClass="full-width read-only"
+											value="#{salesOrderController.object.salesPerson.name}"
+											readonly="true" />
+										<p:commandButton icon="fa fa-search"
+											action="#{salesOrderController.lookupSalesPerson()}"
+											process="@form" />
+									</p:outputPanel>
+
+									<h6>Collection Date</h6>
+									<p:calendar styleClass="full-width" id="collectionDate"
+										value="#{salesOrderController.object.collectionDate}"
+										pattern="dd/MM/yyyy" />
+
+									<h6>Tax Invoice</h6>
+									<p:outputPanel styleClass="ui-inputgroup">
+										<p:outputPanel styleClass="ui-inputgroup-addon">
+											<i class="fa fa-hashtag" />
+										</p:outputPanel>
+										<p:inputText styleClass="full-width read-only" id="invoiceNo"
+											value="#{salesOrderController.object.taxInvoice.documentNo}"
+											readonly="true" />
+										<p:watermark for="invoiceNo" value="Invoice No." />
+									</p:outputPanel>
+
+									<p:outputPanel styleClass="ui-inputgroup">
+										<p:outputPanel styleClass="ui-inputgroup-addon">
+											<i class="fa fa-calendar-days" />
+										</p:outputPanel>
+										<p:inputText styleClass="full-width read-only"
+											id="invoiceDate"
+											value="#{salesOrderController.object.taxInvoice.documentDate}"
+											readonly="true">
+											<f:convertDateTime
+												pattern="#{salesOrderController.configuration.datePattern}" />
+										</p:inputText>
+										<p:watermark for="invoiceDate" value="Invoice Date" />
+									</p:outputPanel>
+									
+									<p:outputPanel styleClass="ui-inputgroup">
+										<p:outputPanel styleClass="ui-inputgroup-addon">
+											<i class="fa fa-person" />
+										</p:outputPanel>
+										<p:inputText styleClass="full-width read-only"
+											id="invoiceName"
+											value="#{salesOrderController.object.taxInvoice.customer.name}"
+											readonly="true" />
+										<p:watermark for="invoiceName" value="Invoice Customer" />
+									</p:outputPanel>
+
+									<p:separator />
+
+									<div class="grid">
+										<div class="col-12 md:col-4 xl:col-4">
+											<h6>Sub-Total</h6>
+										</div>
+										<div class="col-12 md:col-8 xl:col-8">
+											<p:outputPanel styleClass="ui-inputgroup">
+												<p:outputPanel styleClass="ui-inputgroup-addon currency">
+													<h:outputText
+														value="#{salesOrderController.configuration.currencySymbol}" />
+												</p:outputPanel>
+
+												<p:inputNumber styleClass="full-width" id="subTotal"
+													value="#{salesOrderController.object.subtotal}"
+													decimal="#{salesOrderController.configuration.monetaryDecimal}"
+													emptyValue="zero" autocomplete="off">
+													<p:ajax event="blur"
+														listener="#{salesOrderController.object.calculate(salesOrderController.configuration)}"
+														process="@form" update="taxAmount total balance" />
+												</p:inputNumber>
+											</p:outputPanel>
+										</div>
+
+										<div class="col-12 md:col-4 xl:col-4">
+											<h6>Discount</h6>
+										</div>
+										<div class="col-12 md:col-8 xl:col-8">
+											<p:outputPanel styleClass="ui-inputgroup">
+												<p:outputPanel styleClass="ui-inputgroup-addon currency">
+													<h:outputText
+														value="#{salesOrderController.configuration.currencySymbol}" />
+												</p:outputPanel>
+
+												<p:inputNumber styleClass="full-width" id="discount"
+													value="#{salesOrderController.object.discount}"
+													decimal="#{salesOrderController.configuration.monetaryDecimal}"
+													emptyValue="zero" autocomplete="off">
+													<p:ajax event="blur"
+														listener="#{salesOrderController.object.calculate(salesOrderController.configuration)}"
+														process="@form" update="taxAmount total balance" />
+												</p:inputNumber>
+											</p:outputPanel>
+										</div>
+
+										<div class="col-12 md:col-4 xl:col-4">
+											<h6>Tax</h6>
+										</div>
+										<div class="col-12 md:col-8 xl:col-8">
+											<p:outputPanel styleClass="ui-inputgroup">
+												<p:selectOneMenu styleClass="full-width" id="tax"
+													value="#{salesOrderController.object.tax}"
+													converter="taxConverter" autoWidth="false">
+													<f:selectItems value="#{salesOrderController.taxes}"
+														var="tax" itemLabel="#{tax.code}" itemValue="#{tax}" />
+													<p:ajax event="change"
+														listener="#{salesOrderController.object.calculate(salesOrderController.configuration)}"
+														process="@form" update="taxRate taxAmount total balance" />
+												</p:selectOneMenu>
+
+												<p:inputNumber styleClass="full-width read-only"
+													id="taxRate" value="#{salesOrderController.object.taxRate}"
+													readonly="true" />
+
+												<p:outputPanel styleClass="ui-inputgroup-addon">
+													%
+												</p:outputPanel>
+											</p:outputPanel>
+										</div>
+
+										<div class="col-12 md:col-4 xl:col-4">
+											<h6>Tax Amount</h6>
+										</div>
+										<div class="col-12 md:col-8 xl:col-8">
+											<p:outputPanel styleClass="ui-inputgroup">
+												<p:outputPanel styleClass="ui-inputgroup-addon currency">
+													<h:outputText
+														value="#{salesOrderController.configuration.currencySymbol}" />
+												</p:outputPanel>
+
+												<p:inputNumber styleClass="full-width read-only"
+													id="taxAmount"
+													value="#{salesOrderController.object.taxAmount}"
+													decimal="#{salesOrderController.configuration.monetaryDecimal}"
+													emptyValue="zero" readonly="true" />
+											</p:outputPanel>
+										</div>
+
+										<div class="col-12 md:col-4 xl:col-4">
+											<h6>Total</h6>
+										</div>
+										<div class="col-12 md:col-8 xl:col-8">
+											<p:outputPanel styleClass="ui-inputgroup">
+												<p:outputPanel styleClass="ui-inputgroup-addon currency">
+													<h:outputText
+														value="#{salesOrderController.configuration.currencySymbol}" />
+												</p:outputPanel>
+
+												<p:inputNumber styleClass="full-width read-only" id="total"
+													value="#{salesOrderController.object.total}"
+													decimal="#{salesOrderController.configuration.monetaryDecimal}"
+													emptyValue="zero" readonly="true" />
+											</p:outputPanel>
+										</div>
+
+										<div class="col-12 md:col-4 xl:col-4">
+											<h6>Paid</h6>
+										</div>
+										<div class="col-12 md:col-8 xl:col-8">
+											<p:outputPanel styleClass="ui-inputgroup">
+												<p:outputPanel styleClass="ui-inputgroup-addon currency">
+													<h:outputText
+														value="#{salesOrderController.configuration.currencySymbol}" />
+												</p:outputPanel>
+
+												<p:inputNumber styleClass="full-width read-only" id="paid"
+													value="#{salesOrderController.object.paid}"
+													decimal="#{salesOrderController.configuration.monetaryDecimal}"
+													emptyValue="zero" readonly="true" />
+											</p:outputPanel>
+										</div>
+
+										<div class="col-12 md:col-4 xl:col-4">
+											<h6>Balance</h6>
+										</div>
+										<div class="col-12 md:col-8 xl:col-8">
+											<p:outputPanel styleClass="ui-inputgroup">
+												<p:outputPanel styleClass="ui-inputgroup-addon currency">
+													<h:outputText
+														value="#{salesOrderController.configuration.currencySymbol}" />
+												</p:outputPanel>
+
+												<p:inputNumber styleClass="full-width read-only"
+													id="balance" value="#{salesOrderController.object.balance}"
+													decimal="#{salesOrderController.configuration.monetaryDecimal}"
+													emptyValue="zero" readonly="true" />
+											</p:outputPanel>
+										</div>
+									</div>
+								</div>
+							</div>
+						</p:panel>
+					</div>
+				</div>
+			</div>
+		</p:outputPanel>
+	</h:form>
+
+</ui:composition>

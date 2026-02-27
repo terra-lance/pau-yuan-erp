@@ -1,0 +1,89 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.terrase.frame.data.Profile" schema="dbo"
+		table="profiles" where="deleted != 1">
+		<id name="id" type="java.lang.Long">
+			<column name="id" />
+			<generator class="identity" />
+		</id>
+		<version name="version" type="int">
+			<column name="version" />
+		</version>
+
+		<property name="code" type="string"
+			unique-key="unique_profile">
+			<column name="code" length="100" />
+		</property>
+		<property name="name" type="string">
+			<column name="name" length="500" />
+		</property>
+		<property name="description" type="string">
+			<column name="description" length="500" />
+		</property>
+
+		<property name="registrationNo" type="string">
+			<column name="registration_no" length="50" />
+		</property>
+		<property name="taxNo" type="string">
+			<column name="tax_no" length="50" />
+		</property>
+
+		<property name="address1" type="string">
+			<column name="address1" length="500" />
+		</property>
+		<property name="address2" type="string">
+			<column name="address2" length="500" />
+		</property>
+		<property name="address3" type="string">
+			<column name="address3" length="500" />
+		</property>
+		<property name="address4" type="string">
+			<column name="address4" length="500" />
+		</property>
+
+		<property name="phone" type="string">
+			<column name="phone" length="500" />
+		</property>
+		<property name="fax" type="string">
+			<column name="fax" length="500" />
+		</property>
+		<property name="operationDescription" type="string">
+			<column name="operation_description" length="500" />
+		</property>
+
+		<property name="dateCreated" type="timestamp" insert="false">
+			<column name="date_created" default="current_timestamp" />
+		</property>
+		<many-to-one name="userCreated"
+			class="com.terrase.frame.data.User" lazy="false" fetch="select"
+			not-found="ignore">
+			<column name="user_created" not-null="true" />
+		</many-to-one>
+
+		<property name="dateModified" type="timestamp">
+			<column name="date_modified" />
+		</property>
+		<many-to-one name="userModified"
+			class="com.terrase.frame.data.User" lazy="false" fetch="select"
+			not-found="ignore">
+			<column name="user_modified" not-null="false" />
+		</many-to-one>
+
+		<property name="deleted" type="boolean"
+			unique-key="unique_profile">
+			<column name="deleted" />
+		</property>
+		<property name="dateDeleted" type="timestamp"
+			unique-key="unique_profile">
+			<column name="date_deleted" />
+		</property>
+		<many-to-one name="userDeleted"
+			class="com.terrase.frame.data.User" lazy="false" fetch="select"
+			not-found="ignore">
+			<column name="user_deleted" not-null="false" />
+		</many-to-one>
+	</class>
+</hibernate-mapping>

@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="/templates/template.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:sec="http://www.springframework.org/security/tags">
+
+	<ui:define name="title">
+		<h:outputText value="#{configurationController.title}" />
+	</ui:define>
+
+	<ui:define name="content">
+		<h:form id="indexForm" class="page">
+			<p:outputPanel
+				rendered="#{configurationController.page == configurationController.naviIndex}">
+				<p:toolbar id="toolbar">
+					<f:facet name="left">
+						<h:outputText styleClass="module-name"
+							value="#{configurationController.title}" />
+					</f:facet>
+
+					<f:facet name="right">
+						<p:commandButton value="Update Record" icon="fa fa-fw fa-pencil"
+							action="#{configurationController.update()}" update="@(.page)" />
+					</f:facet>
+				</p:toolbar>
+				<p:sticky target="toolbar" />
+
+				<br />
+
+				<div class="card">
+					<p:tabView>
+						<p:tab title="Encoding Setting">
+							<div class="grid">
+								<div class="col-12 md:col-12 xl:col-12">
+									<h6>Character 1</h6>
+									<p:inputText styleClass="full-width read-only" id="character1"
+										value="#{configurationController.object.character1}"
+										readonly="true" />
+
+									<h6>Character 2</h6>
+									<p:inputText styleClass="full-width read-only" id="character2"
+										value="#{configurationController.object.character2}"
+										readonly="true" />
+
+									<h6>Character 3</h6>
+									<p:inputText styleClass="full-width read-only" id="character3"
+										value="#{configurationController.object.character3}"
+										readonly="true" />
+
+									<h6>Character 4</h6>
+									<p:inputText styleClass="full-width read-only" id="character4"
+										value="#{configurationController.object.character4}"
+										readonly="true" />
+
+									<h6>Character 5</h6>
+									<p:inputText styleClass="full-width read-only" id="character5"
+										value="#{configurationController.object.character5}"
+										readonly="true" />
+
+									<h6>Character 6</h6>
+									<p:inputText styleClass="full-width read-only" id="character6"
+										value="#{configurationController.object.character6}"
+										readonly="true" />
+
+									<h6>Character 7</h6>
+									<p:inputText styleClass="full-width read-only" id="character7"
+										value="#{configurationController.object.character7}"
+										readonly="true" />
+
+									<h6>Character 8</h6>
+									<p:inputText styleClass="full-width read-only" id="character8"
+										value="#{configurationController.object.character8}"
+										readonly="true" />
+
+									<h6>Character 9</h6>
+									<p:inputText styleClass="full-width read-only" id="character9"
+										value="#{configurationController.object.character9}"
+										readonly="true" />
+
+									<h6>Character 0</h6>
+									<p:inputText styleClass="full-width read-only" id="character0"
+										value="#{configurationController.object.character0}"
+										readonly="true" />
+								</div>
+							</div>
+						</p:tab>
+
+						<p:tab title="Format Setting">
+							<div class="grid">
+								<div class="col-12 md:col-12 xl:col-12">
+									<h6>Currency Symbol</h6>
+									<p:inputText styleClass="full-width read-only"
+										id="currencySymbol"
+										value="#{configurationController.object.currencySymbol}"
+										readonly="true" />
+
+									<h6>Monetary Decimal</h6>
+									<p:inputNumber styleClass="full-width read-only"
+										id="monetaryDecimal"
+										value="#{configurationController.object.monetaryDecimal}"
+										thousandSeparator="" decimalPlaces="0" minValue="0"
+										maxValue="4" emptyValue="zero" readonly="true" />
+
+									<h6>Date Format</h6>
+									<p:inputText styleClass="full-width read-only" id="datePattern"
+										value="#{configurationController.object.datePattern}"
+										readonly="true" />
+
+									<h6>Time Format</h6>
+									<p:inputText styleClass="full-width read-only" id="timePattern"
+										value="#{configurationController.object.timePattern}"
+										readonly="true" />
+
+									<h6>Timestamp Format</h6>
+									<p:inputText styleClass="full-width read-only"
+										id="timestampPattern"
+										value="#{configurationController.object.timestampPattern}"
+										readonly="true" />
+								</div>
+							</div>
+						</p:tab>
+
+						<p:tab title="Accounting Setting">
+							<div class="grid">
+								<div class="col-12 md:col-12 xl:col-12">
+									<h6>Accounting URL</h6>
+									<p:inputText styleClass="full-width read-only"
+										id="accountingUrl"
+										value="#{configurationController.object.accountingUrl}"
+										readonly="true" />
+
+									<h6>Accounting Server</h6>
+									<p:inputText styleClass="full-width read-only"
+										id="accountingServer"
+										value="#{configurationController.object.accountingServer}"
+										readonly="true" />
+
+									<h6>Accounting Database</h6>
+									<p:inputText styleClass="full-width read-only"
+										id="accountingDatabase"
+										value="#{configurationController.object.accountingDatabase}"
+										readonly="true" />
+
+									<h6>Accounting Username</h6>
+									<p:inputText styleClass="full-width read-only"
+										id="accountingUsername"
+										value="#{configurationController.object.accountingUsername}"
+										readonly="true" />
+
+									<h6>Accounting Debtor Control Account</h6>
+									<p:inputText styleClass="full-width read-only"
+										id="accountingDebtorControlAccount"
+										value="#{configurationController.object.accountingDebtorControlAccount}"
+										readonly="true" />
+
+									<h6>Accounting Creditor Control Account</h6>
+									<p:inputText styleClass="full-width read-only"
+										id="accountingCreditorControlAccount"
+										value="#{configurationController.object.accountingCreditorControlAccount}"
+										readonly="true" />
+
+									<h6>Accounting Sales Account</h6>
+									<p:inputText styleClass="full-width read-only"
+										id="accountingSalesAccount"
+										value="#{configurationController.object.accountingSalesAccount}"
+										readonly="true" />
+
+									<h6>Accounting Purchases Account</h6>
+									<p:inputText styleClass="full-width read-only"
+										id="accountingPurchaseAccount"
+										value="#{configurationController.object.accountingPurchaseAccount}"
+										readonly="true" />
+								</div>
+							</div>
+						</p:tab>
+
+						<p:tab title="Cash Register Setting">
+							<div class="grid">
+								<div class="col-12 md:col-12 xl:col-12">
+									<h6>Cash Register Printer URL</h6>
+									<p:inputText styleClass="full-width read-only"
+										id="cashRegisterPrinterUrl"
+										value="#{configurationController.object.cashRegisterPrinterUrl}"
+										readonly="true" />
+
+									<h6>Cash Register Printer Name</h6>
+									<p:inputText styleClass="full-width read-only"
+										id="cashRegisterPrinterName"
+										value="#{configurationController.object.cashRegisterPrinterName}"
+										readonly="true" />
+								</div>
+							</div>
+						</p:tab>
+
+						<p:tab title="Disclaimer Setting">
+							<div class="grid">
+								<div class="col-12 md:col-12 xl:col-12">
+									<h6>Operation Disclaimer</h6>
+									<p:inputTextarea styleClass="full-width read-only"
+										id="operationDisclaimer"
+										value="#{configurationController.object.operationDisclaimer}"
+										readonly="true" />
+
+									<h6>Deposit Disclaimer</h6>
+									<p:inputTextarea styleClass="full-width read-only"
+										id="depositDisclaimer"
+										value="#{configurationController.object.depositDisclaimer}"
+										readonly="true" />
+
+									<h6>Deposit Slip Footer Disclaimer</h6>
+									<p:inputTextarea styleClass="full-width read-only"
+										id="depositSlipFooterDisclaimer"
+										value="#{configurationController.object.depositSlipFooterDisclaimer}"
+										readonly="true" />
+								</div>
+							</div>
+						</p:tab>
+					</p:tabView>
+				</div>
+			</p:outputPanel>
+		</h:form>
+
+		<ui:include src="/contents/base-configs/configuration/update.xhtml" />
+	</ui:define>
+
+</ui:composition>

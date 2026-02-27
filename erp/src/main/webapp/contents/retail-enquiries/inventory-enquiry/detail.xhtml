@@ -1,0 +1,91 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:form id="detailForm" class="page">
+		<p:outputPanel
+			rendered="#{inventoryEnquiryController.page == inventoryEnquiryController.naviDetail}">
+			<p:toolbar id="toolbar">
+				<f:facet name="left">
+					<h:outputText styleClass="module-name"
+						value="#{inventoryEnquiryController.title} - Detail" />
+				</f:facet>
+
+				<f:facet name="right">
+					<p:commandButton value="Frame Inventory Summary"
+						icon="fa fa-fw fa-magnifying-glass-minus"
+						action="#{inventoryEnquiryController.home()}" update="@(.page)" />
+					<h:commandLink>
+						<p:graphicImage name="/images/excel.png" width="24" />
+						<p:dataExporter type="xls" target="detailData"
+							fileName="data-file" />
+					</h:commandLink>
+				</f:facet>
+			</p:toolbar>
+			<p:sticky target="toolbar" />
+
+			<div class="card">
+				<p:toolbar>
+					<f:facet name="left">
+						<span class="ui-input-icon-left"> <i class="fa fa-search" />
+							<p:inputText placeholder="Search"
+								value="#{inventoryEnquiryController.detailKeyword}">
+								<p:ajax event="keyup" delay="500"
+									listener="#{inventoryEnquiryController.loadDetail()}"
+									process="@this" update="detailData" />
+							</p:inputText>
+						</span>
+					</f:facet>
+				</p:toolbar>
+
+				<p:dataTable id="detailData" rowIndexVar="rowIndex" var="detail"
+					value="#{inventoryEnquiryController.details}"
+					emptyMessage="No record(s) found" widgetVar="detailDataTableWV"
+					paginator="true"
+					paginatorPosition="#{sessionBean.userPreference.paginatorPosition}"
+					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
+					rows="10" rowsPerPageTemplate="10,20,30,40,50" lazy="true"
+					reflow="true">
+
+					<p:column headerText="No." styleClass="index-cell">
+						<h:outputText value="#{rowIndex + 1}" />
+					</p:column>
+
+					<p:column headerText="Model" filterBy="#{detail.frameCode}"
+						filterMatchMode="contains" sortBy="#{detail.frameCode}">
+						<h:outputText value="#{detail.frameCode}" />
+					</p:column>
+
+					<p:column headerText="Material" filterBy="#{detail.frameMaterial}"
+						filterMatchMode="contains" sortBy="#{detail.frameMaterial}">
+						<h:outputText value="#{detail.frameMaterial}" />
+					</p:column>
+
+					<p:column headerText="Size" filterBy="#{detail.frameSize}"
+						filterMatchMode="contains" sortBy="#{detail.frameSize}">
+						<h:outputText value="#{detail.frameSize}" />
+					</p:column>
+
+					<p:column headerText="Brand" filterBy="#{detail.brandName}"
+						filterMatchMode="contains" sortBy="#{detail.brandName}">
+						<h:outputText value="#{detail.brandName}" />
+					</p:column>
+
+					<p:column headerText="Color" filterBy="#{detail.color}"
+						filterMatchMode="contains" sortBy="#{detail.color}">
+						<h:outputText value="#{detail.color}" />
+					</p:column>
+
+					<p:column headerText="Serial No." filterBy="#{detail.serialNo}"
+						filterMatchMode="contains" sortBy="#{detail.serialNo}">
+						<h:outputText value="#{detail.serialNo}" />
+					</p:column>
+				</p:dataTable>
+			</div>
+		</p:outputPanel>
+	</h:form>
+
+</ui:composition>

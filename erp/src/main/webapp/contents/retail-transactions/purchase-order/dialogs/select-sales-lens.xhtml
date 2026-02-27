@@ -1,0 +1,93 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:form id="selectSalesLensForm">
+		<p:dialog value="Selection" widgetVar="selectSalesLensWV"
+			resizable="false" responsive="true" modal="true">
+			<p:toolbar id="toolbar">
+				<f:facet name="right">
+					<p:commandButton value="Select" icon="fa fa-fw fa-check"
+						action="#{purchaseOrderController.selectSalesLens()}"
+						update="@(.page)" />
+				</f:facet>
+			</p:toolbar>
+
+			<p:panel styleClass="dialog" header="Select Lens Order">
+				<p:dataTable styleClass="data-table"
+					widgetVar="selectSalesLensTableWV" rowIndexVar="rowIndex"
+					var="object" rowKey="#{object}"
+					value="#{purchaseOrderController.salesLenses}" paginator="true"
+					paginatorPosition="#{sessionBean.userPreference.paginatorPosition}"
+					rows="10" rowsPerPageTemplate="10,20,30,40,50"
+					selection="#{purchaseOrderController.selectedSalesLenses}"
+					rowSelectMode="none" lazy="true">
+
+					<p:column selectionMode="multiple"
+						style="width:16px;text-align:center" />
+
+					<p:column headerText="Order"
+						filterBy="#{object.salesOrder.documentNo}"
+						filterMatchMode="contains"
+						sortBy="#{object.salesOrder.documentNo}"
+						styleClass="double-action-cell align-left">
+						<h:outputText value="#{object.salesOrder.documentNo}" />
+					</p:column>
+
+					<p:column headerText="Customer"
+						filterBy="#{object.salesOrder.customer.name}"
+						filterMatchMode="contains"
+						sortBy="#{object.salesOrder.customer.name}">
+						<h:outputText value="#{object.salesOrder.customer.name}" />
+					</p:column>
+
+					<p:column headerText="Model" filterBy="#{object.lens.code}"
+						filterMatchMode="contains" sortBy="#{object.lens.code}">
+						<h:outputText value="#{object.lens.code}" />
+					</p:column>
+
+					<p:column headerText="Index" filterBy="#{object.lensIndex}"
+						filterMatchMode="contains" sortBy="#{object.lensIndex}">
+						<h:outputText value="#{object.lensIndex}">
+							<f:convertNumber pattern="#.##" />
+						</h:outputText>
+					</p:column>
+
+					<p:column headerText="Design" filterBy="#{object.lensDesign}"
+						filterMatchMode="contains" sortBy="#{object.lensDesign}">
+						<h:outputText value="#{object.lensDesign}" />
+					</p:column>
+
+					<p:column headerText="Coating" filterBy="#{object.lensCoating}"
+						filterMatchMode="contains" sortBy="#{object.lensCoating}">
+						<h:outputText value="#{object.lensCoating}" />
+					</p:column>
+
+					<p:column headerText="Corridor" filterBy="#{object.lensCorridor}"
+						filterMatchMode="contains" sortBy="#{object.lensCorridor}">
+						<h:outputText value="#{object.lensCorridor}" />
+					</p:column>
+
+					<p:column headerText="Side" filterBy="#{object.side}"
+						filterMatchMode="equals" sortBy="#{object.side}">
+						<f:facet name="filter">
+							<p:selectOneMenu styleClass="full-width"
+								onchange="PF('selectSalesLensTableWV').filter()"
+								autoWidth="false">
+								<f:converter converterId="sideConverter" />
+								<f:selectItem itemLabel="All" itemValue="#{null}" />
+								<f:selectItems value="#{purchaseOrderController.sides}"
+									var="side" itemLabel="#{side.description}" itemValue="#{side}" />
+							</p:selectOneMenu>
+						</f:facet>
+
+						<h:outputText value="#{object.side.description}" />
+					</p:column>
+				</p:dataTable>
+			</p:panel>
+		</p:dialog>
+	</h:form>
+
+</ui:composition>

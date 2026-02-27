@@ -1,0 +1,136 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:form id="insertForm" class="page">
+		<p:outputPanel
+			rendered="#{userGroupController.page == userGroupController.naviInsert}">
+			<p:toolbar id="toolbar">
+				<f:facet name="left">
+					<h:outputText styleClass="module-name"
+						value="#{userGroupController.title} - Add Record" />
+				</f:facet>
+
+				<f:facet name="right">
+					<p:commandButton value="Save" icon="fa fa-fw fa-save"
+						action="#{userGroupController.saveInsert()}" update="@(.page)" />
+					<p:commandButton value="Close" icon="fa fa-fw fa-close"
+						action="#{userGroupController.home()}" update="@(.page)" />
+				</f:facet>
+			</p:toolbar>
+			<p:sticky target="toolbar" />
+			<br />
+
+			<div class="card">
+				<div class="grid">
+					<div class="col-12 md:col-6 xl:col-6">
+						<h6>Code</h6>
+						<p:inputText styleClass="full-width" id="code"
+							value="#{userGroupController.object.code}" autocomplete="off" />
+					</div>
+
+					<div class="col-12 md:col-6 xl:col-6">
+						<h6>Name</h6>
+						<p:inputText styleClass="full-width" id="name"
+							value="#{userGroupController.object.name}" autocomplete="off" />
+					</div>
+				</div>
+
+				<div class="grid">
+					<div class="col-12 md:col-12 xl:col-12">
+						<h6>Description</h6>
+						<p:inputTextarea styleClass="full-width" id="description"
+							value="#{userGroupController.object.description}"
+							autocomplete="off" />
+					</div>
+				</div>
+
+				<h6>Access Permissions</h6>
+				<p:dataTable rowIndexVar="rowIndex" var="object" rowKey="#{object}"
+					value="#{userGroupController.object.userGroupAccesses}">
+
+					<p:column headerText="No.">
+						<h:outputText value="#{rowIndex + 1}" />
+					</p:column>
+
+					<p:column headerText="Module">
+						<h:outputText value="#{object.module.name}" />
+					</p:column>
+
+					<p:column styleClass="align-center">
+						<f:facet name="header">
+							<h:outputLabel value="View" />
+							<br />
+							<br />
+							<p:selectBooleanCheckbox styleClass="override"
+								value="#{userGroupController.allView}">
+								<p:ajax update=":insertForm:" process=":insertForm:"
+									listener="#{userGroupController.selectAll(0)}" />
+							</p:selectBooleanCheckbox>
+						</f:facet>
+						<p:selectBooleanCheckbox value="#{object.viewRights}" />
+					</p:column>
+
+					<p:column styleClass="align-center">
+						<f:facet name="header">
+							<h:outputLabel value="Add" />
+							<br />
+							<br />
+							<p:selectBooleanCheckbox styleClass="override"
+								value="#{userGroupController.allAdd}">
+								<p:ajax update=":insertForm:" process=":insertForm:"
+									listener="#{userGroupController.selectAll(1)}" />
+							</p:selectBooleanCheckbox>
+						</f:facet>
+						<p:selectBooleanCheckbox value="#{object.addRights}" />
+					</p:column>
+
+					<p:column styleClass="align-center">
+						<f:facet name="header">
+							<h:outputLabel value="Update" />
+							<br />
+							<br />
+							<p:selectBooleanCheckbox styleClass="override"
+								value="#{userGroupController.allUpdate}">
+								<p:ajax update=":insertForm:" process=":insertForm:"
+									listener="#{userGroupController.selectAll(2)}" />
+							</p:selectBooleanCheckbox>
+						</f:facet>
+						<p:selectBooleanCheckbox value="#{object.updateRights}" />
+					</p:column>
+
+					<p:column styleClass="align-center">
+						<f:facet name="header">
+							<h:outputLabel value="Delete" />
+							<br />
+							<br />
+							<p:selectBooleanCheckbox styleClass="override"
+								value="#{userGroupController.allDelete}">
+								<p:ajax update=":insertForm:" process=":insertForm:"
+									listener="#{userGroupController.selectAll(3)}" />
+							</p:selectBooleanCheckbox>
+						</f:facet>
+						<p:selectBooleanCheckbox value="#{object.deleteRights}" />
+					</p:column>
+
+					<p:column styleClass="align-center">
+						<f:facet name="header">
+							<h:outputLabel value="Print" />
+							<br />
+							<br />
+							<p:selectBooleanCheckbox styleClass="override"
+								value="#{userGroupController.allPrint}">
+								<p:ajax update=":insertForm:" process=":insertForm:"
+									listener="#{userGroupController.selectAll(4)}" />
+							</p:selectBooleanCheckbox>
+						</f:facet>
+						<p:selectBooleanCheckbox value="#{object.printRights}" />
+					</p:column>
+				</p:dataTable>
+			</div>
+		</p:outputPanel>
+	</h:form>
+
+</ui:composition>

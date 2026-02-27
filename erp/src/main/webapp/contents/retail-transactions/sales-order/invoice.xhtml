@@ -1,0 +1,215 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:form id="invoiceForm" class="page">
+		<p:outputPanel
+			rendered="#{salesOrderController.page == salesOrderController.naviInvoice}">
+			<p:toolbar id="toolbar">
+				<f:facet name="left">
+					<div class="title">
+						<h:outputText styleClass="module-name"
+							value="#{salesOrderController.title} - Invoice / Combine Receipt" />
+					</div>
+				</f:facet>
+
+				<f:facet name="right">
+					<p:commandButton value="Save" icon="fa fa-fw fa-save"
+						action="#{salesOrderController.saveInvoice()}" update="@(.page)">
+						<p:confirm header="Confirmation"
+							message="Combine receipt cannot be undone, do you wish to combine the selected orders?"
+							icon="ui-icon-alert" />
+					</p:commandButton>
+					<p:commandButton value="Close" icon="fa fa-fw fa-close"
+						action="#{salesOrderController.home()}" immediate="true"
+						update="@(.page)" />
+				</f:facet>
+			</p:toolbar>
+			<p:sticky target="toolbar" />
+
+			<div class="card">
+				<div class="grid">
+					<div class="col-12 md:col-3 xl:col-3">
+						<div class="grid">
+							<div class="col-12 md:col-12 xl:col-12">
+								<h6>Invoice No.</h6>
+								<p:outputPanel styleClass="ui-inputgroup">
+									<p:inputText
+										styleClass="full-width #{salesOrderController.taxInvoice.autoNumber ? 'read-only' : ''}"
+										id="documentNo"
+										value="#{salesOrderController.taxInvoice.documentNo}"
+										readonly="#{salesOrderController.taxInvoice.autoNumber}" />
+									<p:selectBooleanButton id="autoNumber" style="width: 80px"
+										offLabel="Manual" onLabel="Auto"
+										value="#{salesOrderController.taxInvoice.autoNumber}">
+										<p:ajax event="change" update="documentNo"
+											listener="#{salesOrderController.taxInvoice.toggleAutoNumber()}" />
+									</p:selectBooleanButton>
+								</p:outputPanel>
+
+								<h6>Invoice Date</h6>
+								<p:calendar styleClass="full-width" id="documentDate"
+									value="#{salesOrderController.taxInvoice.documentDate}"
+									pattern="dd/MM/yyyy" />
+							</div>
+						</div>
+					</div>
+
+					<div class="col-12 md:col-3 xl:col-3">
+						<div class="grid">
+							<div class="col-12 md:col-12 xl:col-12">
+								<h6>Customer</h6>
+								<p:outputPanel styleClass="ui-inputgroup" id="customer">
+									<p:inputText
+										styleClass="full-width #{salesOrderController.taxInvoice.customer.id != 0 ? 'read-only' : ''}"
+										value="#{salesOrderController.taxInvoice.customer.name}"
+										autocomplete="off"
+										readonly="#{salesOrderController.taxInvoice.customer.id != 0}" />
+									<p:commandButton icon="fa fa-search"
+										action="#{salesOrderController.lookupInvoiceCustomer()}"
+										process="@form" />
+									<p:commandButton icon="fa fa-ban"
+										action="#{salesOrderController.clearInvoiceCustomer()}"
+										process="@form" update="@form" />
+								</p:outputPanel>
+
+								<h6>NRIC</h6>
+								<p:inputText styleClass="full-width" id="customerIC"
+									value="#{salesOrderController.taxInvoice.customer.nric}"
+									autocomplete="off" />
+							</div>
+						</div>
+					</div>
+
+					<div class="col-12 md:col-3 xl:col-3">
+						<div class="grid">
+							<div class="col-12 md:col-12 xl:col-12">
+								<h6>Address</h6>
+								<p:inputText styleClass="full-width" id="address1"
+									value="#{salesOrderController.taxInvoice.address1}"
+									autocomplete="off" />
+								<p:inputText styleClass="full-width" id="address2"
+									value="#{salesOrderController.taxInvoice.address2}"
+									autocomplete="off" />
+								<p:inputText styleClass="full-width" id="address3"
+									value="#{salesOrderController.taxInvoice.address3}"
+									autocomplete="off" />
+							</div>
+						</div>
+					</div>
+
+					<div class="col-12 md:col-3 xl:col-3">
+						<div class="grid">
+							<div class="col-12 md:col-12 xl:col-12">
+								<h6>Contact</h6>
+								<p:outputPanel styleClass="ui-inputgroup">
+									<p:outputPanel styleClass="ui-inputgroup-addon">
+										<i class="fa fa-mobile-screen" />
+									</p:outputPanel>
+									<p:inputText styleClass="full-width" id="customerMobile"
+										value="#{salesOrderController.taxInvoice.customer.mobile}"
+										autocomplete="off" />
+									<p:watermark for="customerMobile" value="Mobile" />
+								</p:outputPanel>
+
+								<p:outputPanel styleClass="ui-inputgroup">
+									<p:outputPanel styleClass="ui-inputgroup-addon">
+										<i class="fa fa-house" />
+									</p:outputPanel>
+									<p:inputText styleClass="full-width" id="customerHome"
+										value="#{salesOrderController.taxInvoice.customer.home}"
+										autocomplete="off" />
+									<p:watermark for="customerHome" value="Home" />
+								</p:outputPanel>
+
+								<p:outputPanel styleClass="ui-inputgroup">
+									<p:outputPanel styleClass="ui-inputgroup-addon">
+										<i class="fa fa-building" />
+									</p:outputPanel>
+									<p:inputText styleClass="full-width" id="customerOffice"
+										value="#{salesOrderController.taxInvoice.customer.office}"
+										autocomplete="off" />
+									<p:watermark for="customerOffice" value="Office" />
+								</p:outputPanel>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<p:separator />
+
+				<div class="grid">
+					<div class="col-12 md:col-12 xl:col-12">
+						<p:toolbar>
+							<f:facet name="left">
+								<p:selectOneButton disabled="true">
+									<f:selectItem itemLabel="Orders" />
+								</p:selectOneButton>
+							</f:facet>
+
+							<f:facet name="right">
+								<p:commandButton icon="fa fa-fw fa-plus" value="Select Orders"
+									action="#{salesOrderController.lookupInvoiceOrder()}"
+									process="@form" />
+							</f:facet>
+						</p:toolbar>
+
+						<p:dataTable styleClass="data-table" rowIndexVar="rowIndex"
+							var="salesOrder" rowKey="#{salesOrder}"
+							value="#{salesOrderController.taxInvoice.listOrders}">
+
+							<p:headerRow style="display:none"
+								groupBy="#{salesOrder.taxInvoice.id}" />
+
+							<p:column headerText="Reference #">
+								<h:outputText value="#{salesOrder.documentNo}" />
+							</p:column>
+
+							<p:column headerText="Order Date">
+								<h:outputText value="#{salesOrder.documentDate}">
+									<f:convertDateTime
+										pattern="#{salesOrderController.configuration.datePattern}" />
+								</h:outputText>
+							</p:column>
+
+							<p:column headerText="Customer Name">
+								<h:outputText value="#{salesOrder.customer.name}" />
+							</p:column>
+
+							<p:column headerText="Customer NRIC">
+								<h:outputText value="#{salesOrder.customer.nric}" />
+							</p:column>
+
+							<p:column headerText="Customer Mobile">
+								<h:outputText value="#{salesOrder.customer.mobile}" />
+							</p:column>
+
+							<p:column headerText="Total" styleClass="align-right">
+								<h:outputText value="#{salesOrder.total}">
+									<f:convertNumber
+										pattern="#{salesOrderController.monetaryDecimalMask}" />
+								</h:outputText>
+							</p:column>
+
+							<p:summaryRow>
+								<p:column colspan="5" styleClass="align-right">
+									<h:outputText value="Total:" />
+								</p:column>
+								<p:column styleClass="align-right">
+									<h:outputText id="total"
+										value="#{salesOrderController.taxInvoice.total}">
+										<f:convertNumber
+											pattern="#{salesOrderController.monetaryDecimalMask}" />
+									</h:outputText>
+								</p:column>
+							</p:summaryRow>
+						</p:dataTable>
+					</div>
+				</div>
+			</div>
+		</p:outputPanel>
+	</h:form>
+
+</ui:composition>

@@ -1,0 +1,102 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:form id="graphForm" class="page">
+		<p:outputPanel
+			rendered="#{customerController.page == customerController.naviGraph}">
+			<p:toolbar id="toolbar">
+				<f:facet name="left">
+					<h:outputText styleClass="module-name"
+						value="#{customerController.title} - Optic Graph" />
+				</f:facet>
+
+				<f:facet name="right">
+					<p:commandButton value="Close" icon="fa fa-fw fa-close"
+						action="#{customerController.home()}" update="@(.page)" />
+				</f:facet>
+			</p:toolbar>
+			<p:sticky target="toolbar" />
+
+			<div class="card">
+				<div class="grid">
+					<div class="col-12 md:col-12 xl:col-12">
+						<div class="grid">
+							<div class="col-12 md:col-4 xl:col-4">
+								<h6>Code</h6>
+								<p:inputText styleClass="full-width read-only" id="code"
+									value="#{customerController.object.code}" readonly="true" />
+							</div>
+
+							<div class="col-12 md:col-4 xl:col-4">
+								<h6>Name</h6>
+								<p:inputText styleClass="full-width read-only" id="name"
+									value="#{customerController.object.name}" readonly="true" />
+							</div>
+
+							<div class="col-12 md:col-4 xl:col-4">
+								<h6>NRIC</h6>
+								<p:inputText styleClass="full-width read-only" id="nric"
+									value="#{customerController.object.nric}" readonly="true" />
+							</div>
+						</div>
+					</div>
+
+					<div class="col-12 md:col-12 xl:col-12">
+						<p:lineChart model="#{customerController.sphereChart}"
+							style="width: 100%; height: 250px;" />
+					</div>
+
+					<div class="col-12 md:col-12 xl:col-12">
+						<p:lineChart model="#{customerController.cylinderChart}"
+							style="width: 100%; height: 250px;" />
+					</div>
+
+					<div class="col-12 md:col-12 xl:col-12">
+						<p:lineChart model="#{customerController.axialLengthChart}"
+							style="width: 100%; height: 250px;" />
+					</div>
+				</div>
+			</div>
+
+			<div class="card">
+				<div class="grid">
+					<div class="col-12 md:col-6 xl:col-3">
+						<h6>User Created</h6>
+						<p:inputText styleClass="full-width read-only" id="userCreated"
+							value="#{customerController.object.userCreated.name}"
+							readonly="true" />
+					</div>
+
+					<div class="col-12 md:col-6 xl:col-3">
+						<h6>Date Created</h6>
+						<p:inputText styleClass="full-width read-only" id="dateCreated"
+							value="#{customerController.object.dateCreated}" readonly="true">
+							<f:convertDateTime type="date"
+								pattern="#{customerController.configuration.timestampPattern}" />
+						</p:inputText>
+					</div>
+
+					<div class="col-12 md:col-6 xl:col-3">
+						<h6>User Modified</h6>
+						<p:inputText styleClass="full-width read-only" id="userModified"
+							value="#{customerController.object.userModified.name}"
+							readonly="true" />
+					</div>
+
+					<div class="col-12 md:col-6 xl:col-3">
+						<h6>Date Modified</h6>
+						<p:inputText styleClass="full-width read-only" id="dateModified"
+							value="#{customerController.object.dateModified}" readonly="true">
+							<f:convertDateTime type="date"
+								pattern="#{customerController.configuration.timestampPattern}" />
+						</p:inputText>
+					</div>
+				</div>
+			</div>
+		</p:outputPanel>
+	</h:form>
+
+</ui:composition>

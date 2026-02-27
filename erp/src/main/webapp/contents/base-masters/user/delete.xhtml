@@ -1,0 +1,107 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:form id="deleteForm" class="page">
+		<p:outputPanel
+			rendered="#{userController.page == userController.naviDelete}">
+			<p:toolbar id="toolbar">
+				<f:facet name="left">
+					<div class="title">
+						<h:outputText styleClass="module-name"
+							value="#{userController.title} - Delete Record" />
+					</div>
+				</f:facet>
+
+				<f:facet name="right">
+					<p:commandButton value="Delete" icon="fa fa-fw fa-trash-alt"
+						action="#{userController.saveDelete()}" update="@(.page)">
+						<p:confirm header="Confirmation"
+							message="Do you wish to delete the selected record?"
+							icon="ui-icon-alert" />
+					</p:commandButton>
+					<p:commandButton value="Close" icon="fa fa-fw fa-close"
+						action="#{userController.home()}" update="@(.page)" />
+				</f:facet>
+			</p:toolbar>
+			<p:sticky target="toolbar" />
+			<br />
+
+			<div class="card">
+				<div class="grid">
+					<div class="col-12 md:col-6 xl:col-6">
+						<h6>Username</h6>
+						<p:inputText styleClass="full-width read-only" id="username"
+							value="#{userController.object.username}" readonly="true" />
+					</div>
+
+					<div class="col-12 md:col-6 xl:col-6">
+						<h6>Name</h6>
+						<p:inputText styleClass="full-width read-only" id="name"
+							value="#{userController.object.name}" readonly="true" />
+					</div>
+				</div>
+
+				<div class="grid">
+					<div class="col-12 md:col-12 xl:col-12">
+						<h6>Email</h6>
+						<p:inputText styleClass="full-width read-only" id="email"
+							value="#{userController.object.email}" readonly="true" />
+					</div>
+				</div>
+
+				<h6>User Group</h6>
+				<p:dataTable rowIndexVar="rowIndex" var="object" rowKey="#{object}"
+					value="#{userController.object.userRoles}" reflow="true"
+					resizableColumns="true">
+
+					<p:column headerText="No.">
+						<h:outputText value="#{rowIndex + 1}" />
+					</p:column>
+
+					<p:column headerText="User Group">
+						<h:outputText value="#{object.userGroup.name}" />
+					</p:column>
+				</p:dataTable>
+			</div>
+
+			<div class="card">
+				<div class="grid">
+					<div class="col-12 md:col-6 xl:col-3">
+						<h6>User Created</h6>
+						<p:inputText styleClass="full-width read-only" id="userCreated"
+							value="#{userController.object.userCreated.name}" readonly="true" />
+					</div>
+
+					<div class="col-12 md:col-6 xl:col-3">
+						<h6>Date Created</h6>
+						<p:inputText styleClass="full-width read-only" id="dateCreated"
+							value="#{userController.object.dateCreated}" readonly="true">
+							<f:convertDateTime type="date"
+								pattern="#{userController.configuration.timestampPattern}" />
+						</p:inputText>
+					</div>
+
+					<div class="col-12 md:col-6 xl:col-3">
+						<h6>User Modified</h6>
+						<p:inputText styleClass="full-width read-only" id="userModified"
+							value="#{userController.object.userModified.name}"
+							readonly="true" />
+					</div>
+
+					<div class="col-12 md:col-6 xl:col-3">
+						<h6>Date Modified</h6>
+						<p:inputText styleClass="full-width read-only" id="dateModified"
+							value="#{userController.object.dateModified}" readonly="true">
+							<f:convertDateTime type="date"
+								pattern="#{userController.configuration.timestampPattern}" />
+						</p:inputText>
+					</div>
+				</div>
+			</div>
+		</p:outputPanel>
+	</h:form>
+
+</ui:composition>

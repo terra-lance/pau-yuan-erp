@@ -1,0 +1,49 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:form id="selectFrameForm">
+		<p:dialog value="Selection" widgetVar="selectFrameWV"
+			resizable="false" responsive="true" modal="true">
+			<p:toolbar id="toolbar">
+				<f:facet name="right">
+					<p:commandButton value="Select" icon="fa fa-fw fa-check"
+						action="#{purchaseOrderController.selectFrame()}"
+						update="@(.page)" />
+				</f:facet>
+			</p:toolbar>
+
+			<p:panel styleClass="dialog" header="Select Frame">
+				<p:dataTable styleClass="data-table" rowIndexVar="rowIndex"
+					var="object" rowKey="#{object}"
+					value="#{purchaseOrderController.frames}" paginator="true"
+					paginatorPosition="#{sessionBean.userPreference.paginatorPosition}"
+					rows="10" rowsPerPageTemplate="10,20,30,40,50"
+					selection="#{purchaseOrderController.selectedFrames}"
+					rowSelectMode="none" lazy="true">
+
+					<p:column selectionMode="multiple"
+						style="width:16px;text-align:center" />
+
+					<p:column headerText="Brand" filterBy="#{object.brand.code}"
+						filterMatchMode="contains" sortBy="#{object.brand.code}">
+						<h:outputText value="#{object.brand.code}" />
+					</p:column>
+
+					<p:column headerText="Model" filterBy="#{object.code}"
+						filterMatchMode="contains" sortBy="#{object.code}">
+						<h:outputText value="#{object.code}" />
+					</p:column>
+
+					<p:column headerText="Type" filterBy="#{object.type.description}"
+						filterMatchMode="contains" sortBy="#{object.type.description}">
+						<h:outputText value="#{object.type.description}" />
+					</p:column>
+				</p:dataTable>
+			</p:panel>
+		</p:dialog>
+	</h:form>
+
+</ui:composition>

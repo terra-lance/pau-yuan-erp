@@ -1,0 +1,360 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:form id="updateForm" class="page">
+		<p:outputPanel
+			rendered="#{salesReturnController.page == salesReturnController.naviUpdate}">
+			<p:toolbar id="toolbar">
+				<f:facet name="left">
+					<div class="title">
+						<h:outputText styleClass="module-name"
+							value="#{salesReturnController.title} - Update Record" />
+					</div>
+				</f:facet>
+
+				<f:facet name="right">
+					<p:commandButton value="Save" icon="fa fa-fw fa-save"
+						action="#{salesReturnController.saveUpdate()}" update="@(.page)" />
+					<p:commandButton value="Close" icon="fa fa-fw fa-close"
+						action="#{salesReturnController.home()}" immediate="true"
+						update="@(.page)" />
+				</f:facet>
+			</p:toolbar>
+			<p:sticky target="toolbar" />
+
+			<div class="card">
+				<div class="grid">
+					<div class="col-12 md:col-3 xl:col-3">
+						<div class="grid">
+							<div class="col-12 md:col-12 xl:col-12">
+								<h6>Return No.</h6>
+								<p:inputText styleClass="full-width read-only" id="documentNo"
+									value="#{salesReturnController.object.documentNo}"
+									readonly="true" />
+
+								<h6>Return Date</h6>
+								<p:calendar styleClass="full-width" id="documentDate"
+									value="#{salesReturnController.object.documentDate}"
+									pattern="dd/MM/yyyy" />
+							</div>
+						</div>
+					</div>
+
+					<div class="col-12 md:col-3 xl:col-3">
+						<div class="grid">
+							<div class="col-12 md:col-12 xl:col-12">
+								<h6>Customer</h6>
+								<p:inputText styleClass="full-width read-only"
+									value="#{salesReturnController.object.customer.name}"
+									readonly="true" />
+
+								<h6>NRIC</h6>
+								<p:inputText styleClass="full-width read-only" id="customerIC"
+									value="#{salesReturnController.object.customer.nric}"
+									readonly="true" />
+							</div>
+						</div>
+					</div>
+
+					<div class="col-12 md:col-3 xl:col-3">
+						<div class="grid">
+							<div class="col-12 md:col-12 xl:col-12">
+								<h6>Address</h6>
+								<p:inputText styleClass="full-width" id="address1"
+									value="#{salesReturnController.object.address1}"
+									autocomplete="off" />
+								<p:inputText styleClass="full-width" id="address2"
+									value="#{salesReturnController.object.address2}"
+									autocomplete="off" />
+								<p:inputText styleClass="full-width" id="address3"
+									value="#{salesReturnController.object.address3}"
+									autocomplete="off" />
+							</div>
+						</div>
+					</div>
+
+					<div class="col-12 md:col-3 xl:col-3">
+						<div class="grid">
+							<div class="col-12 md:col-12 xl:col-12">
+								<h6>Contact</h6>
+								<p:outputPanel styleClass="ui-inputgroup">
+									<p:outputPanel styleClass="ui-inputgroup-addon">
+										<i class="fa fa-mobile-screen" />
+									</p:outputPanel>
+									<p:inputText styleClass="full-width" id="customerMobile"
+										value="#{salesReturnController.object.mobile}"
+										autocomplete="off" />
+									<p:watermark for="customerMobile" value="Mobile" />
+								</p:outputPanel>
+
+								<p:outputPanel styleClass="ui-inputgroup">
+									<p:outputPanel styleClass="ui-inputgroup-addon">
+										<i class="fa fa-house" />
+									</p:outputPanel>
+									<p:inputText styleClass="full-width" id="customerHome"
+										value="#{salesReturnController.object.home}"
+										autocomplete="off" />
+									<p:watermark for="customerHome" value="Home" />
+								</p:outputPanel>
+
+								<p:outputPanel styleClass="ui-inputgroup">
+									<p:outputPanel styleClass="ui-inputgroup-addon">
+										<i class="fa fa-building" />
+									</p:outputPanel>
+									<p:inputText styleClass="full-width" id="customerOffice"
+										value="#{salesReturnController.object.office}"
+										autocomplete="off" />
+									<p:watermark for="customerOffice" value="Office" />
+								</p:outputPanel>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<h6>Return Invoice</h6>
+				<p:inputText styleClass="full-width read-only"
+					value="#{salesReturnController.object.taxInvoice.documentNo}"
+					readonly="true" />
+
+				<p:separator />
+
+				<h6>Return Detail</h6>
+
+				<p:dataGrid id="items"
+					value="#{salesReturnController.object.details}" var="detail"
+					lazy="false" columns="1">
+					<div class="card">
+						<div class="grid">
+							<div class="col-12 md:col-2 xl:col-2">
+								<h6>Order</h6>
+								<p:inputText styleClass="full-width read-only"
+									value="#{detail.salesOrder.documentNo}" readonly="true" />
+
+								<h6>Order Date</h6>
+								<p:inputText styleClass="full-width read-only"
+									value="#{detail.salesOrder.documentDate}">
+									<f:convertDateTime
+										pattern="#{salesReturnController.configuration.datePattern}" />
+								</p:inputText>
+							</div>
+
+							<div class="col-12 md:col-7 xl:col-7">
+								<p:outputPanel rendered="#{detail.frame}">
+									<h6>Frame</h6>
+									<div class="grid">
+										<div class="col-12 md:col-9 xl:col-9">
+											<p:inputText styleClass="full-width read-only"
+												value="#{detail.salesOrder.frameSummary}" readonly="true" />
+										</div>
+
+										<div class="col-12 md:col-3 xl:col-3">
+											<p:inputNumber styleClass="full-width"
+												value="#{detail.frameAmount}"
+												decimal="#{salesReturnController.configuration.monetaryDecimal}"
+												emptyValue="zero" autocomplete="off">
+												<p:ajax event="blur"
+													listener="#{detail.calculateSubtotal(salesReturnController.configuration)}"
+													process="@form"
+													update="subtotal taxAmount total :updateForm:grandTotal" />
+											</p:inputNumber>
+										</div>
+									</div>
+								</p:outputPanel>
+
+								<p:outputPanel rendered="#{detail.lenses.size() > 0}">
+									<h6>Lens</h6>
+									<p:dataGrid styleClass="full-width" value="#{detail.lenses}"
+										var="lens" lazy="false" columns="1">
+										<div class="grid">
+											<div class="col-12 md:col-9 xl:col-9">
+												<p:inputText styleClass="full-with read-only"
+													value="#{lens.salesLens.summary}" readonly="true" />
+											</div>
+
+											<div class="col-12 md:col-3 xl:col-3">
+												<p:inputNumber styleClass="full-width"
+													value="#{lens.amount}"
+													decimal="#{salesReturnController.configuration.monetaryDecimal}"
+													emptyValue="zero" autocomplete="off">
+													<p:ajax event="blur"
+														listener="#{detail.calculateSubtotal(salesReturnController.configuration)}"
+														process="@form"
+														update=":updateForm:items:subtotal :updateForm:items:taxAmount :updateForm:items:total :updateForm:grandTotal" />
+												</p:inputNumber>
+											</div>
+										</div>
+									</p:dataGrid>
+								</p:outputPanel>
+
+								<p:outputPanel rendered="#{detail.serviceItems.size() > 0}">
+									<h6>Service Items</h6>
+									<p:dataGrid styleClass="full-width"
+										value="#{detail.serviceItems}" var="serviceItem" lazy="false"
+										columns="1">
+										<div class="grid">
+											<div class="col-12 md:col-9 xl:col-9">
+												<p:inputText styleClass="full-with read-only"
+													value="#{serviceItem.salesServiceItem.serviceType.code}"
+													readonly="true" />
+											</div>
+
+											<div class="col-12 md:col-3 xl:col-3">
+												<p:inputNumber styleClass="full-width"
+													value="#{serviceItem.amount}"
+													decimal="#{salesReturnController.configuration.monetaryDecimal}"
+													emptyValue="zero" autocomplete="off">
+													<p:ajax event="blur"
+														listener="#{detail.calculateSubtotal(salesReturnController.configuration)}"
+														process="@form"
+														update=":updateForm:items:subtotal :updateForm:items:taxAmount :updateForm:items:total :updateForm:grandTotal" />
+												</p:inputNumber>
+											</div>
+										</div>
+									</p:dataGrid>
+								</p:outputPanel>
+							</div>
+
+							<div class="col-12 md:col-3 xl:col-3">
+								<div class="grid">
+									<div class="col-12 md:col-4 xl:col-4">
+										<h6>Sub-Total</h6>
+									</div>
+									<div class="col-12 md:col-8 xl:col-8">
+										<p:outputPanel styleClass="ui-inputgroup">
+											<p:outputPanel styleClass="ui-inputgroup-addon currency">
+												<h:outputText
+													value="#{salesReturnController.configuration.currencySymbol}" />
+											</p:outputPanel>
+
+											<p:inputNumber styleClass="full-width" id="subtotal"
+												value="#{detail.subtotal}"
+												decimal="#{salesReturnController.configuration.monetaryDecimal}"
+												emptyValue="zero" autocomplete="off">
+												<p:ajax event="blur"
+													listener="#{detail.calculate(salesReturnController.configuration)}"
+													process="@form"
+													update="taxAmount total :updateForm:grandTotal" />
+											</p:inputNumber>
+										</p:outputPanel>
+									</div>
+
+									<div class="col-12 md:col-4 xl:col-4">
+										<h6>Discount</h6>
+									</div>
+									<div class="col-12 md:col-8 xl:col-8">
+										<p:outputPanel styleClass="ui-inputgroup">
+											<p:outputPanel styleClass="ui-inputgroup-addon currency">
+												<h:outputText
+													value="#{salesReturnController.configuration.currencySymbol}" />
+											</p:outputPanel>
+
+											<p:inputNumber styleClass="full-width" id="discount"
+												value="#{detail.discount}"
+												decimal="#{salesReturnController.configuration.monetaryDecimal}"
+												emptyValue="zero" autocomplete="off">
+												<p:ajax event="blur"
+													listener="#{detail.calculate(salesReturnController.configuration)}"
+													process="@form"
+													update="taxAmount total :updateForm:grandTotal" />
+											</p:inputNumber>
+										</p:outputPanel>
+									</div>
+
+									<div class="col-12 md:col-4 xl:col-4">
+										<h6>Tax</h6>
+									</div>
+									<div class="col-12 md:col-8 xl:col-8">
+										<p:outputPanel styleClass="ui-inputgroup">
+											<p:selectOneMenu styleClass="full-width" id="tax"
+												value="#{detail.tax}" converter="taxConverter"
+												autoWidth="false">
+												<f:selectItems value="#{salesReturnController.taxes}"
+													var="tax" itemLabel="#{tax.code}" itemValue="#{tax}" />
+												<p:ajax event="change"
+													listener="#{detail.calculate(salesReturnController.configuration)}"
+													process="@form"
+													update="taxRate taxAmount total :updateForm:grandTotal" />
+											</p:selectOneMenu>
+
+											<p:inputNumber styleClass="full-width read-only" id="taxRate"
+												value="#{detail.taxRate}" readonly="true" />
+
+											<p:outputPanel styleClass="ui-inputgroup-addon">
+													%
+											</p:outputPanel>
+										</p:outputPanel>
+									</div>
+
+									<div class="col-12 md:col-4 xl:col-4">
+										<h6>Tax Amount</h6>
+									</div>
+									<div class="col-12 md:col-8 xl:col-8">
+										<p:outputPanel styleClass="ui-inputgroup">
+											<p:outputPanel styleClass="ui-inputgroup-addon currency">
+												<h:outputText
+													value="#{salesReturnController.configuration.currencySymbol}" />
+											</p:outputPanel>
+
+											<p:inputNumber styleClass="full-width read-only"
+												id="taxAmount" value="#{detail.taxAmount}"
+												decimal="#{salesReturnController.configuration.monetaryDecimal}"
+												emptyValue="zero" readonly="true" />
+										</p:outputPanel>
+									</div>
+
+									<div class="col-12 md:col-4 xl:col-4">
+										<h6>Total</h6>
+									</div>
+									<div class="col-12 md:col-8 xl:col-8">
+										<p:outputPanel styleClass="ui-inputgroup">
+											<p:outputPanel styleClass="ui-inputgroup-addon currency">
+												<h:outputText
+													value="#{salesReturnController.configuration.currencySymbol}" />
+											</p:outputPanel>
+
+											<p:inputNumber styleClass="full-width read-only" id="total"
+												value="#{detail.total}"
+												decimal="#{salesReturnController.configuration.monetaryDecimal}"
+												emptyValue="zero" readonly="true" />
+										</p:outputPanel>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</p:dataGrid>
+
+				<p:separator />
+
+				<div class="grid">
+					<div class="col-12 md:col-9 xl:col-9" />
+
+					<div class="col-12 md:col-3 xl:col-3">
+						<div class="grid">
+							<div class="col-12 md:col-4 xl:col-4">
+								<h6>Grand Total</h6>
+							</div>
+							<div class="col-12 md:col-8 xl:col-8">
+								<p:outputPanel styleClass="ui-inputgroup">
+									<p:outputPanel styleClass="ui-inputgroup-addon currency">
+										<h:outputText
+											value="#{salesReturnController.configuration.currencySymbol}" />
+									</p:outputPanel>
+
+									<p:inputNumber styleClass="full-width read-only"
+										id="grandTotal" value="#{salesReturnController.object.total}"
+										decimal="#{salesReturnController.configuration.monetaryDecimal}"
+										emptyValue="zero" readonly="true" />
+								</p:outputPanel>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</p:outputPanel>
+	</h:form>
+
+</ui:composition>

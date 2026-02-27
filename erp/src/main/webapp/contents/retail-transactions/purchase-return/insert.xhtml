@@ -1,0 +1,286 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+	<h:form id="insertForm" class="page">
+		<p:outputPanel
+			rendered="#{purchaseReturnController.page == purchaseReturnController.naviInsert}">
+			<p:toolbar id="toolbar">
+				<f:facet name="left">
+					<div class="title">
+						<h:outputText styleClass="module-name"
+							value="#{purchaseReturnController.title} - Add Record" />
+					</div>
+				</f:facet>
+
+				<f:facet name="right">
+					<p:commandButton value="Save" icon="fa fa-fw fa-save"
+						action="#{purchaseReturnController.saveInsert()}"
+						update="@(.page)" />
+					<p:commandButton value="Close" icon="fa fa-fw fa-close"
+						action="#{purchaseReturnController.home()}" immediate="true"
+						update="@(.page)" />
+				</f:facet>
+			</p:toolbar>
+			<p:sticky target="toolbar" />
+
+			<div class="card">
+				<div class="grid">
+					<div class="col-12 md:col-6 xl:col-6">
+						<h6>Document No.</h6>
+						<p:outputPanel styleClass="ui-inputgroup">
+							<p:inputText
+								styleClass="full-width #{purchaseReturnController.object.autoNumber ? 'read-only' : ''}"
+								id="documentNo"
+								value="#{purchaseReturnController.object.documentNo}"
+								readonly="#{purchaseReturnController.object.autoNumber}" />
+							<p:selectBooleanButton id="autoNumber" style="width: 80px"
+								offLabel="Manual" onLabel="Auto"
+								value="#{purchaseReturnController.object.autoNumber}">
+								<p:ajax event="change" update="documentNo"
+									listener="#{purchaseReturnController.object.toggleAutoNumber()}" />
+							</p:selectBooleanButton>
+						</p:outputPanel>
+
+						<h6>Document Date</h6>
+						<p:calendar styleClass="full-width" id="documentDate"
+							value="#{purchaseReturnController.object.documentDate}"
+							pattern="dd/MM/yyyy" />
+
+						<h6>Supplier Credit Note</h6>
+						<p:inputText styleClass="full-width" id="supplierCreditNote"
+							value="#{purchaseReturnController.object.supplierCreditNote}"
+							autocomplete="off" />
+					</div>
+
+					<div class="col-12 md:col-6 xl:col-6">
+						<h6>Company</h6>
+						<p:outputPanel styleClass="ui-inputgroup" id="company">
+							<p:inputText styleClass="full-width read-only"
+								value="#{purchaseReturnController.object.company.code}"
+								autocomplete="off" readonly="true" />
+							<p:commandButton icon="fa fa-search"
+								action="#{purchaseReturnController.lookupCompany()}"
+								process="@form"
+								disabled="#{purchaseReturnController.object.listFrames.size() != 0}" />
+						</p:outputPanel>
+
+						<h6>Total</h6>
+						<p:inputNumber styleClass="full-width read-only" id="total"
+							value="#{purchaseReturnController.object.total}"
+							decimalPlaces="#{purchaseReturnController.configuration.monetaryDecimal}"
+							readonly="true" />
+					</div>
+				</div>
+
+				<p:separator />
+
+				<p:outputPanel styleClass="ui-inputgroup">
+					<p:inputText styleClass="full-width" id="barcode"
+						value="#{purchaseReturnController.barcode}" autocomplete="off">
+						<p:ajax event="blur"
+							listener="#{purchaseReturnController.validateBarcode()}"
+							process="@form" update="company frameTable" />
+					</p:inputText>
+					<p:watermark for="barcode" value="Please scan frame barcode here" />
+					<p:commandButton icon="fa fa-qrcode" />
+				</p:outputPanel>
+
+				<br />
+
+				<div class="grid">
+					<div class="col-12 md:col-12 xl:col-12">
+						<p:toolbar id="tabControl">
+							<f:facet name="left">
+								<p:selectOneButton value="#{purchaseReturnController.tabIndex}"
+									disabled="true">
+									<f:selectItem itemValue="0" itemLabel="Frame" />
+								</p:selectOneButton>
+							</f:facet>
+
+							<f:facet name="right">
+								<p:commandButton icon="fa fa-plus"
+									value="Select from Sales Order"
+									action="#{purchaseReturnController.lookupSalesOrder()}"
+									process="@form" />
+							</f:facet>
+						</p:toolbar>
+
+						<p:dataTable id="frameTable" styleClass="data-table"
+							rowIndexVar="rowIndex" rowKey="#{frame}" var="frame"
+							value="#{purchaseReturnController.object.listFrames}"
+							reflow="true">
+
+							<p:headerRow style="display:none"
+								groupBy="#{detail.purchaseReturn.id}" />
+
+							<p:column styleClass="index-cell">
+								<p:rowToggler />
+							</p:column>
+
+							<p:column headerText="No." styleClass="index-cell">
+								<h:outputText value="#{frame.line}" />
+							</p:column>
+
+							<p:column headerText="Brand">
+								<h:outputText
+									value="#{frame.purchaseOrderFrame.frame.brand.code}" />
+							</p:column>
+
+							<p:column headerText="Model">
+								<h:outputText value="#{frame.purchaseOrderFrame.frame.code}" />
+							</p:column>
+
+							<p:column headerText="Type">
+								<h:outputText
+									value="#{frame.purchaseOrderFrame.frame.type.description}" />
+							</p:column>
+
+							<p:column headerText="Color">
+								<p:selectOneMenu styleClass="full-width"
+									value="#{frame.purchaseOrderFrame.color}" autoWidth="false">
+									<f:selectItem itemLabel="Select" itemValue="" />
+									<f:selectItems value="#{frame.purchaseOrderFrame.frame.colors}"
+										var="color" itemLabel="#{color.color}"
+										itemValue="#{color.color}" />
+								</p:selectOneMenu>
+							</p:column>
+
+							<p:column headerText="Qty.">
+								<p:inputNumber styleClass="full-width" value="#{frame.quantity}"
+									minValue="0" decimalPlaces="0" emptyValue="zero"
+									autocomplete="off">
+									<p:ajax event="blur" listener="#{frame.calculate()}"
+										process="frameTable"
+										update="taxAmount total 
+												insertForm:frameTable:#{purchaseReturnController.object.listFrames.size() - 1}:frameTotalTax
+												insertForm:frameTable:#{purchaseReturnController.object.listFrames.size() - 1}:frameTotal
+												insertForm:total" />
+								</p:inputNumber>
+							</p:column>
+
+							<p:column headerText="Unit Price">
+								<p:inputNumber styleClass="full-width"
+									value="#{frame.unitPrice}"
+									decimalPlaces="#{purchaseReturnController.configuration.monetaryDecimal}"
+									emptyValue="zero" autocomplete="off">
+									<p:ajax event="blur" listener="#{frame.calculate()}"
+										process="frameTable"
+										update="taxAmount total 
+												insertForm:frameTable:#{purchaseReturnController.object.listFrames.size() - 1}:frameTotalTax
+												insertForm:frameTable:#{purchaseReturnController.object.listFrames.size() - 1}:frameTotal 
+												insertForm:total" />
+								</p:inputNumber>
+							</p:column>
+
+							<p:column headerText="Discount">
+								<p:inputNumber styleClass="full-width" value="#{frame.discount}"
+									decimalPlaces="#{purchaseReturnController.configuration.monetaryDecimal}"
+									emptyValue="zero" autocomplete="off">
+									<p:ajax event="blur" listener="#{frame.calculate()}"
+										process="frameTable"
+										update="taxAmount total 
+												insertForm:frameTable:#{purchaseReturnController.object.listFrames.size() - 1}:frameTotalTax
+												insertForm:frameTable:#{purchaseReturnController.object.listFrames.size() - 1}:frameTotal 
+												insertForm:total" />
+								</p:inputNumber>
+							</p:column>
+
+							<p:column headerText="Tax Rate">
+								<p:inputNumber styleClass="full-width" value="#{frame.taxRate}"
+									emptyValue="zero" autocomplete="off">
+									<p:ajax event="blur" listener="#{frame.calculate()}"
+										process="frameTable"
+										update="taxAmount total 
+												insertForm:frameTable:#{purchaseReturnController.object.listFrames.size() - 1}:frameTotalTax
+												insertForm:frameTable:#{purchaseReturnController.object.listFrames.size() - 1}:frameTotal 
+												insertForm:total" />
+								</p:inputNumber>
+							</p:column>
+
+							<p:column headerText="Tax Amount" styleClass="align-right">
+								<h:outputText id="taxAmount" value="#{frame.taxAmount}">
+									<f:convertNumber
+										pattern="#{purchaseReturnController.monetaryDecimalMask}" />
+								</h:outputText>
+							</p:column>
+
+							<p:column headerText="Total" styleClass="align-right">
+								<h:outputText id="total" value="#{frame.total}">
+									<f:convertNumber
+										pattern="#{purchaseReturnController.monetaryDecimalMask}" />
+								</h:outputText>
+							</p:column>
+
+							<p:column headerText="Remark">
+								<p:inputTextarea styleClass="full-width" id="remark"
+									value="#{frame.remark}" rows="1" autocomplete="off" />
+							</p:column>
+
+							<p:rowExpansion>
+								<p:column>
+									<p:dataTable styleClass="data-table"
+										rowIndexVar="innerRowIndex" var="frameInventory"
+										value="#{frame.listFrameInventories}">
+
+										<p:column headerText="No." styleClass="index-cell">
+											<h:outputText value="#{innerRowIndex + 1}" />
+										</p:column>
+
+										<p:column headerText="Serial No./Barcode">
+											<h:outputText
+												value="#{frameInventory.frameInventory.serialNo}"
+												converter="whiteSpaceConverter" />
+										</p:column>
+
+										<p:column styleClass="single-action-cell">
+											<p:commandButton class="rounded-button" id="deleteButton"
+												icon="fa fa-trash-alt"
+												action="#{purchaseReturnController.deleteFrameInventory(frame, frameInventory)}"
+												update="insertForm:company insertForm:frameTable">
+												<p:confirm header="Confirmation"
+													message="Do you wish to delete this frame from this order return?"
+													icon="ui-icon-alert" />
+											</p:commandButton>
+											<p:tooltip styleClass="tooltip" for="deleteButton"
+												value="Delete Frame" position="top"
+												hideEvent="mouseleave click" />
+										</p:column>
+									</p:dataTable>
+								</p:column>
+							</p:rowExpansion>
+
+							<p:summaryRow>
+								<p:column colspan="10" styleClass="align-right">
+									<h:outputText value="Total:" />
+								</p:column>
+
+								<p:column styleClass="align-right">
+									<h:outputText id="frameTotalTax"
+										value="#{purchaseReturnController.object.frameTotalTax}">
+										<f:convertNumber
+											pattern="#{purchaseReturnController.monetaryDecimalMask}" />
+									</h:outputText>
+								</p:column>
+
+								<p:column styleClass="align-right">
+									<h:outputText id="frameTotal"
+										value="#{purchaseReturnController.object.frameTotal}">
+										<f:convertNumber
+											pattern="#{purchaseReturnController.monetaryDecimalMask}" />
+									</h:outputText>
+								</p:column>
+
+								<p:column />
+							</p:summaryRow>
+						</p:dataTable>
+					</div>
+				</div>
+			</div>
+		</p:outputPanel>
+	</h:form>
+
+</ui:composition>

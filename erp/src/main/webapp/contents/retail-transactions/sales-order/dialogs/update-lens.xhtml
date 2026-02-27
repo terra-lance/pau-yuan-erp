@@ -1,0 +1,136 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:form id="updateLensForm">
+		<p:dialog value="Update Lens" widgetVar="updateLensWV"
+			resizable="false" responsive="true" modal="true" closable="false">
+
+			<p:toolbar id="toolbar">
+				<f:facet name="left">
+					<h:outputText value="Update Lens" />
+				</f:facet>
+
+				<f:facet name="right">
+					<p:commandButton value="Return" icon="fa fa-fw fa-rotate-left"
+						onclick="PF('updateLensWV').hide()" update="@(.page)" />
+				</f:facet>
+			</p:toolbar>
+
+			<p:panel styleClass="dialog" id="dialogPanel">
+				<div class="grid">
+					<div class="col-12 md:col-12 xl:col-12">
+						<h6>Model</h6>
+						<p:outputPanel styleClass="ui-inputgroup">
+							<p:inputText styleClass="full-width read-only" id="model"
+								value="#{salesOrderController.lens.summary}" readonly="true" />
+							<p:commandButton icon="fa fa-search"
+								action="#{salesOrderController.lookupLens()}" process="@form"
+								update="dialogPanel" />
+						</p:outputPanel>
+					</div>
+
+					<div class="col-12 md:col-6 xl:col-3">
+						<h6>Index</h6>
+						<p:selectOneMenu styleClass="full-width" id="lensIndex"
+							value="#{salesOrderController.lens.lensIndex}" autoWidth="false">
+							<f:selectItem itemLabel="Select" itemValue="" />
+							<f:selectItems value="#{salesOrderController.lens.lens.indexes}"
+								var="lensIndex" itemLabel="#{lensIndex.indexValue.setScale(2)}"
+								itemValue="#{lensIndex.indexValue}" />
+
+							<p:ajax event="itemSelect"
+								listener="#{salesOrderController.validateLensPrice}"
+								process="@form" update="@(.page)" />
+						</p:selectOneMenu>
+					</div>
+
+					<div class="col-12 md:col-6 xl:col-3">
+						<h6>Design</h6>
+						<p:selectOneMenu styleClass="full-width" id="lensDesign"
+							value="#{salesOrderController.lens.lensDesign}" autoWidth="false">
+							<f:selectItem itemLabel="Select" itemValue="" />
+							<f:selectItems value="#{salesOrderController.lens.lens.designs}"
+								var="design" itemLabel="#{design.design}"
+								itemValue="#{design.design}" />
+
+							<p:ajax event="itemSelect"
+								listener="#{salesOrderController.validateLensPrice}"
+								process="@form" update="@(.page)" />
+						</p:selectOneMenu>
+					</div>
+
+					<div class="col-12 md:col-6 xl:col-3">
+						<h6>Coating</h6>
+						<p:selectOneMenu styleClass="full-width" id="lensCoating"
+							value="#{salesOrderController.lens.lensCoating}"
+							autoWidth="false">
+							<f:selectItem itemLabel="Select" itemValue="" />
+							<f:selectItems value="#{salesOrderController.lens.lens.coatings}"
+								var="coating" itemLabel="#{coating.coating}"
+								itemValue="#{coating.coating}" />
+
+							<p:ajax event="itemSelect"
+								listener="#{salesOrderController.validateLensPrice}"
+								process="@form" update="@(.page)" />
+						</p:selectOneMenu>
+					</div>
+
+					<div class="col-12 md:col-6 xl:col-3">
+						<h6>Corridor</h6>
+						<p:selectOneMenu styleClass="full-width" id="lensCorridor"
+							value="#{salesOrderController.lens.lensCorridor}"
+							autoWidth="false">
+							<f:selectItem itemLabel="Select" itemValue="" />
+							<f:selectItems
+								value="#{salesOrderController.lens.lens.corridors}"
+								var="corridor" itemLabel="#{corridor.corridor}"
+								itemValue="#{corridor.corridor}" />
+
+							<p:ajax event="itemSelect"
+								listener="#{salesOrderController.validateLensPrice}"
+								process="@form" update="@(.page)" />
+						</p:selectOneMenu>
+					</div>
+
+					<div class="col-12 md:col-3 xl:col-3">
+						<h6>Side</h6>
+						<p:selectOneRadio id="side"
+							value="#{salesOrderController.lens.side}" layout="pageDirection"
+							converter="sideConverter">
+							<f:selectItems value="#{salesOrderController.sides}" var="side"
+								itemLabel="#{side.description}" itemValue="#{side}" />
+						</p:selectOneRadio>
+					</div>
+
+					<div class="col-12 md:col-3 xl:col-3">
+						<h6>Distance</h6>
+						<p:selectOneRadio id="distance"
+							value="#{salesOrderController.lens.distance}"
+							layout="pageDirection" converter="distanceConverter">
+							<f:selectItems value="#{salesOrderController.distances}"
+								var="distance" itemLabel="#{distance.description}"
+								itemValue="#{distance}" />
+						</p:selectOneRadio>
+					</div>
+
+					<div class="col-12 md:col-6 xl:col-6">
+						<h6>Distance Remark</h6>
+						<p:inputTextarea styleClass="full-width" id="distanceRemark"
+							value="#{salesOrderController.lens.distanceRemark}"
+							autocomplete="off" />
+					</div>
+
+					<div class="col-12 md:col-12 xl:col-12">
+						<h6>Remark</h6>
+						<p:inputText styleClass="full-width" id="remark"
+							value="#{salesOrderController.lens.remark}" autocomplete="off" />
+					</div>
+				</div>
+			</p:panel>
+		</p:dialog>
+	</h:form>
+
+</ui:composition>

@@ -1,0 +1,383 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+	<h:form id="detailForm" class="page">
+		<p:outputPanel
+			rendered="#{purchaseOrderController.page == purchaseOrderController.naviDetail}">
+			<p:toolbar id="toolbar">
+				<f:facet name="left">
+					<div class="title">
+						<h:outputText styleClass="module-name"
+							value="#{purchaseOrderController.title} - Record Detail" />
+					</div>
+				</f:facet>
+
+				<f:facet name="right">
+					<p:commandButton value="Update" icon="fa fa-fw fa-pencil"
+						action="#{purchaseOrderController.update(purchaseOrderController.object.id)}"
+						update="@(.page)" />
+					<p:commandButton value="Delete" icon="fa fa-fw fa-trash-alt"
+						action="#{purchaseOrderController.saveDelete()}" update="@(.page)">
+						<p:confirm header="Confirmation"
+							message="Do you wish to delete the selected record?"
+							icon="ui-icon-alert" />
+					</p:commandButton>
+					<p:commandButton value="Close" icon="fa fa-fw fa-close"
+						action="#{purchaseOrderController.home()}" immediate="true"
+						update="@(.page)" />
+				</f:facet>
+			</p:toolbar>
+			<p:sticky target="toolbar" />
+
+			<div class="card">
+				<div class="grid">
+					<div class="col-12 md:col-6 xl:col-6">
+						<h6>Document No.</h6>
+						<p:inputText styleClass="full-width read-only" id="documentNo"
+							value="#{purchaseOrderController.object.documentNo}"
+							readonly="true" />
+
+						<h6>Document Date</h6>
+						<p:inputText styleClass="full-width read-only" id="documentDate"
+							value="#{purchaseOrderController.object.documentDate}"
+							readonly="true">
+							<f:convertDateTime
+								pattern="#{purchaseOrderController.configuration.datePattern}" />
+						</p:inputText>
+											
+						<h6>Discount Remark</h6>
+						<p:inputText styleClass="full-width read-only" id="discountRemark"
+							value="#{purchaseOrderController.object.discountRemark}"
+							readonly="true" />
+					</div>
+
+					<div class="col-12 md:col-6 xl:col-6">
+						<h6>Company</h6>
+						<p:inputText styleClass="full-width read-only" id="company"
+							value="#{purchaseOrderController.object.company.code}"
+							readonly="true" />
+
+						<h6>Supplier Invoice</h6>
+						<p:inputText styleClass="full-width read-only"
+							id="supplierInvoice"
+							value="#{purchaseOrderController.object.supplierInvoice}"
+							readonly="true" />
+
+						<h6>Total</h6>
+						<p:inputNumber styleClass="full-width read-only" id="total"
+							value="#{purchaseOrderController.object.total}"
+							decimalPlaces="#{purchaseOrderController.configuration.monetaryDecimal}"
+							readonly="true" />
+					</div>
+				</div>
+
+				<p:separator />
+
+				<div class="grid">
+					<div class="col-12 md:col-12 xl:col-12">
+						<p:toolbar id="tabControl">
+							<f:facet name="left">
+								<p:selectOneButton value="#{purchaseOrderController.tabIndex}">
+									<c:if test="#{purchaseOrderController.object.company.frame}">
+										<f:selectItem itemValue="0" itemLabel="Frame" />
+									</c:if>
+
+									<c:if test="#{purchaseOrderController.object.company.lens}">
+										<f:selectItem itemValue="1" itemLabel="Lens" />
+									</c:if>
+
+									<p:ajax event="change" process="@form" update="tabControl tab" />
+								</p:selectOneButton>
+							</f:facet>
+						</p:toolbar>
+
+						<p:outputPanel id="tab">
+							<p:outputPanel id="framePanel"
+								styleClass="#{purchaseOrderController.tabIndex == purchaseOrderController.tabFrame ? '' : 'invisible'}">
+								<br />
+
+								<p:dataTable id="frameTable" styleClass="data-table"
+									rowIndexVar="rowIndex" rowKey="#{frame}" var="frame"
+									value="#{purchaseOrderController.object.listFrames}"
+									reflow="true">
+
+									<p:headerRow style="display:none"
+										groupBy="#{detail.purchaseOrder.id}" />
+
+									<p:column styleClass="index-cell">
+										<p:rowToggler />
+									</p:column>
+
+									<p:column headerText="No." styleClass="index-cell">
+										<h:outputText value="#{frame.line}" />
+									</p:column>
+
+									<p:column headerText="Brand">
+										<h:outputText value="#{frame.frame.brand.code}" />
+									</p:column>
+
+									<p:column headerText="Model">
+										<h:outputText value="#{frame.frame.code}" />
+									</p:column>
+
+									<p:column headerText="Type">
+										<h:outputText value="#{frame.frame.type.description}" />
+									</p:column>
+
+									<p:column headerText="Color">
+										<h:outputText value="#{frame.color}" />
+									</p:column>
+
+									<p:column headerText="Qty." styleClass="align-right">
+										<h:outputText value="#{frame.quantity}" />
+									</p:column>
+
+									<p:column headerText="Unit Price" styleClass="align-right">
+										<h:outputText value="#{frame.unitPrice}">
+											<f:convertNumber
+												pattern="#{purchaseOrderController.monetaryDecimalMask}" />
+										</h:outputText>
+									</p:column>
+									
+									<p:column headerText="Discount" styleClass="align-right">
+										<h:outputText value="#{frame.discount}">
+											<f:convertNumber
+												pattern="#{purchaseOrderController.monetaryDecimalMask}" />
+										</h:outputText>
+									</p:column>
+
+									<p:column headerText="Tax Rate" styleClass="align-right">
+										<h:outputText value="#{frame.taxRate}">
+											<f:convertNumber
+												pattern="#{purchaseOrderController.monetaryDecimalMask}" />
+										</h:outputText>
+									</p:column>
+
+									<p:column headerText="Tax Amount" styleClass="align-right">
+										<h:outputText value="#{frame.taxAmount}">
+											<f:convertNumber
+												pattern="#{purchaseOrderController.monetaryDecimalMask}" />
+										</h:outputText>
+									</p:column>
+
+									<p:column headerText="Total" styleClass="align-right">
+										<h:outputText value="#{frame.total}">
+											<f:convertNumber
+												pattern="#{purchaseOrderController.monetaryDecimalMask}" />
+										</h:outputText>
+									</p:column>
+
+									<p:column headerText="Remark">
+										<h:outputText value="#{frame.remark}" />
+									</p:column>
+
+									<p:rowExpansion>
+										<p:column>
+											<p:dataTable styleClass="data-table"
+												rowIndexVar="innerRowIndex" var="inventory"
+												value="#{frame.listInventories}">
+
+												<p:column headerText="No." styleClass="index-cell">
+													<h:outputText value="#{innerRowIndex + 1}" />
+												</p:column>
+
+												<p:column headerText="Serial No./Barcode">
+													<h:outputText value="#{inventory.serialNo}"
+														converter="whiteSpaceConverter" />
+												</p:column>
+
+												<p:column headerText="Received"
+													styleClass="double-action-cell">
+													<p:selectBooleanCheckbox value="#{inventory.received}"
+														disabled="true" />
+												</p:column>
+
+												<p:column headerText="Received By"
+													styleClass="triple-action-cell">
+													<h:outputText id="receivedBy"
+														value="#{inventory.receivedBy.name}" />
+												</p:column>
+
+												<p:column headerText="Received On"
+													styleClass="triple-action-cell">
+													<h:outputText id="receivedDate"
+														value="#{inventory.receivedDate}">
+														<f:convertDateTime
+															pattern="#{purchaseOrderController.configuration.timestampPattern}" />
+													</h:outputText>
+												</p:column>
+
+												<p:column styleClass="single-action-cell">
+													<p:commandButton class="rounded-button" id="printButton"
+														icon="fa fa-print"
+														action="#{purchaseOrderController.printFrameLabelByLine(inventory.id)}"
+														style="margin-right: .3rem" ajax="false" />
+													<p:tooltip styleClass="tooltip" for="printButton"
+														value="Print Frame Label" position="top"
+														hideEvent="mouseleave click" />
+												</p:column>
+											</p:dataTable>
+										</p:column>
+									</p:rowExpansion>
+
+									<p:summaryRow>
+										<p:column colspan="10" styleClass="align-right">
+											<h:outputText value="Total:" />
+										</p:column>
+
+										<p:column styleClass="align-right">
+											<h:outputText
+												value="#{purchaseOrderController.object.frameTotalTax}">
+												<f:convertNumber
+													pattern="#{purchaseOrderController.monetaryDecimalMask}" />
+											</h:outputText>
+										</p:column>
+
+										<p:column styleClass="align-right">
+											<h:outputText
+												value="#{purchaseOrderController.object.frameTotal}">
+												<f:convertNumber
+													pattern="#{purchaseOrderController.monetaryDecimalMask}" />
+											</h:outputText>
+										</p:column>
+
+										<p:column />
+									</p:summaryRow>
+								</p:dataTable>
+							</p:outputPanel>
+
+							<p:outputPanel id="lensPanel"
+								styleClass="#{purchaseOrderController.tabIndex == purchaseOrderController.tabLens ? '' : 'invisible'}">
+
+								<p:dataTable id="lensTable" styleClass="data-table"
+									rowIndexVar="rowIndex" rowKey="#{lens}" var="lens"
+									value="#{purchaseOrderController.object.listLenses}"
+									reflow="true">
+
+									<p:headerRow style="display:none"
+										groupBy="#{detail.purchaseOrder.id}" />
+
+									<p:column headerText="No." styleClass="index-cell">
+										<h:outputText value="#{lens.line}" />
+									</p:column>
+
+									<p:column headerText="Sales Order">
+										<h:outputText value="#{lens.salesLens.salesOrder.documentNo}" />
+									</p:column>
+
+									<p:column headerText="Side">
+										<h:outputText value="#{lens.salesLens.side.description}" />
+									</p:column>
+
+									<p:column headerText="Lens">
+										<h:outputText value="#{lens.salesLens.summary}" />
+									</p:column>
+
+									<p:column headerText="Sub-Total">
+										<h:outputText value="#{lens.subtotal}">
+											<f:convertNumber
+												pattern="#{purchaseOrderController.monetaryDecimalMask}" />
+										</h:outputText>
+									</p:column>
+									
+									<p:column headerText="Discount">
+										<h:outputText value="#{lens.discount}">
+											<f:convertNumber
+												pattern="#{purchaseOrderController.monetaryDecimalMask}" />
+										</h:outputText>
+									</p:column>
+
+									<p:column headerText="Tax Rate">
+										<h:outputText value="#{lens.taxRate}">
+											<f:convertNumber
+												pattern="#{purchaseOrderController.monetaryDecimalMask}" />
+										</h:outputText>
+									</p:column>
+
+									<p:column headerText="Tax Amount" styleClass="align-right">
+										<h:outputText value="#{lens.taxAmount}">
+											<f:convertNumber
+												pattern="#{purchaseOrderController.monetaryDecimalMask}" />
+										</h:outputText>
+									</p:column>
+
+									<p:column headerText="Total" styleClass="align-right">
+										<h:outputText value="#{lens.total}">
+											<f:convertNumber
+												pattern="#{purchaseOrderController.monetaryDecimalMask}" />
+										</h:outputText>
+									</p:column>
+
+									<p:summaryRow>
+										<p:column colspan="7" styleClass="align-right">
+											<h:outputText value="Total:" />
+										</p:column>
+
+										<p:column styleClass="align-right">
+											<h:outputText
+												value="#{purchaseOrderController.object.lensTotalTax}">
+												<f:convertNumber
+													pattern="#{purchaseOrderController.monetaryDecimalMask}" />
+											</h:outputText>
+										</p:column>
+
+										<p:column styleClass="align-right">
+											<h:outputText
+												value="#{purchaseOrderController.object.lensTotal}">
+												<f:convertNumber
+													pattern="#{purchaseOrderController.monetaryDecimalMask}" />
+											</h:outputText>
+										</p:column>
+									</p:summaryRow>
+								</p:dataTable>
+							</p:outputPanel>
+						</p:outputPanel>
+					</div>
+				</div>
+
+				<div class="card">
+					<div class="grid">
+						<div class="col-12 md:col-6 xl:col-3">
+							<h6>User Created</h6>
+							<p:inputText styleClass="full-width read-only" id="userCreated"
+								value="#{purchaseOrderController.object.userCreated.name}"
+								readonly="true" />
+						</div>
+
+						<div class="col-12 md:col-6 xl:col-3">
+							<h6>Date Created</h6>
+							<p:inputText styleClass="full-width read-only" id="dateCreated"
+								value="#{purchaseOrderController.object.dateCreated}"
+								readonly="true">
+								<f:convertDateTime type="date"
+									pattern="#{purchaseOrderController.configuration.timestampPattern}" />
+							</p:inputText>
+						</div>
+
+						<div class="col-12 md:col-6 xl:col-3">
+							<h6>User Modified</h6>
+							<p:inputText styleClass="full-width read-only" id="userModified"
+								value="#{purchaseOrderController.object.userModified.name}"
+								readonly="true" />
+						</div>
+
+						<div class="col-12 md:col-6 xl:col-3">
+							<h6>Date Modified</h6>
+							<p:inputText styleClass="full-width read-only" id="dateModified"
+								value="#{purchaseOrderController.object.dateModified}"
+								readonly="true">
+								<f:convertDateTime type="date"
+									pattern="#{purchaseOrderController.configuration.timestampPattern}" />
+							</p:inputText>
+						</div>
+					</div>
+				</div>
+			</div>
+		</p:outputPanel>
+	</h:form>
+
+</ui:composition>

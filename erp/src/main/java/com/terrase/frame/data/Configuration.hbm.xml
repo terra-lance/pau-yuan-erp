@@ -1,0 +1,161 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.terrase.frame.data.Configuration" schema="dbo"
+		table="configurations" where="deleted != 1">
+		<id name="id" type="java.lang.Long">
+			<column name="id" />
+			<generator class="identity" />
+		</id>
+		<version name="version" type="int">
+			<column name="version" />
+		</version>
+
+		<property name="currencySymbol" type="string">
+			<column name="currency_symbol" length="5" />
+		</property>
+
+		<property name="quantityDecimal" type="int">
+			<column name="quantity_decimal" />
+		</property>
+		<property name="monetaryDecimal" type="int">
+			<column name="monetary_decimal" />
+		</property>
+
+		<property name="datePattern" type="string">
+			<column name="date_pattern" length="50" />
+		</property>
+		<property name="timePattern" type="string">
+			<column name="time_pattern" length="50" />
+		</property>
+		<property name="timestampPattern" type="string">
+			<column name="timestamp_pattern" length="50" />
+		</property>
+
+		<property name="character0" type="string">
+			<column name="character0" length="1" />
+		</property>
+		<property name="character1" type="string">
+			<column name="character1" length="1" />
+		</property>
+		<property name="character2" type="string">
+			<column name="character2" length="1" />
+		</property>
+		<property name="character3" type="string">
+			<column name="character3" length="1" />
+		</property>
+		<property name="character4" type="string">
+			<column name="character4" length="1" />
+		</property>
+		<property name="character5" type="string">
+			<column name="character5" length="1" />
+		</property>
+		<property name="character6" type="string">
+			<column name="character6" length="1" />
+		</property>
+		<property name="character7" type="string">
+			<column name="character7" length="1" />
+		</property>
+		<property name="character8" type="string">
+			<column name="character8" length="1" />
+		</property>
+		<property name="character9" type="string">
+			<column name="character9" length="1" />
+		</property>
+
+		<property name="accountingUrl" type="string">
+			<column name="accounting_url" length="500" />
+		</property>
+		<property name="accountingServer" type="string">
+			<column name="accounting_server" length="500" />
+		</property>
+		<property name="accountingDatabase" type="string">
+			<column name="accounting_database" length="500" />
+		</property>
+		<property name="accountingUsername" type="string">
+			<column name="accounting_username" length="50" />
+		</property>
+		<property name="accountingPassword" type="string">
+			<column name="accounting_password" length="50" />
+		</property>
+
+		<property name="accountingDebtorControlAccount" type="string">
+			<column name="accounting_debtor_control_account" length="500" />
+		</property>
+		<property name="accountingCreditorControlAccount"
+			type="string">
+			<column name="accounting_creditor_control_account"
+				length="500" />
+		</property>
+
+		<property name="accountingSalesAccount" type="string">
+			<column name="accounting_sales_account" length="500" />
+		</property>
+		<property name="accountingPurchaseAccount" type="string">
+			<column name="accounting_purchase_account" length="500" />
+		</property>
+		<property name="accountingPurchaseReturnAccount"
+			type="string">
+			<column name="accounting_purchase_return_account" length="500" />
+		</property>
+		<property name="accountingTaxCode" type="string">
+			<column name="accounting_tax_code" length="500" />
+		</property>
+		<property name="accountingTaxRate" type="big_decimal">
+			<column name="accounting_tax_rate" precision="18" scale="4" />
+		</property>
+
+		<property name="operationDisclaimer" type="string">
+			<column name="operation_disclaimer" length="4000" />
+		</property>
+		<property name="depositDisclaimer" type="string">
+			<column name="deposit_disclaimer" length="4000" />
+		</property>
+		<property name="depositSlipFooterDisclaimer" type="string">
+			<column name="deposit_slip_footer_disclaimer" length="4000" />
+		</property>
+
+		<property name="cashRegisterPrinterUrl" type="string">
+			<column name="cash_register_printer_url" length="4000" />
+		</property>
+		<property name="cashRegisterPrinterName" type="string">
+			<column name="cash_register_printer_name" length="4000" />
+		</property>
+
+		<property name="cachePath" type="string">
+			<column name="cache_path" length="4000" />
+		</property>
+
+		<property name="dateCreated" type="timestamp" insert="false">
+			<column name="date_created" default="current_timestamp" />
+		</property>
+		<many-to-one name="userCreated"
+			class="com.terrase.frame.data.User" lazy="false" fetch="select"
+			not-found="ignore">
+			<column name="user_created" not-null="true" />
+		</many-to-one>
+
+		<property name="dateModified" type="timestamp">
+			<column name="date_modified" />
+		</property>
+		<many-to-one name="userModified"
+			class="com.terrase.frame.data.User" lazy="false" fetch="select"
+			not-found="ignore">
+			<column name="user_modified" not-null="false" />
+		</many-to-one>
+
+		<property name="deleted" type="boolean">
+			<column name="deleted" />
+		</property>
+		<property name="dateDeleted" type="timestamp">
+			<column name="date_deleted" />
+		</property>
+		<many-to-one name="userDeleted"
+			class="com.terrase.frame.data.User" lazy="false" fetch="select"
+			not-found="ignore">
+			<column name="user_deleted" not-null="false" />
+		</many-to-one>
+	</class>
+</hibernate-mapping>

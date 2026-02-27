@@ -1,0 +1,215 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:form id="updateForm" class="page">
+		<p:outputPanel
+			rendered="#{configurationController.page == configurationController.naviUpdate}">
+			<p:toolbar id="toolbar">
+				<f:facet name="left">
+					<div class="title">
+						<h:outputText styleClass="module-name"
+							value="#{configurationController.title} - Update Record" />
+					</div>
+				</f:facet>
+
+				<f:facet name="right">
+					<p:commandButton value="Save" icon="fa fa-fw fa-save"
+						action="#{configurationController.saveUpdate()}" update="@(.page)" />
+					<p:commandButton value="Close" icon="fa fa-fw fa-close"
+						action="#{configurationController.home()}" update="@(.page)" />
+				</f:facet>
+			</p:toolbar>
+			<p:sticky target="toolbar" />
+			<br />
+
+			<div class="card">
+				<p:tabView>
+					<p:tab title="Encoding Setting">
+						<div class="grid">
+							<div class="col-12 md:col-12 xl:col-12">
+								<h6>Character 1</h6>
+								<p:inputText styleClass="full-width" id="character1"
+									value="#{configurationController.object.character1}"
+									maxlength="1" autocomplete="off" />
+
+								<h6>Character 2</h6>
+								<p:inputText styleClass="full-width" id="character2"
+									value="#{configurationController.object.character2}"
+									maxlength="1" autocomplete="off" />
+
+								<h6>Character 3</h6>
+								<p:inputText styleClass="full-width" id="character3"
+									value="#{configurationController.object.character3}"
+									maxlength="1" autocomplete="off" />
+
+								<h6>Character 4</h6>
+								<p:inputText styleClass="full-width" id="character4"
+									value="#{configurationController.object.character4}"
+									maxlength="1" autocomplete="off" />
+
+								<h6>Character 5</h6>
+								<p:inputText styleClass="full-width" id="character5"
+									value="#{configurationController.object.character5}"
+									maxlength="1" autocomplete="off" />
+
+								<h6>Character 6</h6>
+								<p:inputText styleClass="full-width" id="character6"
+									value="#{configurationController.object.character6}"
+									maxlength="1" autocomplete="off" />
+
+								<h6>Character 7</h6>
+								<p:inputText styleClass="full-width" id="character7"
+									value="#{configurationController.object.character7}"
+									maxlength="1" autocomplete="off" />
+
+								<h6>Character 8</h6>
+								<p:inputText styleClass="full-width" id="character8"
+									value="#{configurationController.object.character8}"
+									maxlength="1" autocomplete="off" />
+
+								<h6>Character 9</h6>
+								<p:inputText styleClass="full-width" id="character9"
+									value="#{configurationController.object.character9}"
+									maxlength="1" autocomplete="off" />
+
+								<h6>Character 0</h6>
+								<p:inputText styleClass="full-width" id="character0"
+									value="#{configurationController.object.character0}"
+									maxlength="1" autocomplete="off" />
+							</div>
+						</div>
+					</p:tab>
+
+					<p:tab title="Format Setting">
+						<div class="grid">
+							<div class="col-12 md:col-12 xl:col-12">
+								<h6>Currency Symbol</h6>
+								<p:inputText styleClass="full-width" id="currencySymbol"
+									value="#{configurationController.object.currencySymbol}"
+									autocomplete="off" />
+
+								<h6>Monetary Decimal</h6>
+								<p:inputNumber styleClass="full-width" id="monetaryDecimal"
+									value="#{configurationController.object.monetaryDecimal}"
+									thousandSeparator="" decimalPlaces="0" minValue="0"
+									maxValue="4" emptyValue="zero" autocomplete="off" />
+
+								<h6>Date Format</h6>
+								<p:inputText styleClass="full-width" id="datePattern"
+									value="#{configurationController.object.datePattern}"
+									autocomplete="off" />
+
+								<h6>Time Format</h6>
+								<p:inputText styleClass="full-width" id="timePattern"
+									value="#{configurationController.object.timePattern}"
+									autocomplete="off" />
+
+								<h6>Timestamp Format</h6>
+								<p:inputText styleClass="full-width" id="timestampPattern"
+									value="#{configurationController.object.timestampPattern}"
+									autocomplete="off" />
+							</div>
+						</div>
+					</p:tab>
+
+					<p:tab title="Accounting Setting">
+						<div class="grid">
+							<div class="col-12 md:col-12 xl:col-12">
+								<h6>Accounting URL</h6>
+								<p:inputText styleClass="full-width" id="accountingUrl"
+									value="#{configurationController.object.accountingUrl}"
+									autocomplete="off" />
+
+								<h6>Accounting Server</h6>
+								<p:inputText styleClass="full-width" id="accountingServer"
+									value="#{configurationController.object.accountingServer}"
+									autocomplete="off" />
+
+								<h6>Accounting Database</h6>
+								<p:inputText styleClass="full-width" id="accountingDatabase"
+									value="#{configurationController.object.accountingDatabase}"
+									autocomplete="off" />
+
+								<h6>Accounting Username</h6>
+								<p:inputText styleClass="full-width" id="accountingUsername"
+									value="#{configurationController.object.accountingUsername}"
+									autocomplete="off" />
+
+								<h6>Accounting Password</h6>
+								<p:password styleClass="full-width" id="accountingPassword"
+									value="#{configurationController.object.accountingPassword}"
+									redisplay="true" />
+
+								<h6>Accounting Debtor Control Account</h6>
+								<p:inputText styleClass="full-width"
+									id="accountingDebtorControlAccount"
+									value="#{configurationController.object.accountingDebtorControlAccount}"
+									autocomplete="off" />
+
+								<h6>Accounting Creditor Control Account</h6>
+								<p:inputText styleClass="full-width"
+									id="accountingCreditorControlAccount"
+									value="#{configurationController.object.accountingCreditorControlAccount}"
+									autocomplete="off" />
+
+								<h6>Accounting Sales Account</h6>
+								<p:inputText styleClass="full-width" id="accountingSalesAccount"
+									value="#{configurationController.object.accountingSalesAccount}"
+									autocomplete="off" />
+
+								<h6>Accounting Purchases Account</h6>
+								<p:inputText styleClass="full-width"
+									id="accountingPurchaseAccount"
+									value="#{configurationController.object.accountingPurchaseAccount}"
+									autocomplete="off" />
+							</div>
+						</div>
+					</p:tab>
+					
+					<p:tab title="Cash Register Setting">
+						<div class="grid">
+							<div class="col-12 md:col-12 xl:col-12">
+								<h6>Cash Register Printer URL</h6>
+								<p:inputText styleClass="full-width" id="cashRegisterPrinterUrl"
+									value="#{configurationController.object.cashRegisterPrinterUrl}"
+									autocomplete="off" />
+
+								<h6>Cash Register Printer Name</h6>
+								<p:inputText styleClass="full-width" id="cashRegisterPrinterName"
+									value="#{configurationController.object.cashRegisterPrinterName}"
+									autocomplete="off" />
+							</div>
+						</div>
+					</p:tab>
+
+					<p:tab title="Disclaimer Setting">
+						<div class="grid">
+							<div class="col-12 md:col-12 xl:col-12">
+								<h6>Operation Disclaimer</h6>
+								<p:inputTextarea styleClass="full-width" id="operationDisclaimer"
+									value="#{configurationController.object.operationDisclaimer}"
+									autocomplete="off" />
+								
+								<h6>Deposit Disclaimer</h6>
+								<p:inputTextarea styleClass="full-width" id="depositDisclaimer"
+									value="#{configurationController.object.depositDisclaimer}"
+									autocomplete="off" />
+
+								<h6>Deposit Slip Footer Disclaimer</h6>
+								<p:inputTextarea styleClass="full-width"
+									id="depositSlipFooterDisclaimer"
+									value="#{configurationController.object.depositSlipFooterDisclaimer}"
+									autocomplete="off" />
+
+							</div>
+						</div>
+					</p:tab>
+				</p:tabView>
+			</div>
+		</p:outputPanel>
+	</h:form>
+
+</ui:composition>

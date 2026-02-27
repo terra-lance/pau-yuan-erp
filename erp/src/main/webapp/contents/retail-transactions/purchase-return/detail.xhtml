@@ -1,0 +1,251 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+	<h:form id="detailForm" class="page">
+		<p:outputPanel
+			rendered="#{purchaseReturnController.page == purchaseReturnController.naviDetail}">
+			<p:toolbar id="toolbar">
+				<f:facet name="left">
+					<div class="title">
+						<h:outputText styleClass="module-name"
+							value="#{purchaseReturnController.title} - Record Detail" />
+					</div>
+				</f:facet>
+
+				<f:facet name="right">
+					<p:commandButton value="Update" icon="fa fa-fw fa-pencil"
+						action="#{purchaseReturnController.update(purchaseReturnController.object.id)}"
+						update="@(.page)" />
+					<p:commandButton value="Delete" icon="fa fa-fw fa-trash-alt"
+						action="#{purchaseReturnController.saveDelete()}"
+						update="@(.page)">
+						<p:confirm header="Confirmation"
+							message="Do you wish to delete the selected record?"
+							icon="ui-icon-alert" />
+					</p:commandButton>
+					<p:commandButton value="Close" icon="fa fa-fw fa-close"
+						action="#{purchaseReturnController.home()}" immediate="true"
+						update="@(.page)" />
+				</f:facet>
+			</p:toolbar>
+			<p:sticky target="toolbar" />
+
+			<div class="card">
+				<div class="grid">
+					<div class="col-12 md:col-6 xl:col-6">
+						<h6>Document No.</h6>
+						<p:inputText styleClass="full-width read-only" id="documentNo"
+							value="#{purchaseReturnController.object.documentNo}"
+							readonly="true" />
+
+						<h6>Document Date</h6>
+						<p:inputText styleClass="full-width read-only" id="documentDate"
+							value="#{purchaseReturnController.object.documentDate}"
+							readonly="true">
+							<f:convertDateTime
+								pattern="#{purchaseReturnController.configuration.datePattern}" />
+						</p:inputText>
+
+						<h6>Supplier Credit Note</h6>
+						<p:inputText styleClass="full-width read-only"
+							id="supplierCreditNote"
+							value="#{purchaseReturnController.object.supplierCreditNote}"
+							readonly="true" />
+					</div>
+
+					<div class="col-12 md:col-6 xl:col-6">
+						<h6>Company</h6>
+						<p:inputText styleClass="full-width read-only"
+							value="#{purchaseReturnController.object.company.code}"
+							autocomplete="off" readonly="true" />
+
+						<h6>Total</h6>
+						<p:inputNumber styleClass="full-width read-only" id="total"
+							value="#{purchaseReturnController.object.total}"
+							decimalPlaces="#{purchaseReturnController.configuration.monetaryDecimal}"
+							readonly="true" />
+					</div>
+				</div>
+
+				<p:separator />
+
+				<div class="grid">
+					<div class="col-12 md:col-12 xl:col-12">
+						<p:toolbar id="tabControl">
+							<f:facet name="left">
+								<p:selectOneButton value="#{purchaseReturnController.tabIndex}"
+									disabled="true">
+									<f:selectItem itemValue="0" itemLabel="Frame" />
+								</p:selectOneButton>
+							</f:facet>
+						</p:toolbar>
+
+						<p:dataTable id="frameTable" styleClass="data-table"
+							rowIndexVar="rowIndex" rowKey="#{frame}" var="frame"
+							value="#{purchaseReturnController.object.listFrames}"
+							reflow="true">
+
+							<p:headerRow style="display:none"
+								groupBy="#{detail.purchaseReturn.id}" />
+
+							<p:column styleClass="index-cell">
+								<p:rowToggler />
+							</p:column>
+
+							<p:column headerText="No." styleClass="index-cell">
+								<h:outputText value="#{frame.line}" />
+							</p:column>
+
+							<p:column headerText="Brand">
+								<h:outputText
+									value="#{frame.purchaseOrderFrame.frame.brand.code}" />
+							</p:column>
+
+							<p:column headerText="Model">
+								<h:outputText value="#{frame.purchaseOrderFrame.frame.code}" />
+							</p:column>
+
+							<p:column headerText="Type">
+								<h:outputText
+									value="#{frame.purchaseOrderFrame.frame.type.description}" />
+							</p:column>
+
+							<p:column headerText="Color">
+								<h:outputText value="#{frame.purchaseOrderFrame.color}" />
+							</p:column>
+
+							<p:column headerText="Qty." styleClass="align-left">
+								<h:outputText id="quantity" value="#{frame.quantity}" />
+							</p:column>
+
+							<p:column headerText="Unit Price" styleClass="align-left">
+								<h:outputText id="unitPrice" value="#{frame.unitPrice}">
+									<f:convertNumber
+										pattern="#{purchaseReturnController.monetaryDecimalMask}" />
+								</h:outputText>
+							</p:column>
+							
+							<p:column headerText="Discount" styleClass="align-left">
+								<h:outputText id="discount" value="#{frame.discount}">
+									<f:convertNumber
+										pattern="#{purchaseReturnController.monetaryDecimalMask}" />
+								</h:outputText>
+							</p:column>
+
+							<p:column headerText="Tax Rate">
+								<h:outputText id="taxRate" value="#{frame.taxRate}">
+									<f:convertNumber pattern="#0.0" />
+								</h:outputText>
+							</p:column>
+
+							<p:column headerText="Tax Amount" styleClass="align-right">
+								<h:outputText id="taxAmount" value="#{frame.taxAmount}">
+									<f:convertNumber
+										pattern="#{purchaseReturnController.monetaryDecimalMask}" />
+								</h:outputText>
+							</p:column>
+
+							<p:column headerText="Total" styleClass="align-right">
+								<h:outputText id="total" value="#{frame.total}">
+									<f:convertNumber
+										pattern="#{purchaseReturnController.monetaryDecimalMask}" />
+								</h:outputText>
+							</p:column>
+
+							<p:column headerText="Remark">
+								<h:outputText styleClass="multi-line" id="remark"
+									value="#{frame.remark}" />
+							</p:column>
+
+							<p:rowExpansion>
+								<p:column>
+									<p:dataTable styleClass="data-table"
+										rowIndexVar="innerRowIndex" var="frameInventory"
+										value="#{frame.listFrameInventories}">
+
+										<p:column headerText="No." styleClass="index-cell">
+											<h:outputText value="#{innerRowIndex + 1}" />
+										</p:column>
+
+										<p:column headerText="Serial No./Barcode">
+											<h:outputText
+												value="#{frameInventory.frameInventory.serialNo}"
+												converter="whiteSpaceConverter" />
+										</p:column>
+									</p:dataTable>
+								</p:column>
+							</p:rowExpansion>
+
+							<p:summaryRow>
+								<p:column colspan="10" styleClass="align-right">
+									<h:outputText value="Total:" />
+								</p:column>
+
+								<p:column styleClass="align-right">
+									<h:outputText id="frameTotalTax"
+										value="#{purchaseReturnController.object.frameTotalTax}">
+										<f:convertNumber
+											pattern="#{purchaseReturnController.monetaryDecimalMask}" />
+									</h:outputText>
+								</p:column>
+
+								<p:column styleClass="align-right">
+									<h:outputText id="frameTotal"
+										value="#{purchaseReturnController.object.frameTotal}">
+										<f:convertNumber
+											pattern="#{purchaseReturnController.monetaryDecimalMask}" />
+									</h:outputText>
+								</p:column>
+
+								<p:column />
+							</p:summaryRow>
+						</p:dataTable>
+					</div>
+				</div>
+
+				<div class="card">
+					<div class="grid">
+						<div class="col-12 md:col-6 xl:col-3">
+							<h6>User Created</h6>
+							<p:inputText styleClass="full-width read-only" id="userCreated"
+								value="#{purchaseReturnController.object.userCreated.name}"
+								readonly="true" />
+						</div>
+
+						<div class="col-12 md:col-6 xl:col-3">
+							<h6>Date Created</h6>
+							<p:inputText styleClass="full-width read-only" id="dateCreated"
+								value="#{purchaseReturnController.object.dateCreated}"
+								readonly="true">
+								<f:convertDateTime type="date"
+									pattern="#{purchaseReturnController.configuration.timestampPattern}" />
+							</p:inputText>
+						</div>
+
+						<div class="col-12 md:col-6 xl:col-3">
+							<h6>User Modified</h6>
+							<p:inputText styleClass="full-width read-only" id="userModified"
+								value="#{purchaseReturnController.object.userModified.name}"
+								readonly="true" />
+						</div>
+
+						<div class="col-12 md:col-6 xl:col-3">
+							<h6>Date Modified</h6>
+							<p:inputText styleClass="full-width read-only" id="dateModified"
+								value="#{purchaseReturnController.object.dateModified}"
+								readonly="true">
+								<f:convertDateTime type="date"
+									pattern="#{purchaseReturnController.configuration.timestampPattern}" />
+							</p:inputText>
+						</div>
+					</div>
+				</div>
+			</div>
+		</p:outputPanel>
+	</h:form>
+
+</ui:composition>

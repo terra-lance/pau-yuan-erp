@@ -1,0 +1,77 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:form id="insertForm" class="page">
+		<p:outputPanel
+			rendered="#{userController.page == userController.naviInsert}">
+			<p:toolbar id="toolbar">
+				<f:facet name="left">
+					<div class="title">
+						<h:outputText styleClass="module-name"
+							value="#{userController.title} - Add Record" />
+					</div>
+				</f:facet>
+
+				<f:facet name="right">
+					<p:commandButton value="Save" icon="fa fa-fw fa-save"
+						action="#{userController.saveInsert()}" update="@(.page)" />
+					<p:commandButton value="Close" icon="fa fa-fw fa-close"
+						action="#{userController.home()}" update="@(.page)" />
+				</f:facet>
+			</p:toolbar>
+			<p:sticky target="toolbar" />
+			<br />
+
+			<div class="card">
+				<div class="grid">
+					<div class="col-12 md:col-6 xl:col-6">
+						<h6>Username</h6>
+						<p:inputText styleClass="full-width" id="username"
+							value="#{userController.object.username}" autocomplete="off" />
+					</div>
+
+					<div class="col-12 md:col-6 xl:col-6">
+						<h6>Name</h6>
+						<p:inputText styleClass="full-width" id="name"
+							value="#{userController.object.name}" autocomplete="off" />
+					</div>
+				</div>
+
+				<div class="grid">
+					<div class="col-12 md:col-12 xl:col-12">
+						<h6>Email</h6>
+						<p:inputText styleClass="full-width" id="email"
+							value="#{userController.object.email}" autocomplete="off" />
+					</div>
+				</div>
+
+				<div class="grid">
+					<div class="col-12 md:col-6 xl:col-6">
+						<h6>Password</h6>
+						<p:password styleClass="full-width" id="password"
+							value="#{userController.object.password}" autocomplete="off" />
+					</div>
+
+					<div class="col-12 md:col-6 xl:col-6">
+						<h6>Confirm Password</h6>
+						<p:password styleClass="full-width" id="confirmPassword"
+							value="#{userController.confirmPassword}" autocomplete="off" />
+					</div>
+				</div>
+
+				<h6>User Group</h6>
+				<p:pickList id="userRolePickList"
+					value="#{userController.userGroups}" var="userGroup"
+					itemLabel="#{userGroup.name}" itemValue="#{userGroup}"
+					converter="userGroupPickListConverter">
+					<f:facet name="sourceCaption">Available Group</f:facet>
+					<f:facet name="targetCaption">Selected Group</f:facet>
+				</p:pickList>
+			</div>
+		</p:outputPanel>
+	</h:form>
+
+</ui:composition>

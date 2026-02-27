@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" lang="en">
+
+<h:head>
+	<f:facet name="first">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<meta name="viewport"
+			content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<link rel="icon"
+			href="#{request.contextPath}/resources/images/favicon.ico"
+			type="image/x-icon"></link>
+	</f:facet>
+
+	<p:growl showDetail="true" sticky="true">
+		<p:autoUpdate />
+	</p:growl>
+
+	<title><ui:insert name="title">
+			<h:outputText value="Rain" />
+		</ui:insert></title>
+
+	<h:outputScript name="js/layout.js" library="rain-layout" />
+	<h:outputScript name="js/prism.js" library="rain-layout" />
+	<h:outputScript name="chart.js" library="chartjs" />
+	<h:outputStylesheet name="font-awesome/6.4.2/css/all-jsf.css"
+		library="webjars" />
+	<ui:insert name="head" />
+</h:head>
+
+<h:body styleClass="#{sessionBean.userPreference.inputStyleClass}">
+	<div
+		class="layout-wrapper layout-topbar-#{sessionBean.userPreference.topbarTheme} layout-menu-#{sessionBean.userPreference.menuTheme} #{sessionBean.userPreference.menuMode}">
+
+		<ui:include src="./topbar.xhtml" />
+		<ui:include src="./menu.xhtml" />
+
+		<div class="layout-main">
+			<div class="layout-content">
+				<ui:insert name="content" />
+			</div>
+		</div>
+
+		<p:ajaxStatus
+			style="width:32px;height:32px;position:fixed;right:7px;bottom:7px">
+			<f:facet name="start">
+				<i class="pi pi-spin pi-spinner layout-ajax-loader-icon"
+					aria-hidden="true" />
+			</f:facet>
+
+			<f:facet name="complete">
+				<h:outputText value="" />
+			</f:facet>
+		</p:ajaxStatus>
+
+		<div class="layout-mask modal-in"></div>
+	</div>
+
+	<p:confirmDialog global="true">
+		<div class="grid">
+			<div class="col-12 md:col-6 xl:col-6" style="text-align: right">
+				<p:commandButton value="No" type="button"
+					styleClass="ui-confirmdialog-no" icon="fa fa-times" />
+			</div>
+
+			<div class="col-12 md:col-6 xl:col-6" style="text-align: left">
+				<p:commandButton value="Yes" type="button"
+					styleClass="ui-confirmdialog-yes" icon="fa fa-check" />
+			</div>
+		</div>
+	</p:confirmDialog>
+
+	<h:outputStylesheet name="css/primeicons.css" library="rain-layout" />
+	<h:outputStylesheet name="css/primeflex.min.css" library="rain-layout" />
+	<h:outputStylesheet name="css/#{sessionBean.userPreference.layout}.css"
+		library="rain-layout" />
+	
+	<h:outputStylesheet name="css/default.css" />
+		
+	<script type="text/javascript">
+		window.addEventListener('keydown', function(e) {
+			if (e.keyIdentifier == 'U+000A' || e.keyIdentifier == 'Enter'
+					|| e.keyCode == 13) {
+				if (e.target.type != 'textarea') {
+					e.preventDefault();
+
+					return false;
+				}
+			}
+		}, true);
+	</script>
+</h:body>
+
+</html>

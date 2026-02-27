@@ -1,0 +1,29 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:form id="printCombinedInvoiceForm">
+		<p:dialog header="Print" widgetVar="printCombinedInvoiceWV"
+			resizable="false" responsive="true" modal="true">
+
+			<div class="grid">
+				<div class="col-12 md:col-12 xl:col-12">
+					<p:commandButton styleClass="full-width"
+						value="Print Combined Tax Invoice for Company (Simplified)"
+						action="#{salesOrderController.printCompanyTaxInvoiceSimplified()}"
+						ajax="false" />
+
+					<br /> <br />
+
+					<p:commandButton styleClass="full-width"
+						value="Print Combined Tax Invoice for Company (Detailed)"
+						action="#{salesOrderController.printCompanyTaxInvoiceDetailed()}"
+						ajax="false" />
+				</div>
+			</div>
+		</p:dialog>
+	</h:form>
+
+</ui:composition>

@@ -1,0 +1,86 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.terrase.frame.data.UserPreference"
+		table="user_preferences">
+		<id name="id" type="java.lang.Long">
+			<column name="id" />
+			<generator class="identity" />
+		</id>
+		<version name="version" type="int">
+			<column name="version" />
+		</version>
+
+		<many-to-one name="user"
+			class="com.terrase.frame.data.User" lazy="false" fetch="select"
+			not-found="ignore">
+			<column name="user_id" not-null="true" />
+		</many-to-one>
+
+		<property name="menuMode" type="string">
+			<column name="menu_mode" length="50" />
+		</property>
+		<property name="darkMode" type="string">
+			<column name="dark_mode" length="50" />
+		</property>
+		<property name="layoutPrimaryColor" type="string">
+			<column name="layout_primary_color" length="50" />
+		</property>
+		<property name="componentTheme" type="string">
+			<column name="component_theme" length="50" />
+		</property>
+		<property name="topbarTheme" type="string">
+			<column name="topbar_theme" length="50" />
+		</property>
+		<property name="menuTheme" type="string">
+			<column name="menu_theme" length="50" />
+		</property>
+		<property name="profileMode" type="string">
+			<column name="profile_mode" length="50" />
+		</property>
+		<property name="inputStyle" type="string">
+			<column name="input_style" length="50" />
+		</property>
+		<property name="lightLogo" type="boolean">
+			<column name="light_logo" />
+		</property>
+
+		<property name="paginatorPosition" column="paginator_position">
+			<type name="org.hibernate.type.EnumType">
+				<param name="enumClass">com.terrase.frame.enumerator.EnumPaginatorPosition</param>
+			</type>
+		</property>
+
+		<property name="dateCreated" type="timestamp" insert="false">
+			<column name="date_created" default="current_timestamp" />
+		</property>
+		<many-to-one name="userCreated"
+			class="com.terrase.frame.data.User" lazy="false" fetch="select"
+			not-found="ignore">
+			<column name="user_created" not-null="true" />
+		</many-to-one>
+
+		<property name="dateModified" type="timestamp">
+			<column name="date_modified" />
+		</property>
+		<many-to-one name="userModified"
+			class="com.terrase.frame.data.User" lazy="false" fetch="select"
+			not-found="ignore">
+			<column name="user_modified" not-null="false" />
+		</many-to-one>
+
+		<property name="deleted" type="boolean">
+			<column name="deleted" />
+		</property>
+		<property name="dateDeleted" type="timestamp">
+			<column name="date_deleted" />
+		</property>
+		<many-to-one name="userDeleted"
+			class="com.terrase.frame.data.User" lazy="false" fetch="select"
+			not-found="ignore">
+			<column name="user_deleted" not-null="false" />
+		</many-to-one>
+	</class>
+</hibernate-mapping>

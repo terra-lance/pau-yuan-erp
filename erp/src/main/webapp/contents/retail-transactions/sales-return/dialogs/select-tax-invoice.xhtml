@@ -1,0 +1,64 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:form id="selectTaxInvoiceForm">
+		<p:dialog value="Selection" widgetVar="selectTaxInvoiceWV"
+			resizable="false" responsive="true" modal="true">
+
+			<p:panel styleClass="dialog" header="Select Tax Invoice">
+				<p:dataTable styleClass="data-table" rowIndexVar="rowIndex"
+					var="object" rowKey="#{object}"
+					value="#{salesReturnController.taxInvoices}" paginator="true"
+					paginatorPosition="#{sessionBean.userPreference.paginatorPosition}"
+					rows="10" rowsPerPageTemplate="10,20,30,40,50" lazy="true">
+
+					<p:column styleClass="index-cell">
+						<p:commandButton icon="fa fa-fw fa-check"
+							action="#{salesReturnController.selectTaxInvoice(object.taxInvoice)}"
+							update="@(.page)" />
+					</p:column>
+
+					<p:column headerText="Invoice Date"
+						sortBy="#{object.taxInvoice.documentDate}">
+						<h:outputText value="#{object.taxInvoice.documentDate}">
+							<f:convertDateTime
+								pattern="#{salesReturnController.configuration.datePattern}" />
+						</h:outputText>
+					</p:column>
+
+					<p:column headerText="Invoice #"
+						filterBy="#{object.taxInvoice.documentNo}"
+						filterMatchMode="contains"
+						sortBy="#{object.taxInvoice.documentNo}">
+						<h:outputText value="#{object.taxInvoice.documentNo}" />
+					</p:column>
+
+					<p:column headerText="Customer Name"
+						filterBy="#{object.taxInvoice.customer.name}"
+						filterMatchMode="contains"
+						sortBy="#{object.taxInvoice.customer.name}">
+						<h:outputText value="#{object.taxInvoice.customer.name}" />
+					</p:column>
+
+					<p:column headerText="Customer NRIC"
+						filterBy="#{object.taxInvoice.customer.nric}"
+						filterMatchMode="contains"
+						sortBy="#{object.taxInvoice.customer.nric}">
+						<h:outputText value="#{object.taxInvoice.customer.nric}" />
+					</p:column>
+
+					<p:column headerText="Mobile"
+						filterBy="#{object.taxInvoice.customer.mobile}"
+						filterMatchMode="contains"
+						sortBy="#{object.taxInvoice.customer.mobile}">
+						<h:outputText value="#{object.taxInvoice.customer.mobile}" />
+					</p:column>
+				</p:dataTable>
+			</p:panel>
+		</p:dialog>
+	</h:form>
+
+</ui:composition>
