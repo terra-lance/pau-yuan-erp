@@ -3,8 +3,8 @@
     "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
     "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
-	<class name="com.terrase.frame.data.UserGroup"
-		table="user_groups" where="deleted != 1">
+	<class name="com.terrase.frame.data.UserGroupBranch"
+		table="user_group_branches" where="deleted != 1">
 		<id name="id" type="java.lang.Long">
 			<column name="id" />
 			<generator class="identity" />
@@ -13,37 +13,18 @@
 			<column name="version" />
 		</version>
 
-		<property name="code" type="string"
-			unique-key="unique_user_group">
-			<column name="code" length="100" />
-		</property>
+		<many-to-one name="userGroup"
+			class="com.terrase.frame.data.UserGroup" lazy="false" fetch="select"
+			not-found="ignore">
+			<column name="user_group_id" not-null="true" />
+		</many-to-one>
+		<many-to-one name="branch"
+			class="com.terrase.frame.data.Branch" lazy="false" fetch="select"
+			not-found="ignore">
+			<column name="branch_id" not-null="true" />
+		</many-to-one>
 
-		<property name="name" type="string">
-			<column name="name" length="500" />
-		</property>
-		<property name="description" type="string">
-			<column name="description" length="500" />
-		</property>
-
-		<set name="branches" table="user_group_branches"
-			cascade="save-update, delete-orphan" lazy="false" fetch="join"
-			order-by="id">
-			<key>
-				<column name="user_group_id" not-null="true" />
-			</key>
-			<one-to-many
-				class="com.terrase.frame.data.UserGroupBranch" />
-		</set>
-
-		<set name="userRoles" table="user_roles"
-			cascade="save-update, delete-orphan" lazy="false" fetch="join">
-			<key>
-				<column name="user_group_id" not-null="true" />
-			</key>
-			<one-to-many class="com.terrase.frame.data.UserRole" />
-		</set>
-
-		<property name="dateCreated" type="timestamp">
+		<property name="dateCreated" type="timestamp" insert="false">
 			<column name="date_created" default="current_timestamp" />
 		</property>
 		<many-to-one name="userCreated"
@@ -61,12 +42,10 @@
 			<column name="user_modified" not-null="false" />
 		</many-to-one>
 
-		<property name="deleted" type="boolean"
-			unique-key="unique_user_group">
+		<property name="deleted" type="boolean">
 			<column name="deleted" />
 		</property>
-		<property name="dateDeleted" type="timestamp"
-			unique-key="unique_user_group">
+		<property name="dateDeleted" type="timestamp">
 			<column name="date_deleted" />
 		</property>
 		<many-to-one name="userDeleted"

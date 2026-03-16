@@ -14,7 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.terrase.frame.data.Module;
 import com.terrase.frame.data.User;
 import com.terrase.frame.data.UserGroup;
-import com.terrase.frame.data.UserGroupAccess;
+import com.terrase.frame.data.UserGroupBranchAccess;
 import com.terrase.frame.jsf.bean.system.AuthenticatedBean;
 import com.terrase.frame.model.LazyUserGroup;
 import com.terrase.frame.service.UserGroupService;
@@ -109,11 +109,11 @@ public class UserGroupController extends AuthenticatedBean {
 			if (authenticate(module, OPERATION_INSERT)) {
 				object = new UserGroup();
 
-				Set<UserGroupAccess> accesses = new LinkedHashSet<UserGroupAccess>();
+				Set<UserGroupBranchAccess> accesses = new LinkedHashSet<UserGroupBranchAccess>();
 
 				List<Module> modules = moduleSvc.find();
 				for (Module module : modules) {
-					UserGroupAccess access = new UserGroupAccess();
+					UserGroupBranchAccess access = new UserGroupBranchAccess();
 					access.setUserGroup(object);
 					access.setModule(module);
 					EntityUtil.markInsert(access, (User) sessionBean.getUser().clone());
@@ -204,7 +204,7 @@ public class UserGroupController extends AuthenticatedBean {
 	}
 
 	public void selectAll(int index) {
-		for (UserGroupAccess userGroupAccess : object.getUserGroupAccesses()) {
+		for (UserGroupBranchAccess userGroupAccess : object.getUserGroupAccesses()) {
 			switch (index) {
 			case 0:
 				userGroupAccess.setViewRights(allView);

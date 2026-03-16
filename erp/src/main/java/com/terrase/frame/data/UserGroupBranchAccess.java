@@ -7,10 +7,10 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class UserGroupAccess extends Entity {
+public class UserGroupBranchAccess extends Entity {
 	private static final long serialVersionUID = 1L;
 
-	protected UserGroup userGroup;
+	protected UserGroupBranch userGroupBranch;
 	protected Module module;
 	
 	protected boolean viewRights;
@@ -20,7 +20,9 @@ public class UserGroupAccess extends Entity {
 	protected boolean printRights;
 	protected boolean postRights;
 
-	public UserGroupAccess() {
+	public UserGroupBranchAccess() {
 		super();
+		userGroupBranch = new UserGroupBranch();
+		module = new Module();
 	}
 }

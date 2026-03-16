@@ -13,12 +13,12 @@ import lombok.Setter;
 public class UserGroup extends MasterEntity {
 	private static final long serialVersionUID = 1L;
 
-	protected Set<UserGroupAccess> userGroupAccesses;
+	protected Set<UserGroupBranch> branches;
 	protected Set<UserRole> userRoles;
 
 	public UserGroup() {
 		super();
-		userGroupAccesses = new LinkedHashSet<>();
+		branches = new LinkedHashSet<>();
 		userRoles = new LinkedHashSet<>();
 	}
 }

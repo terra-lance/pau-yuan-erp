@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import com.terrase.frame.dao.base.EntityDAOImpl;
 import com.terrase.frame.data.User;
 import com.terrase.frame.data.UserGroup;
-import com.terrase.frame.data.UserGroupAccess;
+import com.terrase.frame.data.UserGroupBranchAccess;
 import com.terrase.frame.util.EntityUtil;
 
 @Repository("com.terrase.frame.dao.UserGroupDAO")
@@ -23,7 +23,7 @@ public class UserGroupDAOImpl extends EntityDAOImpl<UserGroup> implements UserGr
 	public void delete(UserGroup object, User user) {
 		EntityUtil.markDelete(object, user);
 
-		for (UserGroupAccess userGroupAccess : object.getUserGroupAccesses()) {
+		for (UserGroupBranchAccess userGroupAccess : object.getUserGroupAccesses()) {
 			EntityUtil.markDelete(userGroupAccess, user);
 		}
 
