@@ -3,8 +3,8 @@
     "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
     "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
-	<class name="com.terrase.frame.data.Profile" schema="dbo"
-		table="profiles" where="deleted != 1">
+	<class name="com.terrase.frame.data.Company" schema="dbo"
+		table="companies" where="deleted != 1">
 		<id name="id" type="java.lang.Long">
 			<column name="id" />
 			<generator class="identity" />
@@ -14,7 +14,7 @@
 		</version>
 
 		<property name="code" type="string"
-			unique-key="unique_profile">
+			unique-key="unique_company">
 			<column name="code" length="100" />
 		</property>
 		<property name="name" type="string">
@@ -73,11 +73,11 @@
 		</many-to-one>
 
 		<property name="deleted" type="boolean"
-			unique-key="unique_profile">
+			unique-key="unique_company">
 			<column name="deleted" />
 		</property>
 		<property name="dateDeleted" type="timestamp"
-			unique-key="unique_profile">
+			unique-key="unique_company">
 			<column name="date_deleted" />
 		</property>
 		<many-to-one name="userDeleted"
