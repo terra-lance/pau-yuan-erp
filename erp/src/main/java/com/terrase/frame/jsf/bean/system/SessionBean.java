@@ -15,13 +15,13 @@ import javax.faces.context.FacesContext;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.terrase.frame.data.Profile;
 import com.terrase.frame.data.Module;
 import com.terrase.frame.data.User;
 import com.terrase.frame.data.UserPreference;
+import com.terrase.frame.enumerator.EnumSystem;
 import com.terrase.frame.jsf.bean.FrameController;
-import com.terrase.frame.service.ProfileService;
 import com.terrase.frame.service.ConfigurationService;
+import com.terrase.frame.service.CompanyService;
 import com.terrase.frame.service.UserPreferenceService;
 import com.terrase.frame.service.UserService;
 import com.terrase.util.EncryptionUtil;
@@ -47,8 +47,6 @@ public class SessionBean extends FrameController {
 	private String newPassword;
 	private String confirmPassword;
 
-	private Profile company;
-
 	private List<Module> modules;
 
 	private Map<String, Serializable> sessionObjects;
@@ -67,7 +65,7 @@ public class SessionBean extends FrameController {
 
 	@Autowired
 	@Setter(AccessLevel.NONE)
-	private transient ProfileService companySvc;
+	private transient CompanyService companySvc;
 
 	@Autowired
 	@Setter(AccessLevel.NONE)
@@ -82,7 +80,6 @@ public class SessionBean extends FrameController {
 
 		user = new User();
 		authenticated = false;
-		company = new Profile();
 		modules = Collections.emptyList();
 
 		sessionObjects = new LinkedHashMap<>();
@@ -161,14 +158,14 @@ public class SessionBean extends FrameController {
 		}
 	}
 
-	public boolean authorize(String moduleName) {
-		return authorize(user, moduleName);
+	public boolean authorize(String moduleName, EnumSystem system) {
+		return authorize(user, moduleName, system);
 	}
 
 	@Override
-	protected boolean authorize(User user, String moduleName) {
+	protected boolean authorize(User user, String moduleName, EnumSystem system) {
 		try {
-			Module module = findModuleByName(moduleName);
+			Module module = findModuleByName(moduleName, system);
 			return authenticate(user, module, OPERATION_VIEW);
 		} catch (Throwable t) {
 			return false;
@@ -183,18 +180,18 @@ public class SessionBean extends FrameController {
 		resetInput();
 	}
 
-	public Module findModuleByName(String moduleName) {
+	public Module findModuleByName(String moduleName, EnumSystem system) {
 		for (Module module : modules) {
-			if (StringUtils.equalsIgnoreCase(module.getName(), moduleName)) {
+			if (StringUtils.equalsIgnoreCase(module.getName(), moduleName) && module.getSystem() == system) {
 				return module;
 			}
 		}
 		return null;
 	}
 
-	public Module findModuleByCode(String moduleCode) {
+	public Module findModuleByCode(String moduleCode, EnumSystem system) {
 		for (Module module : modules) {
-			if (StringUtils.equalsIgnoreCase(module.getCode(), moduleCode)) {
+			if (StringUtils.equalsIgnoreCase(module.getCode(), moduleCode) && module.getSystem() == system) {
 				return module;
 			}
 		}

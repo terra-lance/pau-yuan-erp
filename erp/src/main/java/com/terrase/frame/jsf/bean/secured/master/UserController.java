@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.terrase.frame.data.User;
 import com.terrase.frame.data.UserGroup;
 import com.terrase.frame.data.UserRole;
+import com.terrase.frame.enumerator.EnumSystem;
 import com.terrase.frame.jsf.bean.system.AuthenticatedBean;
 import com.terrase.frame.model.LazyUser;
 import com.terrase.frame.service.UserGroupService;
@@ -36,6 +37,7 @@ import lombok.Setter;
 public class UserController extends AuthenticatedBean {
 	private static final long serialVersionUID = 1L;
 
+	public static final EnumSystem SYSTEM = EnumSystem.GENERAL;
 	public static final String NAVIGATION_SPACE = "user";
 	public static final String MODULE_NAME = "User";
 
@@ -72,7 +74,7 @@ public class UserController extends AuthenticatedBean {
 		try {
 			super.init();
 
-			module = sessionBean.findModuleByName(MODULE_NAME);
+			module = sessionBean.findModuleByName(MODULE_NAME, SYSTEM);
 			title = MODULE_NAME;
 
 			page = NAVI_INDEX;

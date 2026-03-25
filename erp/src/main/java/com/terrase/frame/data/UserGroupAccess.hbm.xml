@@ -3,8 +3,8 @@
     "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
     "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
-	<class name="com.terrase.frame.data.Module" schema="dbo"
-		table="modules" where="deleted != 1">
+	<class name="com.terrase.frame.data.UserGroupBranchAccess"
+		table="user_group_branch_accesses" where="deleted != 1">
 		<id name="id" type="java.lang.Long">
 			<column name="id" />
 			<generator class="identity" />
@@ -13,22 +13,35 @@
 			<column name="version" />
 		</version>
 
-		<property name="system" column="system"
-			unique-key="unique_module">
-			<type name="org.hibernate.type.EnumType">
-				<param name="enumClass">com.terrase.frame.enumerator.EnumSystem</param>
-			</type>
-		</property>
+		<many-to-one name="userGroup"
+			class="com.terrase.frame.data.UserGroup" lazy="false"
+			fetch="select" not-found="ignore">
+			<column name="user_group_id" not-null="true" />
+		</many-to-one>
 
-		<property name="code" type="string"
-			unique-key="unique_module">
-			<column name="code" length="100" />
+		<many-to-one name="module"
+			class="com.terrase.frame.data.Module" lazy="false" fetch="select"
+			not-found="ignore">
+			<column name="module_id" not-null="true" />
+		</many-to-one>
+
+		<property name="viewRights" type="boolean">
+			<column name="view_rights" />
 		</property>
-		<property name="name" type="string">
-			<column name="name" length="500" />
+		<property name="addRights" type="boolean">
+			<column name="add_rights" />
 		</property>
-		<property name="description" type="string">
-			<column name="description" length="500" />
+		<property name="updateRights" type="boolean">
+			<column name="update_rights" />
+		</property>
+		<property name="deleteRights" type="boolean">
+			<column name="delete_rights" />
+		</property>
+		<property name="printRights" type="boolean">
+			<column name="print_rights" />
+		</property>
+		<property name="postRights" type="boolean">
+			<column name="post_rights" />
 		</property>
 
 		<property name="dateCreated" type="timestamp" insert="false">
@@ -49,12 +62,10 @@
 			<column name="user_modified" not-null="false" />
 		</many-to-one>
 
-		<property name="deleted" type="boolean"
-			unique-key="unique_module">
+		<property name="deleted" type="boolean">
 			<column name="deleted" />
 		</property>
-		<property name="dateDeleted" type="timestamp"
-			unique-key="unique_module">
+		<property name="dateDeleted" type="timestamp">
 			<column name="date_deleted" />
 		</property>
 		<many-to-one name="userDeleted"

@@ -25,7 +25,6 @@ public class User extends Entity {
 
 	public User() {
 		super();
-
 		active = true;
 
 		userRoles = new LinkedHashSet<>();

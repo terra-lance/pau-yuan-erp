@@ -1,16 +1,18 @@
-package com.terrase.frame.jsf.bean.secured.config;
+package com.terrase.frame.jsf.bean.secured.master;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 
+import org.primefaces.model.LazyDataModel;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.terrase.frame.data.Configuration;
+import com.terrase.frame.data.Company;
 import com.terrase.frame.data.User;
 import com.terrase.frame.enumerator.EnumSystem;
 import com.terrase.frame.jsf.bean.system.AuthenticatedBean;
-import com.terrase.frame.service.ConfigurationService;
+import com.terrase.frame.model.LazyCompany;
+import com.terrase.frame.service.CompanyService;
 
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -18,25 +20,21 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@ManagedBean(name = "configurationController")
+@ManagedBean(name = "companyController")
 @ViewScoped
-public class ConfigurationController extends AuthenticatedBean {
+public class CompanyController extends AuthenticatedBean {
 	private static final long serialVersionUID = 1L;
 
-	public static final String NAVIGATION_SPACE = "configuration";
-	public static final String MODULE_NAME = "Configuration";
+	public static final EnumSystem SYSTEM = EnumSystem.GENERAL;
+	public static final String NAVIGATION_SPACE = "company";
+	public static final String MODULE_NAME = "Company";
 
-	private Configuration object;
-
-	private String[] themes = { "afterdark", "afternoon", "afterwork", "arya", "black-tie", "blitzer", "bluesky",
-			"bootstrap", "casablanca", "cruze", "cupertino", "dark-hive", "dot-luv", "eggplant", "excite-bike", "flick",
-			"glass-x", "home", "hot-sneaks", "humanity", "le-frog", "midnight", "mint-choc", "overcast",
-			"pepper-grinder", "redmond", "rocket", "saga", "sam", "smoothness", "south-street", "start", "sunny",
-			"swanky-purse", "trontastic", "ui-darkness", "ui-lightness", "vader", "vela" };
+	private LazyDataModel<Company> objects;
+	private Company object;
 
 	@Autowired
 	@Setter(AccessLevel.NONE)
-	private transient ConfigurationService classSvc;
+	private transient CompanyService classSvc;
 
 	@Override
 	@PostConstruct
@@ -44,11 +42,12 @@ public class ConfigurationController extends AuthenticatedBean {
 		try {
 			super.init();
 
-			module = sessionBean.findModuleByName(MODULE_NAME, EnumSystem.GENERAL);
+			module = sessionBean.findModuleByName(MODULE_NAME, SYSTEM);
 			title = MODULE_NAME;
 			page = NAVI_INDEX;
 
-			object = classSvc.findFirst();
+			objects = new LazyCompany();
+			object = new Company();
 
 			super.endInit();
 		} catch (Throwable t) {
@@ -59,6 +58,8 @@ public class ConfigurationController extends AuthenticatedBean {
 	public String index() {
 		try {
 			if (authenticate(module, OPERATION_VIEW)) {
+				object = classSvc.findFirst();
+
 				return NAVIGATION_SPACE.concat(INDEX_PAGE);
 			} else {
 				addWarningMessage("Notification", "You do not have permission to access this operation");
@@ -73,16 +74,24 @@ public class ConfigurationController extends AuthenticatedBean {
 		try {
 			init();
 			page = NAVI_INDEX;
+
+			object = classSvc.findFirst();
 		} catch (Throwable t) {
 			addErrorMessage(t.getClass().getName(), t.getMessage());
 		}
 	}
 
 	public void update() {
-		if (authenticate(module, OPERATION_UPDATE)) {
-			page = NAVI_UPDATE;
-		} else {
-			addWarningMessage("Notification", "You do not have permission to access this operation");
+		try {
+			if (authenticate(module, OPERATION_UPDATE)) {
+				object = classSvc.findFirst();
+
+				page = NAVI_UPDATE;
+			} else {
+				addWarningMessage("Notification", "You do not have permission to access this operation");
+			}
+		} catch (Throwable t) {
+			addErrorMessage(t);
 		}
 	}
 
@@ -91,8 +100,7 @@ public class ConfigurationController extends AuthenticatedBean {
 			classSvc.update(object, (User) sessionBean.getUser().clone());
 			addInfoMessage("Notification", "Record successfully updated");
 
-			sessionBean.setConfiguration(object);
-
+			init();
 			page = NAVI_INDEX;
 		} catch (Throwable t) {
 			addErrorMessage(t);

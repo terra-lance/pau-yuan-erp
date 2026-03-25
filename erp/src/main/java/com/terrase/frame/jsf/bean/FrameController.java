@@ -9,6 +9,7 @@ import com.terrase.frame.data.Module;
 import com.terrase.frame.data.User;
 import com.terrase.frame.data.UserGroupAccess;
 import com.terrase.frame.data.UserRole;
+import com.terrase.frame.enumerator.EnumSystem;
 import com.terrase.frame.service.ConfigurationService;
 import com.terrase.frame.service.ModuleService;
 
@@ -86,9 +87,9 @@ public class FrameController extends Controller {
 		configuration = configSvc.findFirst();
 	}
 
-	protected boolean authorize(User user, String moduleName) {
+	protected boolean authorize(User user, String moduleName, EnumSystem system) {
 		try {
-			Module module = moduleSvc.findByName(moduleName);
+			Module module = moduleSvc.findByName(moduleName, system);
 
 			return authenticate(user, module, OPERATION_VIEW);
 		} catch (Throwable t) {
@@ -103,7 +104,7 @@ public class FrameController extends Controller {
 			}
 
 			for (UserRole userRole : user.getUserRoles()) {
-				for (UserGroupAccess access : userRole.getUserGroup().getUserGroupAccesses()) {
+				for (UserGroupAccess access : userRole.getUserGroup().getAccesses()) {
 					if (access.getModule() == null || access.getModule().getId() != module.getId()) {
 						continue;
 					}

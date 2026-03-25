@@ -5,6 +5,7 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.context.FacesContext;
 
 import com.terrase.frame.data.Module;
+import com.terrase.frame.enumerator.EnumSystem;
 import com.terrase.frame.jsf.bean.FrameController;
 
 import lombok.Getter;
@@ -40,8 +41,8 @@ public abstract class AuthenticatedBean extends FrameController {
 		return authenticate(module, OPERATION_VIEW);
 	}
 
-	public boolean authorize(String moduleName) {
-		return authorize(sessionBean.getUser(), moduleName);
+	public boolean authorize(String moduleName, EnumSystem system) {
+		return authorize(sessionBean.getUser(), moduleName, system);
 	}
 
 	public boolean authenticate(Module module, int operation) {

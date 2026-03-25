@@ -13,6 +13,13 @@
 			<column name="version" />
 		</version>
 
+		<property name="system" column="system"
+			unique-key="unique_user_group">
+			<type name="org.hibernate.type.EnumType">
+				<param name="enumClass">com.terrase.frame.enumerator.EnumSystem</param>
+			</type>
+		</property>
+
 		<property name="code" type="string"
 			unique-key="unique_user_group">
 			<column name="code" length="100" />
@@ -25,7 +32,7 @@
 			<column name="description" length="500" />
 		</property>
 
-		<set name="branches" table="user_group_branches"
+		<set name="accesses" table="user_group_accesses"
 			cascade="save-update, delete-orphan" lazy="false" fetch="join"
 			order-by="id">
 			<key>
