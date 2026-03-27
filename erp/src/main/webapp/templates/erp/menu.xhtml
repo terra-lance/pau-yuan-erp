@@ -1,0 +1,52 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pr="http://primefaces.org/rain">
+
+	<p:outputPanel rendered="#{sessionBean.system.value == 1}">
+		<div class="menu-wrapper">
+			<div class="layout-menu-container">
+				<ui:fragment
+					rendered="#{sessionBean.userPreference.profileMode == 'popup' ? false : true}">
+					<div class="layout-profile">
+						<a class="layout-profile-button" href="#"> <span
+							class="image-name"> <i class="fa-solid fa-user fa-2x"
+								style="margin-right: .75rem"></i> <span
+								class="layout-profile-userinfo"> <span
+									class="layout-profile-name">#{sessionBean.user.name}</span> <span
+									class="layout-profile-mail">#{sessionBean.user.email}</span>
+							</span>
+						</span> <i class="layout-profile-icon pi pi-chevron-down" />
+						</a>
+						<ul class="layout-profile-menu">
+							<li><p:commandLink style="text-decoration: none"
+									action="#{sessionBean.logout()}" ajax="true">
+									<i class="fa-solid fa-door-open fa-lg"></i>
+									<span>Sign Out</span>
+								</p:commandLink></li>
+						</ul>
+					</div>
+				</ui:fragment>
+
+				<h:form id="erpMenuform">
+					<pr:menu widgetVar="RainMenuWidget">
+						<p:submenu label="System" icon="fa fa-gears fa-lg"
+							rendered="#{sessionBean.authorize('User', 'COMMON')
+						|| sessionBean.authorize('User Group', 'COMMON')}">
+							<p:menuitem value="User" icon="fa fa-user fa-lg"
+								outcome="user-index"
+								rendered="#{sessionBean.authorize('User', 'COMMON')}" />
+
+							<p:menuitem value="User Group" icon="fa fa-user-group fa-lg"
+								outcome="user-group-index"
+								rendered="#{sessionBean.authorize('User Group', 'COMMON')}" />
+						</p:submenu>
+					</pr:menu>
+				</h:form>
+			</div>
+		</div>
+	</p:outputPanel>
+
+</ui:composition>

@@ -5,7 +5,7 @@
 		driverClassName="com.microsoft.sqlserver.jdbc.SQLServerDriver"
 		maxTotal="200" maxIdle="2" maxWaitMillis="30000" username="sa"
 		password="P@55w0rd"
-		url="jdbc:sqlserver://localhost;databaseName=paoyuanerp;useUnicode=yes;characterEncoding=UTF-8"
+		url="jdbc:sqlserver://localhost;databaseName=pauyuanerp;useUnicode=yes;characterEncoding=UTF-8"
 		type="javax.sql.DataSource" validationQuery="">
 	</Resource>
 

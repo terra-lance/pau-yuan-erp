@@ -2,7 +2,6 @@ package com.terrase.frame.jsf.bean.system;
 
 import java.io.Serializable;
 import java.util.Collections;
-import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,8 +19,8 @@ import com.terrase.frame.data.User;
 import com.terrase.frame.data.UserPreference;
 import com.terrase.frame.enumerator.EnumSystem;
 import com.terrase.frame.jsf.bean.FrameController;
-import com.terrase.frame.service.ConfigurationService;
 import com.terrase.frame.service.CompanyService;
+import com.terrase.frame.service.ConfigurationService;
 import com.terrase.frame.service.UserPreferenceService;
 import com.terrase.frame.service.UserService;
 import com.terrase.util.EncryptionUtil;
@@ -47,13 +46,13 @@ public class SessionBean extends FrameController {
 	private String newPassword;
 	private String confirmPassword;
 
+	private EnumSystem[] systems = { EnumSystem.ERP, EnumSystem.WMS };
+	private EnumSystem system;
+
 	private List<Module> modules;
 
 	private Map<String, Serializable> sessionObjects;
-
 	private UserPreference userPreference;
-
-	private Date lastPublicAddressTimestamp;
 
 	@Autowired
 	@Setter(AccessLevel.NONE)
@@ -71,6 +70,10 @@ public class SessionBean extends FrameController {
 	@Setter(AccessLevel.NONE)
 	private transient ConfigurationService configSvc;
 
+	public String getSystemNamespace() {
+		return system.name().toLowerCase();
+	}
+
 	@Override
 	@PostConstruct
 	public void init() {
@@ -83,10 +86,7 @@ public class SessionBean extends FrameController {
 		modules = Collections.emptyList();
 
 		sessionObjects = new LinkedHashMap<>();
-
 		userPreference = new UserPreference();
-
-		lastPublicAddressTimestamp = new Date();
 	}
 
 	public void resetInput() {
@@ -117,7 +117,7 @@ public class SessionBean extends FrameController {
 			} else {
 				modules = Collections.unmodifiableList(moduleSvc.find());
 				addInfoMessage("Notification", "Welcome");
-				return "home";
+				return getSystemNamespace().concat("-home");
 			}
 		} catch (Throwable t) {
 			addErrorMessage(t);
@@ -158,8 +158,8 @@ public class SessionBean extends FrameController {
 		}
 	}
 
-	public boolean authorize(String moduleName, EnumSystem system) {
-		return authorize(user, moduleName, system);
+	public boolean authorize(String moduleName, String system) {
+		return authorize(user, moduleName, EnumSystem.valueOf(system));
 	}
 
 	@Override

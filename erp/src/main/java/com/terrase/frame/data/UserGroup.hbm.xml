@@ -39,7 +39,7 @@
 				<column name="user_group_id" not-null="true" />
 			</key>
 			<one-to-many
-				class="com.terrase.frame.data.UserGroupBranch" />
+				class="com.terrase.frame.data.UserGroupAccess" />
 		</set>
 
 		<set name="userRoles" table="user_roles"

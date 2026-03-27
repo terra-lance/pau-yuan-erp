@@ -37,8 +37,11 @@
 	<div
 		class="layout-wrapper layout-topbar-#{sessionBean.userPreference.topbarTheme} layout-menu-#{sessionBean.userPreference.menuTheme} #{sessionBean.userPreference.menuMode}">
 
-		<ui:include src="./topbar.xhtml" />
-		<ui:include src="./menu.xhtml" />
+		<ui:include src="./erp/topbar.xhtml" />
+		<ui:include src="./wms/topbar.xhtml" />
+
+		<ui:include src="./erp/menu.xhtml" />
+		<ui:include src="./wms/menu.xhtml" />
 
 		<div class="layout-main">
 			<div class="layout-content">
@@ -79,9 +82,9 @@
 	<h:outputStylesheet name="css/primeflex.min.css" library="rain-layout" />
 	<h:outputStylesheet name="css/#{sessionBean.userPreference.layout}.css"
 		library="rain-layout" />
-	
+
 	<h:outputStylesheet name="css/default.css" />
-		
+
 	<script type="text/javascript">
 		window.addEventListener('keydown', function(e) {
 			if (e.keyIdentifier == 'U+000A' || e.keyIdentifier == 'Enter'

@@ -25,7 +25,7 @@ import lombok.Setter;
 public class CompanyController extends AuthenticatedBean {
 	private static final long serialVersionUID = 1L;
 
-	public static final EnumSystem SYSTEM = EnumSystem.GENERAL;
+	public static final EnumSystem SYSTEM = EnumSystem.COMMON;
 	public static final String NAVIGATION_SPACE = "company";
 	public static final String MODULE_NAME = "Company";
 

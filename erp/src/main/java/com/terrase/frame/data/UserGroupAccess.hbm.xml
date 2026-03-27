@@ -3,8 +3,8 @@
     "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
     "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
-	<class name="com.terrase.frame.data.UserGroupBranchAccess"
-		table="user_group_branch_accesses" where="deleted != 1">
+	<class name="com.terrase.frame.data.UserGroupAccess"
+		table="user_group_accesses" where="deleted != 1">
 		<id name="id" type="java.lang.Long">
 			<column name="id" />
 			<generator class="identity" />
@@ -14,8 +14,8 @@
 		</version>
 
 		<many-to-one name="userGroup"
-			class="com.terrase.frame.data.UserGroup" lazy="false"
-			fetch="select" not-found="ignore">
+			class="com.terrase.frame.data.UserGroup" lazy="false" fetch="select"
+			not-found="ignore">
 			<column name="user_group_id" not-null="true" />
 		</many-to-one>
 

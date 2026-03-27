@@ -16,6 +16,21 @@
 				</f:facet>
 
 				<f:facet name="right">
+					<p:commandButton value="Update" icon="fa fa-fw fa-pencil"
+						action="#{userController.update(userController.object.id)}"
+						update="@(.page)" />
+
+					<p:commandButton value="Delete" icon="fa fa-fw fa-trash-alt"
+						action="#{userController.saveDelete()}" update="@(.page)">
+						<p:confirm header="Confirmation"
+							message="Do you wish to delete the selected record?"
+							icon="ui-icon-alert" />
+					</p:commandButton>
+
+					<p:commandButton value="Reset" icon="fa fa-sync-alt"
+						action="#{userController.reset(userController.object.id)}"
+						update="@(.page)" />
+
 					<p:commandButton value="Close" icon="fa fa-fw fa-close"
 						action="#{userController.home()}" update="@(.page)" />
 				</f:facet>

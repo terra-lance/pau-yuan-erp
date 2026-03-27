@@ -56,12 +56,39 @@
 			<redirect />
 		</navigation-case>
 	</navigation-rule>
+	
+	<navigation-rule>
+		<from-view-id>/*</from-view-id>
+		<navigation-case>
+			<from-outcome>erp-home</from-outcome>
+			<to-view-id>/contents/erp/base/index.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
 
 	<navigation-rule>
 		<from-view-id>/*</from-view-id>
 		<navigation-case>
-			<from-outcome>home</from-outcome>
-			<to-view-id>/contents/base/index.xhtml</to-view-id>
+			<from-outcome>wms-home</from-outcome>
+			<to-view-id>/contents/wms/base/index.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+
+	<navigation-rule>
+		<from-view-id>/*</from-view-id>
+		<navigation-case>
+			<from-outcome>user-index</from-outcome>
+			<to-view-id>/contents/common/base-masters/user/index.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+	
+	<navigation-rule>
+		<from-view-id>/*</from-view-id>
+		<navigation-case>
+			<from-outcome>user-group-index</from-outcome>
+			<to-view-id>/contents/common/base-masters/user-group/index.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
 	</navigation-rule>

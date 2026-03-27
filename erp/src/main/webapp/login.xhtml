@@ -24,8 +24,6 @@
 	</p:growl>
 
 	<title><h:outputText value="#{sessionBean.project}" /> - Login</title>
-	<script type="text/javascript"
-		src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
 </h:head>
 
 <h:body styleClass="login-body">
@@ -48,10 +46,20 @@
 				<p:inputText id="username" value="#{sessionBean.username}"
 					required="true" autocomplete="off" />
 			</div>
+
 			<div class="form-group">
 				<span>Password</span>
 				<p:password id="password" value="#{sessionBean.password}"
 					required="true" autocomplete="off" />
+			</div>
+
+			<div class="form-group">
+				<span>System</span>
+				<p:selectOneMenu style="width:100%" id="system"
+					value="#{sessionBean.system}" autoWidth="false">
+					<f:selectItems value="#{sessionBean.systems}" var="system"
+						itemValue="#{system}" itemLabel="#{system.description}" />
+				</p:selectOneMenu>
 			</div>
 
 			<div>

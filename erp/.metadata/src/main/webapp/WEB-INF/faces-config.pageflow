@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <pageflow:Pageflow xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:pageflow="http://www.sybase.com/suade/pageflow" id="pf17744453105770" configfile="/erp/src/main/webapp/WEB-INF/faces-config.xml">
-  <nodes xsi:type="pageflow:PFPage" name="*" x="122" y="1234" id="pf17744453291921" referenceLink="//@navigationRule.6/@fromViewId|" outlinks="pf17744453291922 pf17744453291923 pf177444540224519" path="/*"/>
-  <nodes xsi:type="pageflow:PFPage" name="login.xhtml" x="338" y="178" id="pf177444532919210" referenceLink="//@navigationRule.6/@navigationCase.0/@toViewId|" inlinks="pf17744453291922 pf177444540224519" path="/login.xhtml"/>
-  <nodes xsi:type="pageflow:PFPage" name="contents/base/index.xhtml" x="338" y="562" id="pf177444532919211" referenceLink="//@navigationRule.7/@navigationCase.0/@toViewId|" inlinks="pf17744453291923" path="/contents/base/index.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="*" x="122" y="690" id="pf17744453291921" referenceLink="//@navigationRule.5/@fromViewId|" outlinks="pf17744453291922 pf17744453291923 pf177444540224519 pf17745815161880 pf17745823512822 pf17745826207274" path="/*"/>
+  <nodes xsi:type="pageflow:PFPage" name="login.xhtml" x="338" y="178" id="pf177444532919210" referenceLink="//@navigationRule.5/@navigationCase.0/@toViewId|" inlinks="pf17744453291922 pf177444540224519" path="/login.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="contents/base/index.xhtml" x="338" y="562" id="pf177444532919211" referenceLink="//@navigationRule.2/@navigationCase.0/@toViewId|" inlinks="pf17744453291923" path="/contents/wms/base/index.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="contents/wms/base-masters/user/index.xhtml" x="338" y="946" id="pf17745815161881" referenceLink="//@navigationRule.4/@navigationCase.0/@toViewId|" inlinks="pf17745815161880 pf17745826207274" path="/contents/common/base-masters/user/index.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="contents/erp/base/index.xhtml" x="338" y="1330" id="pf17745823512823" referenceLink="//@navigationRule.1/@navigationCase.0/@toViewId|" inlinks="pf17745823512822" path="/contents/erp/base/index.xhtml"/>
   <links id="pf17744453291922" target="pf177444532919210" source="pf17744453291921" outcome="login" redirect="true"/>
-  <links id="pf17744453291923" target="pf177444532919211" source="pf17744453291921" outcome="home" redirect="true"/>
+  <links id="pf17744453291923" target="pf177444532919211" source="pf17744453291921" outcome="wms-home" redirect="true"/>
   <links id="pf177444540224519" target="pf177444532919210" source="pf17744453291921" redirect="true"/>
+  <links id="pf17745815161880" target="pf17745815161881" source="pf17744453291921" outcome="user-index" redirect="true"/>
+  <links id="pf17745823512822" target="pf17745823512823" source="pf17744453291921" outcome="erp-home" redirect="true"/>
+  <links id="pf17745826207274" target="pf17745815161881" source="pf17744453291921" outcome="user-group-index" redirect="true"/>
 </pageflow:Pageflow>

@@ -1,7 +1,7 @@
 package com.terrase.frame.enumerator;
 
 public enum EnumSystem {
-	GENERAL(0, "General"), DISTRIBUTION(1, "Sales & Distribution"), WAREHOUSE(2, "Storage Service");
+	COMMON(0, "General"), ERP(1, "Resources Planning"), WMS(2, "Warehouse Management");
 
 	private int value;
 	private String description;

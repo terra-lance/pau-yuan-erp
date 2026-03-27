@@ -33,7 +33,7 @@ public abstract class AuthenticatedBean extends FrameController {
 
 	public void endInit() throws Exception {
 		if (!authenticate(module, OPERATION_VIEW)) {
-			FacesContext.getCurrentInstance().getExternalContext().redirect("/retail/login.xhtml");
+			FacesContext.getCurrentInstance().getExternalContext().redirect("/erp/login.xhtml");
 		}
 	}
 

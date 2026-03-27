@@ -21,10 +21,10 @@ public class Company extends MasterEntity {
 	private String taxIdentificationNo;
 
 	// Contact Info
-	private String line1;
-	private String line2;
-	private String line3;
-	private String line4;
+	private String address1;
+	private String address2;
+	private String address3;
+	private String address4;
 	private String phone;
 	private String fax;
 
@@ -36,20 +36,20 @@ public class Company extends MasterEntity {
 		String address = StringUtil.EMPTY;
 		List<String> strings = new ArrayList<String>();
 
-		if (!StringUtil.isEmpty(line1)) {
-			strings.add(line1);
+		if (!StringUtil.isEmpty(address1)) {
+			strings.add(address1);
 		}
 
-		if (!StringUtil.isEmpty(line2)) {
-			strings.add(line2);
+		if (!StringUtil.isEmpty(address2)) {
+			strings.add(address2);
 		}
 
-		if (!StringUtil.isEmpty(line3)) {
-			strings.add(line3);
+		if (!StringUtil.isEmpty(address3)) {
+			strings.add(address3);
 		}
 
-		if (!StringUtil.isEmpty(line4)) {
-			strings.add(line4);
+		if (!StringUtil.isEmpty(address4)) {
+			strings.add(address4);
 		}
 
 		String contact = StringUtil.EMPTY;

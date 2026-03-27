@@ -37,7 +37,7 @@ import lombok.Setter;
 public class UserController extends AuthenticatedBean {
 	private static final long serialVersionUID = 1L;
 
-	public static final EnumSystem SYSTEM = EnumSystem.GENERAL;
+	public static final EnumSystem SYSTEM = EnumSystem.COMMON;
 	public static final String NAVIGATION_SPACE = "user";
 	public static final String MODULE_NAME = "User";
 
@@ -48,6 +48,7 @@ public class UserController extends AuthenticatedBean {
 	}
 
 	private LazyDataModel<User> objects;
+	private List<User> selectedObjects;
 	private User object;
 	private String confirmPassword;
 
@@ -59,6 +60,9 @@ public class UserController extends AuthenticatedBean {
 	@Autowired
 	@Setter(AccessLevel.NONE)
 	private transient UserService classSvc;
+
+	// UI
+	private String keyword;
 
 	@Autowired
 	@Setter(AccessLevel.NONE)
@@ -79,15 +83,30 @@ public class UserController extends AuthenticatedBean {
 
 			page = NAVI_INDEX;
 
-			HashMap<String, Object> predicates = new LinkedHashMap<>();
-			predicates.put("o.deleted = :param", false);
-
-			objects = new LazyUser(predicates);
+			loadRecord();
 			object = new User();
 
 			userGroups = new DualListModel<>();
 
 			super.endInit();
+		} catch (Throwable t) {
+			addErrorMessage(t);
+		}
+	}
+
+	public void loadRecord() {
+		try {
+			HashMap<String, Object> predicates = new LinkedHashMap<>();
+			predicates.put("o.deleted = :param1", false);
+
+			if (!StringUtil.isEmpty(keyword)) {
+				String condition = "(o.username like :param2 " + "or o.name like :param3 " + "or o.email like :param4)";
+				predicates.put(condition, "%" + keyword + "%");
+				predicates.put("1 = 1", "%" + keyword + "%");
+				predicates.put("2 = 2", "%" + keyword + "%");
+			}
+
+			objects = new LazyUser(predicates);
 		} catch (Throwable t) {
 			addErrorMessage(t);
 		}
@@ -124,6 +143,24 @@ public class UserController extends AuthenticatedBean {
 			} else {
 				addWarningMessage("Notification", "You do not have permission to access this operation");
 			}
+		} catch (Throwable t) {
+			addErrorMessage(t);
+		}
+	}
+
+	public void detail() {
+		try {
+			if (selectedObjects.size() == 0) {
+				addWarningMessage("Notification", "Please select record");
+				return;
+			}
+
+			if (selectedObjects.size() > 1) {
+				addWarningMessage("Notification", "Please select only one record");
+				return;
+			}
+
+			detail(selectedObjects.get(0).getId());
 		} catch (Throwable t) {
 			addErrorMessage(t);
 		}
@@ -200,6 +237,24 @@ public class UserController extends AuthenticatedBean {
 		}
 	}
 
+	public void update() {
+		try {
+			if (selectedObjects.size() == 0) {
+				addWarningMessage("Notification", "Please select record");
+				return;
+			}
+
+			if (selectedObjects.size() > 1) {
+				addWarningMessage("Notification", "Please select only one record");
+				return;
+			}
+
+			update(selectedObjects.get(0).getId());
+		} catch (Throwable t) {
+			addErrorMessage(t);
+		}
+	}
+
 	public void saveUpdate() {
 		try {
 			object.getUserRoles().clear();
@@ -242,13 +297,35 @@ public class UserController extends AuthenticatedBean {
 		}
 	}
 
+	public void delete() {
+		try {
+			if (selectedObjects.size() == 0) {
+				addWarningMessage("Notification", "Please select record");
+				return;
+			}
+
+			if (selectedObjects.size() > 1) {
+				addWarningMessage("Notification", "Please select only one record");
+				return;
+			}
+
+			delete(selectedObjects.get(0).getId());
+		} catch (Throwable t) {
+			addErrorMessage(t);
+		}
+	}
+
 	public void saveDelete() {
 		try {
-			classSvc.delete(object, (User) sessionBean.getUser().clone());
-			addInfoMessage("Notification", "Record successfully deleted");
+			if (authenticate(module, OPERATION_DELETE)) {
+				classSvc.delete(object, (User) sessionBean.getUser().clone());
+				addInfoMessage("Notification", "Record successfully deleted");
 
-			init();
-			page = NAVI_INDEX;
+				init();
+				page = NAVI_INDEX;
+			} else {
+				addWarningMessage("Notification", "You do not have permission to access this operation");
+			}
 		} catch (Throwable t) {
 			addErrorMessage(t);
 		}
@@ -265,6 +342,24 @@ public class UserController extends AuthenticatedBean {
 			} else {
 				addWarningMessage("Notification", "You do not have permission to access this operation");
 			}
+		} catch (Throwable t) {
+			addErrorMessage(t);
+		}
+	}
+
+	public void reset() {
+		try {
+			if (selectedObjects.size() == 0) {
+				addWarningMessage("Notification", "Please select record");
+				return;
+			}
+
+			if (selectedObjects.size() > 1) {
+				addWarningMessage("Notification", "Please select only one record");
+				return;
+			}
+
+			reset(selectedObjects.get(0).getId());
 		} catch (Throwable t) {
 			addErrorMessage(t);
 		}

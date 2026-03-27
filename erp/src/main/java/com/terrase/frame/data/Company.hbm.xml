@@ -27,8 +27,8 @@
 		<property name="registrationNo" type="string">
 			<column name="registration_no" length="50" />
 		</property>
-		<property name="taxNo" type="string">
-			<column name="tax_no" length="50" />
+		<property name="taxIdentificationNo" type="string">
+			<column name="tax_identification_no" length="50" />
 		</property>
 
 		<property name="address1" type="string">
@@ -49,9 +49,6 @@
 		</property>
 		<property name="fax" type="string">
 			<column name="fax" length="500" />
-		</property>
-		<property name="operationDescription" type="string">
-			<column name="operation_description" length="500" />
 		</property>
 
 		<property name="dateCreated" type="timestamp" insert="false">

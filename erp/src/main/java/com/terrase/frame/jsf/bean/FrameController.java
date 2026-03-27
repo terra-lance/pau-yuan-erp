@@ -70,6 +70,9 @@ public class FrameController extends Controller {
 	public static final String CONTENT_XLSX_FILE = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
 	public static final String CONTENT_PDF_FILE = "application/pdf";
 
+	public EnumSystem[] systems = { EnumSystem.ERP, EnumSystem.WMS };
+	protected EnumSystem system;
+
 	protected String title;
 	protected Module module;
 	protected int page;

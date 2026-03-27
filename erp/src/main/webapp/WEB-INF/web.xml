@@ -3,10 +3,10 @@
 	xmlns="http://java.sun.com/xml/ns/javaee"
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
 	id="WebApp_ID" version="3.0">
-	<display-name>pao-yuan-erp</display-name>
+	<display-name>pau-yuan-erp</display-name>
 	<context-param>
 		<param-name>project</param-name>
-		<param-value>Pao Yuan ERP</param-value>
+		<param-value>Pau Yuan ERP</param-value>
 	</context-param>
 	<context-param>
 		<param-name>version</param-name>

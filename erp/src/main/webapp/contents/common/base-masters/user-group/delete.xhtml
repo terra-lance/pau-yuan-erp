@@ -4,16 +4,22 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:p="http://primefaces.org/ui">
 
-	<h:form id="detailForm" class="page">
+	<h:form id="deleteForm" class="page">
 		<p:outputPanel
-			rendered="#{userGroupController.page == userGroupController.naviDetail}">
+			rendered="#{userGroupController.page == userGroupController.naviDelete}">
 			<p:toolbar id="toolbar">
 				<f:facet name="left">
 					<h:outputText styleClass="module-name"
-						value="#{userGroupController.title} - Record Detail" />
+						value="#{userGroupController.title} - Delete Record" />
 				</f:facet>
 
 				<f:facet name="right">
+					<p:commandButton value="Delete" icon="fa fa-fw fa-trash-alt"
+						action="#{userGroupController.saveDelete()}" update="@(.page)">
+						<p:confirm header="Confirmation"
+							message="Do you wish to delete the selected record?"
+							icon="ui-icon-alert" />
+					</p:commandButton>
 					<p:commandButton value="Close" icon="fa fa-fw fa-close"
 						action="#{userGroupController.home()}" update="@(.page)" />
 				</f:facet>
@@ -47,9 +53,9 @@
 
 				<h6>Access Permissions</h6>
 				<p:dataTable rowIndexVar="rowIndex" var="object" rowKey="#{object}"
-					value="#{userGroupController.object.userGroupAccesses}">
+					value="#{userGroupController.object.accesses}">
 
-					<p:column headerText="No.">
+					<p:column headerText="No." styleClass="index-cell">
 						<h:outputText value="#{rowIndex + 1}" />
 					</p:column>
 
